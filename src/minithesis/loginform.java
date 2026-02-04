@@ -83,6 +83,7 @@ public class loginform extends javax.swing.JFrame {
         getContentPane().add(lblbg, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 697, 527));
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnloginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnloginActionPerformed
@@ -99,8 +100,10 @@ public class loginform extends javax.swing.JFrame {
         }
         
         if (uname.equals("admin") && upass.equals("123")) {
-        maintenance m = new maintenance();
-        m.setVisible(true);
+        
+            maintenance m = new maintenance();
+            m.setVisible(true);
+            
         
         this.dispose();
 
