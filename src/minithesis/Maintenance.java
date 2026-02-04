@@ -4,12 +4,6 @@
  */
 package minithesis;
 
-import javax.swing.plaf.basic.BasicInternalFrameUI;
-import java.sql.*;
-import java.util.Vector;
-import javax.swing.JOptionPane;
-import javax.swing.table.DefaultTableModel;
-import java.math.BigDecimal;
 
 /**
  *
@@ -41,6 +35,7 @@ public class Maintenance extends javax.swing.JFrame {
         lbltitle1 = new javax.swing.JLabel();
         lbltitle2 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
+        desktoppane = new javax.swing.JDesktopPane();
         jPanel3 = new javax.swing.JPanel();
         btnoverview = new javax.swing.JButton();
         btnfoodmenu = new javax.swing.JButton();
@@ -50,7 +45,6 @@ public class Maintenance extends javax.swing.JFrame {
         btnrecords = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
         btnlogout = new javax.swing.JButton();
-        desktoppane = new javax.swing.JDesktopPane();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setSize(new java.awt.Dimension(1366, 768));
@@ -75,6 +69,19 @@ public class Maintenance extends javax.swing.JFrame {
         jPanel2.setBackground(new java.awt.Color(255, 204, 204));
         jPanel2.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        javax.swing.GroupLayout desktoppaneLayout = new javax.swing.GroupLayout(desktoppane);
+        desktoppane.setLayout(desktoppaneLayout);
+        desktoppaneLayout.setHorizontalGroup(
+            desktoppaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 1140, Short.MAX_VALUE)
+        );
+        desktoppaneLayout.setVerticalGroup(
+            desktoppaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 610, Short.MAX_VALUE)
+        );
+
+        jPanel2.add(desktoppane, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, 1140, 610));
 
         jPanel3.setBackground(new java.awt.Color(204, 0, 0));
         jPanel3.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -152,27 +159,12 @@ public class Maintenance extends javax.swing.JFrame {
                 .addComponent(btnreservations)
                 .addGap(18, 18, 18)
                 .addComponent(btnrecords)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 215, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButton1)
                 .addGap(18, 18, 18)
                 .addComponent(btnlogout)
                 .addGap(16, 16, 16))
         );
-
-        jPanel2.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 200, 650));
-
-        javax.swing.GroupLayout desktoppaneLayout = new javax.swing.GroupLayout(desktoppane);
-        desktoppane.setLayout(desktoppaneLayout);
-        desktoppaneLayout.setHorizontalGroup(
-            desktoppaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1130, Short.MAX_VALUE)
-        );
-        desktoppaneLayout.setVerticalGroup(
-            desktoppaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 610, Short.MAX_VALUE)
-        );
-
-        jPanel2.add(desktoppane, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 20, 1130, 610));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -180,28 +172,25 @@ public class Maintenance extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 1366, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 1182, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 650, Short.MAX_VALUE)
+                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnfoodmenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnfoodmenuActionPerformed
-        // TODO add your handling code here:
-        foodmenu fm = new foodmenu();
-        desktoppane.add(fm);
-        fm.setVisible(true);
-        
-        lbltitle1.setText("Food Menu");
-        lbltitle2.setText("Food Menu");
+     
     }//GEN-LAST:event_btnfoodmenuActionPerformed
 
     private void btnlogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnlogoutActionPerformed
@@ -218,12 +207,7 @@ public class Maintenance extends javax.swing.JFrame {
 
     private void btncategoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncategoryActionPerformed
         // TODO add your handling code here:
-        category cat = new category();
-        desktoppane.add(cat);
-        cat.setVisible(true);
-        
-        lbltitle1.setText("Food Category");
-        lbltitle2.setText("Food Category");
+       
     }//GEN-LAST:event_btncategoryActionPerformed
 
     /**
