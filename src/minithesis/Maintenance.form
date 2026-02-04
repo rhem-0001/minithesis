@@ -78,7 +78,7 @@
             </Constraint>
           </Constraints>
         </Component>
-        <Component class="javax.swing.JLabel" name="lblmaintenance">
+        <Component class="javax.swing.JLabel" name="lbltitle1">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Script MT Bold" size="100" style="0"/>
@@ -86,15 +86,14 @@
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="0" green="0" red="cc" type="rgb"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Maintenance"/>
           </Properties>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-              <AbsoluteConstraints x="460" y="40" width="630" height="70"/>
+              <AbsoluteConstraints x="440" y="40" width="630" height="120"/>
             </Constraint>
           </Constraints>
         </Component>
-        <Component class="javax.swing.JLabel" name="lblmaintenance2">
+        <Component class="javax.swing.JLabel" name="lbltitle2">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Script MT Bold" size="100" style="0"/>
@@ -102,11 +101,10 @@
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="33" green="0" red="66" type="rgb"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Maintenance"/>
           </Properties>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-              <AbsoluteConstraints x="450" y="40" width="630" height="80"/>
+              <AbsoluteConstraints x="450" y="40" width="630" height="130"/>
             </Constraint>
           </Constraints>
         </Component>

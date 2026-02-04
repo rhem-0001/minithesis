@@ -24,6 +24,7 @@ public class Maintenance extends javax.swing.JFrame {
      */
     public Maintenance() {
         initComponents();
+        setExtendedState(Maintenance.MAXIMIZED_BOTH);
     }
 
     /**
@@ -37,8 +38,8 @@ public class Maintenance extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        lblmaintenance = new javax.swing.JLabel();
-        lblmaintenance2 = new javax.swing.JLabel();
+        lbltitle1 = new javax.swing.JLabel();
+        lbltitle2 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         btnoverview = new javax.swing.JButton();
@@ -63,15 +64,13 @@ public class Maintenance extends javax.swing.JFrame {
         jLabel1.setMinimumSize(new java.awt.Dimension(200, 22));
         jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 180, 500));
 
-        lblmaintenance.setFont(new java.awt.Font("Script MT Bold", 0, 100)); // NOI18N
-        lblmaintenance.setForeground(new java.awt.Color(204, 0, 0));
-        lblmaintenance.setText("Maintenance");
-        jPanel1.add(lblmaintenance, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 40, 630, 70));
+        lbltitle1.setFont(new java.awt.Font("Script MT Bold", 0, 100)); // NOI18N
+        lbltitle1.setForeground(new java.awt.Color(204, 0, 0));
+        jPanel1.add(lbltitle1, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 40, 630, 120));
 
-        lblmaintenance2.setFont(new java.awt.Font("Script MT Bold", 0, 100)); // NOI18N
-        lblmaintenance2.setForeground(new java.awt.Color(102, 0, 51));
-        lblmaintenance2.setText("Maintenance");
-        jPanel1.add(lblmaintenance2, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 40, 630, 80));
+        lbltitle2.setFont(new java.awt.Font("Script MT Bold", 0, 100)); // NOI18N
+        lbltitle2.setForeground(new java.awt.Color(102, 0, 51));
+        jPanel1.add(lbltitle2, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 40, 630, 130));
 
         jPanel2.setBackground(new java.awt.Color(255, 204, 204));
         jPanel2.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -200,6 +199,9 @@ public class Maintenance extends javax.swing.JFrame {
         foodmenu fm = new foodmenu();
         desktoppane.add(fm);
         fm.setVisible(true);
+        
+        lbltitle1.setText("Food Menu");
+        lbltitle2.setText("Food Menu");
     }//GEN-LAST:event_btnfoodmenuActionPerformed
 
     private void btnlogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnlogoutActionPerformed
@@ -219,6 +221,9 @@ public class Maintenance extends javax.swing.JFrame {
         category cat = new category();
         desktoppane.add(cat);
         cat.setVisible(true);
+        
+        lbltitle1.setText("Food Category");
+        lbltitle2.setText("Food Category");
     }//GEN-LAST:event_btncategoryActionPerformed
 
     /**
@@ -260,7 +265,7 @@ public class Maintenance extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JLabel lblmaintenance;
-    private javax.swing.JLabel lblmaintenance2;
+    private javax.swing.JLabel lbltitle1;
+    private javax.swing.JLabel lbltitle2;
     // End of variables declaration//GEN-END:variables
 }
