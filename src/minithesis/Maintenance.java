@@ -4,6 +4,9 @@
  */
 package minithesis;
 
+import javax.swing.JOptionPane;
+import javax.swing.plaf.basic.BasicInternalFrameUI;
+
 
 /**
  *
@@ -12,12 +15,37 @@ package minithesis;
 public class Maintenance extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Maintenance.class.getName());
+    
+    private void openPage(javax.swing.JInternalFrame frame) {
+    desktoppane.removeAll();
+    desktoppane.repaint();
 
+    // Remove title bar
+    javax.swing.plaf.basic.BasicInternalFrameUI ui =
+        (javax.swing.plaf.basic.BasicInternalFrameUI) frame.getUI();
+    ui.setNorthPane(null);
+
+    frame.setBorder(null);
+    frame.setSize(desktoppane.getSize());
+    frame.setLocation(0, 0);
+    frame.setVisible(true);
+
+    desktoppane.add(frame);
+}
     /**
      * Creates new form Maintenance
      */
     public Maintenance() {
         initComponents();
+        addComponentListener(new java.awt.event.ComponentAdapter() {
+    @Override
+    public void componentResized(java.awt.event.ComponentEvent evt) {
+        if (desktoppane.getComponentCount() > 0) {
+            desktoppane.getComponent(0).setSize(desktoppane.getSize());
+        }
+    }
+});
+        openPage(new overview());
         setExtendedState(Maintenance.MAXIMIZED_BOTH);
     }
 
@@ -43,7 +71,7 @@ public class Maintenance extends javax.swing.JFrame {
         btnstocks = new javax.swing.JButton();
         btnreservations = new javax.swing.JButton();
         btnrecords = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
+        btnclose = new javax.swing.JButton();
         btnlogout = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -109,14 +137,17 @@ public class Maintenance extends javax.swing.JFrame {
         btnreservations.setFont(new java.awt.Font("Script MT Bold", 0, 24)); // NOI18N
         btnreservations.setForeground(new java.awt.Color(153, 0, 0));
         btnreservations.setText("Reservations");
+        btnreservations.addActionListener(this::btnreservationsActionPerformed);
 
         btnrecords.setFont(new java.awt.Font("Script MT Bold", 0, 24)); // NOI18N
         btnrecords.setForeground(new java.awt.Color(153, 0, 0));
         btnrecords.setText("Records");
+        btnrecords.addActionListener(this::btnrecordsActionPerformed);
 
-        jButton1.setFont(new java.awt.Font("Script MT Bold", 0, 24)); // NOI18N
-        jButton1.setForeground(new java.awt.Color(153, 0, 0));
-        jButton1.setText("Close");
+        btnclose.setFont(new java.awt.Font("Script MT Bold", 0, 24)); // NOI18N
+        btnclose.setForeground(new java.awt.Color(153, 0, 0));
+        btnclose.setText("Close");
+        btnclose.addActionListener(this::btncloseActionPerformed);
 
         btnlogout.setFont(new java.awt.Font("Script MT Bold", 0, 24)); // NOI18N
         btnlogout.setForeground(new java.awt.Color(153, 0, 0));
@@ -129,7 +160,7 @@ public class Maintenance extends javax.swing.JFrame {
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(44, 44, 44)
-                .addComponent(jButton1)
+                .addComponent(btnclose)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
@@ -160,7 +191,7 @@ public class Maintenance extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(btnrecords)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton1)
+                .addComponent(btnclose)
                 .addGap(18, 18, 18)
                 .addComponent(btnlogout)
                 .addGap(16, 16, 16))
@@ -190,25 +221,63 @@ public class Maintenance extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnfoodmenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnfoodmenuActionPerformed
-     
+            openPage(new foodmenu());
     }//GEN-LAST:event_btnfoodmenuActionPerformed
 
     private void btnlogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnlogoutActionPerformed
-        // TODO add your handling code here:
+    // TODO add your handling code here:
+        int choice = JOptionPane.showConfirmDialog(
+        this,
+        "Are you sure you want to logout?",
+        "Logout",
+        JOptionPane.YES_NO_OPTION
+    );
+
+    if (choice == JOptionPane.YES_OPTION) {
+        this.dispose();
+        new loginform().setVisible(true); // change if needed
+    }
     }//GEN-LAST:event_btnlogoutActionPerformed
 
     private void btnstocksActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnstocksActionPerformed
         // TODO add your handling code here:
+            openPage(new stocks());
     }//GEN-LAST:event_btnstocksActionPerformed
 
     private void btnoverviewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnoverviewActionPerformed
             // TODO add your handling code here:
+              openPage(new overview());
     }//GEN-LAST:event_btnoverviewActionPerformed
 
     private void btncategoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncategoryActionPerformed
         // TODO add your handling code here:
+        openPage(new category());
        
     }//GEN-LAST:event_btncategoryActionPerformed
+
+    private void btncloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncloseActionPerformed
+            // TODO add your handling code here:
+             int confirm = JOptionPane.showConfirmDialog(
+        this,
+        "Exit the system?",
+        "Confirm Exit",
+        JOptionPane.YES_NO_OPTION
+    );
+
+    if (confirm == JOptionPane.YES_OPTION) {
+        System.exit(0);
+    }
+    }//GEN-LAST:event_btncloseActionPerformed
+
+    private void btnreservationsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnreservationsActionPerformed
+        // TODO add your handling code here: 
+            openPage(new reservations());
+    }//GEN-LAST:event_btnreservationsActionPerformed
+
+    private void btnrecordsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnrecordsActionPerformed
+        // TODO add your handling code here:
+            openPage(new records());
+    }//GEN-LAST:event_btnrecordsActionPerformed
 
     /**
      * @param args the command line arguments
@@ -237,6 +306,7 @@ public class Maintenance extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btncategory;
+    private javax.swing.JButton btnclose;
     private javax.swing.JButton btnfoodmenu;
     private javax.swing.JButton btnlogout;
     private javax.swing.JButton btnoverview;
@@ -244,7 +314,6 @@ public class Maintenance extends javax.swing.JFrame {
     private javax.swing.JButton btnreservations;
     private javax.swing.JButton btnstocks;
     private javax.swing.JDesktopPane desktoppane;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;

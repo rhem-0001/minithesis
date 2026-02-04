@@ -15,6 +15,10 @@ public class foodmenu extends javax.swing.JInternalFrame {
      */
     public foodmenu() {
         initComponents();
+        setClosable(false);
+        setResizable(false);
+        setMaximizable(false);
+        setIconifiable(false);
     }
 
     /**
@@ -48,8 +52,10 @@ public class foodmenu extends javax.swing.JInternalFrame {
         jTextField3.setText("jTextField3");
 
         jPanel2.setBackground(new java.awt.Color(204, 0, 0));
+        jPanel2.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
         jPanel1.setBackground(new java.awt.Color(255, 204, 204));
+        jPanel1.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
         jTextField2.addActionListener(this::jTextField2ActionPerformed);
 
@@ -137,6 +143,7 @@ public class foodmenu extends javax.swing.JInternalFrame {
         );
 
         jPanel3.setBackground(new java.awt.Color(153, 0, 51));
+        jPanel3.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -170,6 +177,7 @@ public class foodmenu extends javax.swing.JInternalFrame {
                 .addContainerGap())
         );
 
+        jTable1.setBorder(new javax.swing.border.MatteBorder(null));
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null},
@@ -188,7 +196,7 @@ public class foodmenu extends javax.swing.JInternalFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 699, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 693, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );

@@ -15,6 +15,10 @@ public class category extends javax.swing.JInternalFrame {
      */
     public category() {
         initComponents();
+        setClosable(false);
+        setResizable(false);
+        setMaximizable(false);
+        setIconifiable(false);
     }
 
     /**
