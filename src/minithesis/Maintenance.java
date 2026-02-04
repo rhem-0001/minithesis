@@ -49,7 +49,7 @@ public class Maintenance extends javax.swing.JFrame {
         btnrecords = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
         btnlogout = new javax.swing.JButton();
-        jDesktopPane1 = new javax.swing.JDesktopPane();
+        desktoppane = new javax.swing.JDesktopPane();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setSize(new java.awt.Dimension(1366, 768));
@@ -93,6 +93,7 @@ public class Maintenance extends javax.swing.JFrame {
         btncategory.setFont(new java.awt.Font("Script MT Bold", 0, 24)); // NOI18N
         btncategory.setForeground(new java.awt.Color(153, 0, 0));
         btncategory.setText("Category");
+        btncategory.addActionListener(this::btncategoryActionPerformed);
 
         btnstocks.setFont(new java.awt.Font("Script MT Bold", 0, 24)); // NOI18N
         btnstocks.setForeground(new java.awt.Color(153, 0, 0));
@@ -161,18 +162,18 @@ public class Maintenance extends javax.swing.JFrame {
 
         jPanel2.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 200, 650));
 
-        javax.swing.GroupLayout jDesktopPane1Layout = new javax.swing.GroupLayout(jDesktopPane1);
-        jDesktopPane1.setLayout(jDesktopPane1Layout);
-        jDesktopPane1Layout.setHorizontalGroup(
-            jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout desktoppaneLayout = new javax.swing.GroupLayout(desktoppane);
+        desktoppane.setLayout(desktoppaneLayout);
+        desktoppaneLayout.setHorizontalGroup(
+            desktoppaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 1130, Short.MAX_VALUE)
         );
-        jDesktopPane1Layout.setVerticalGroup(
-            jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        desktoppaneLayout.setVerticalGroup(
+            desktoppaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 610, Short.MAX_VALUE)
         );
 
-        jPanel2.add(jDesktopPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 20, 1130, 610));
+        jPanel2.add(desktoppane, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 20, 1130, 610));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -196,6 +197,9 @@ public class Maintenance extends javax.swing.JFrame {
 
     private void btnfoodmenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnfoodmenuActionPerformed
         // TODO add your handling code here:
+        foodmenu fm = new foodmenu();
+        desktoppane.add(fm);
+        fm.setVisible(true);
     }//GEN-LAST:event_btnfoodmenuActionPerformed
 
     private void btnlogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnlogoutActionPerformed
@@ -209,6 +213,13 @@ public class Maintenance extends javax.swing.JFrame {
     private void btnoverviewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnoverviewActionPerformed
             // TODO add your handling code here:
     }//GEN-LAST:event_btnoverviewActionPerformed
+
+    private void btncategoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncategoryActionPerformed
+        // TODO add your handling code here:
+        category cat = new category();
+        desktoppane.add(cat);
+        cat.setVisible(true);
+    }//GEN-LAST:event_btncategoryActionPerformed
 
     /**
      * @param args the command line arguments
@@ -243,8 +254,8 @@ public class Maintenance extends javax.swing.JFrame {
     private javax.swing.JButton btnrecords;
     private javax.swing.JButton btnreservations;
     private javax.swing.JButton btnstocks;
+    private javax.swing.JDesktopPane desktoppane;
     private javax.swing.JButton jButton1;
-    private javax.swing.JDesktopPane jDesktopPane1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
