@@ -101,7 +101,7 @@ public class loginform extends javax.swing.JFrame {
         
         if (uname.equals("admin") && upass.equals("123")) {
         
-            maintenance m = new maintenance();
+            Maintenance m = new Maintenance();
             m.setVisible(true);
             
         

@@ -4,6 +4,13 @@
  */
 package minithesis;
 
+import javax.swing.plaf.basic.BasicInternalFrameUI;
+import java.sql.*;
+import java.util.Vector;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import java.math.BigDecimal;
+
 /**
  *
  * @author janxt
@@ -30,16 +37,19 @@ public class Maintenance extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jPanel4 = new javax.swing.JPanel();
+        lblmaintenance = new javax.swing.JLabel();
+        lblmaintenance2 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
+        btnoverview = new javax.swing.JButton();
         btnfoodmenu = new javax.swing.JButton();
         btncategory = new javax.swing.JButton();
-        btnreservations = new javax.swing.JButton();
         btnstocks = new javax.swing.JButton();
-        btnoverview = new javax.swing.JButton();
+        btnreservations = new javax.swing.JButton();
         btnrecords = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
         btnlogout = new javax.swing.JButton();
+        jDesktopPane1 = new javax.swing.JDesktopPane();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setSize(new java.awt.Dimension(1366, 768));
@@ -53,20 +63,15 @@ public class Maintenance extends javax.swing.JFrame {
         jLabel1.setMinimumSize(new java.awt.Dimension(200, 22));
         jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 180, 500));
 
-        jPanel4.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        lblmaintenance.setFont(new java.awt.Font("Script MT Bold", 0, 100)); // NOI18N
+        lblmaintenance.setForeground(new java.awt.Color(204, 0, 0));
+        lblmaintenance.setText("Maintenance");
+        jPanel1.add(lblmaintenance, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 40, 630, 70));
 
-        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
-        jPanel4.setLayout(jPanel4Layout);
-        jPanel4Layout.setHorizontalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1194, Short.MAX_VALUE)
-        );
-        jPanel4Layout.setVerticalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 164, Short.MAX_VALUE)
-        );
-
-        jPanel1.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 0, 1200, 170));
+        lblmaintenance2.setFont(new java.awt.Font("Script MT Bold", 0, 100)); // NOI18N
+        lblmaintenance2.setForeground(new java.awt.Color(102, 0, 51));
+        lblmaintenance2.setText("Maintenance");
+        jPanel1.add(lblmaintenance2, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 40, 630, 80));
 
         jPanel2.setBackground(new java.awt.Color(255, 204, 204));
         jPanel2.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -74,61 +79,116 @@ public class Maintenance extends javax.swing.JFrame {
 
         jPanel3.setBackground(new java.awt.Color(204, 0, 0));
         jPanel3.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        jPanel3.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        btnoverview.setFont(new java.awt.Font("Script MT Bold", 0, 24)); // NOI18N
+        btnoverview.setForeground(new java.awt.Color(153, 0, 0));
+        btnoverview.setText("OverView");
+        btnoverview.addActionListener(this::btnoverviewActionPerformed);
 
         btnfoodmenu.setFont(new java.awt.Font("Script MT Bold", 0, 24)); // NOI18N
         btnfoodmenu.setForeground(new java.awt.Color(153, 0, 0));
         btnfoodmenu.setText("Food Menu");
         btnfoodmenu.addActionListener(this::btnfoodmenuActionPerformed);
-        jPanel3.add(btnfoodmenu, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, -1, -1));
 
         btncategory.setFont(new java.awt.Font("Script MT Bold", 0, 24)); // NOI18N
         btncategory.setForeground(new java.awt.Color(153, 0, 0));
         btncategory.setText("Category");
-        jPanel3.add(btncategory, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 60, -1, -1));
-
-        btnreservations.setFont(new java.awt.Font("Script MT Bold", 0, 24)); // NOI18N
-        btnreservations.setForeground(new java.awt.Color(153, 0, 0));
-        btnreservations.setText("Reservations");
-        jPanel3.add(btnreservations, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 120, -1, -1));
 
         btnstocks.setFont(new java.awt.Font("Script MT Bold", 0, 24)); // NOI18N
         btnstocks.setForeground(new java.awt.Color(153, 0, 0));
         btnstocks.setText("Stocks");
         btnstocks.addActionListener(this::btnstocksActionPerformed);
-        jPanel3.add(btnstocks, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 180, -1, -1));
 
-        btnoverview.setFont(new java.awt.Font("Script MT Bold", 0, 24)); // NOI18N
-        btnoverview.setForeground(new java.awt.Color(153, 0, 0));
-        btnoverview.setText("OverView");
-        jPanel3.add(btnoverview, new org.netbeans.lib.awtextra.AbsoluteConstraints(11, 260, 150, -1));
+        btnreservations.setFont(new java.awt.Font("Script MT Bold", 0, 24)); // NOI18N
+        btnreservations.setForeground(new java.awt.Color(153, 0, 0));
+        btnreservations.setText("Reservations");
 
         btnrecords.setFont(new java.awt.Font("Script MT Bold", 0, 24)); // NOI18N
         btnrecords.setForeground(new java.awt.Color(153, 0, 0));
         btnrecords.setText("Records");
-        jPanel3.add(btnrecords, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 340, 150, -1));
+
+        jButton1.setFont(new java.awt.Font("Script MT Bold", 0, 24)); // NOI18N
+        jButton1.setForeground(new java.awt.Color(153, 0, 0));
+        jButton1.setText("Close");
 
         btnlogout.setFont(new java.awt.Font("Script MT Bold", 0, 24)); // NOI18N
         btnlogout.setForeground(new java.awt.Color(153, 0, 0));
         btnlogout.setText("Logout");
         btnlogout.addActionListener(this::btnlogoutActionPerformed);
-        jPanel3.add(btnlogout, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 540, 150, -1));
 
-        jPanel2.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 170, 590));
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(44, 44, 44)
+                .addComponent(jButton1)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(btnlogout, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnstocks, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnreservations, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnrecords, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btncategory, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(btnoverview, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnfoodmenu, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(26, 26, 26))
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(17, 17, 17)
+                .addComponent(btnoverview)
+                .addGap(18, 18, 18)
+                .addComponent(btnfoodmenu)
+                .addGap(18, 18, 18)
+                .addComponent(btncategory)
+                .addGap(18, 18, 18)
+                .addComponent(btnstocks)
+                .addGap(18, 18, 18)
+                .addComponent(btnreservations)
+                .addGap(18, 18, 18)
+                .addComponent(btnrecords)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 215, Short.MAX_VALUE)
+                .addComponent(jButton1)
+                .addGap(18, 18, 18)
+                .addComponent(btnlogout)
+                .addGap(16, 16, 16))
+        );
+
+        jPanel2.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 200, 650));
+
+        javax.swing.GroupLayout jDesktopPane1Layout = new javax.swing.GroupLayout(jDesktopPane1);
+        jDesktopPane1.setLayout(jDesktopPane1Layout);
+        jDesktopPane1Layout.setHorizontalGroup(
+            jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 1130, Short.MAX_VALUE)
+        );
+        jDesktopPane1Layout.setVerticalGroup(
+            jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 610, Short.MAX_VALUE)
+        );
+
+        jPanel2.add(jDesktopPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 20, 1130, 610));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 1366, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 590, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -145,6 +205,10 @@ public class Maintenance extends javax.swing.JFrame {
     private void btnstocksActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnstocksActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnstocksActionPerformed
+
+    private void btnoverviewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnoverviewActionPerformed
+            // TODO add your handling code here:
+    }//GEN-LAST:event_btnoverviewActionPerformed
 
     /**
      * @param args the command line arguments
@@ -179,10 +243,13 @@ public class Maintenance extends javax.swing.JFrame {
     private javax.swing.JButton btnrecords;
     private javax.swing.JButton btnreservations;
     private javax.swing.JButton btnstocks;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JDesktopPane jDesktopPane1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel4;
+    private javax.swing.JLabel lblmaintenance;
+    private javax.swing.JLabel lblmaintenance2;
     // End of variables declaration//GEN-END:variables
 }
