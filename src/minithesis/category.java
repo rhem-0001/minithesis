@@ -8,8 +8,13 @@ package minithesis;
  *
  * @author janxt
  */
+import java.sql.*;
+import java.util.Vector;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 public class category extends javax.swing.JInternalFrame {
-
+private int categoryId;
+private String check;
     /**
      * Creates new form category
      */
@@ -30,21 +35,25 @@ public class category extends javax.swing.JInternalFrame {
         jTextField1 = new javax.swing.JTextField();
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tblcategory = new javax.swing.JTable();
         jPanel2 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
-        jTextField2 = new javax.swing.JTextField();
+        txtcategoryname = new javax.swing.JTextField();
         jPanel4 = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
         lbladdnew = new javax.swing.JLabel();
+        btnadd = new javax.swing.JButton();
+        btndelete = new javax.swing.JButton();
+        btncancel = new javax.swing.JButton();
+        btnsave = new javax.swing.JButton();
 
         jTextField1.setText("jTextField1");
 
         jPanel1.setBackground(new java.awt.Color(153, 0, 51));
         jPanel1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
-        jTable1.setBorder(new javax.swing.border.MatteBorder(null));
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tblcategory.setBorder(new javax.swing.border.MatteBorder(null));
+        tblcategory.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null},
                 {null, null},
@@ -55,7 +64,7 @@ public class category extends javax.swing.JInternalFrame {
                 "ID", "Category"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tblcategory);
 
         jPanel2.setBackground(new java.awt.Color(255, 204, 204));
         jPanel2.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -63,7 +72,8 @@ public class category extends javax.swing.JInternalFrame {
         jPanel3.setBackground(new java.awt.Color(255, 102, 102));
         jPanel3.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
-        jTextField2.addActionListener(this::jTextField2ActionPerformed);
+        txtcategoryname.setEnabled(false);
+        txtcategoryname.addActionListener(this::txtcategorynameActionPerformed);
 
         jPanel4.setBackground(new java.awt.Color(204, 0, 51));
         jPanel4.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -104,16 +114,41 @@ public class category extends javax.swing.JInternalFrame {
                 .addContainerGap())
         );
 
+        btnadd.setText("Add");
+        btnadd.addActionListener(this::btnaddActionPerformed);
+
+        btndelete.setText("Delete");
+        btndelete.setEnabled(false);
+        btndelete.addActionListener(this::btndeleteActionPerformed);
+
+        btncancel.setText("Cancel");
+        btncancel.setEnabled(false);
+
+        btnsave.setText("Save");
+        btnsave.addActionListener(this::btnsaveActionPerformed);
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(57, 57, 57)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jTextField2)
-                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(161, Short.MAX_VALUE))
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(57, 57, 57)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(txtcategoryname)
+                            .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(78, 78, 78)
+                        .addComponent(btnadd)
+                        .addGap(18, 18, 18)
+                        .addComponent(btndelete)
+                        .addGap(117, 117, 117)
+                        .addComponent(btncancel))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(124, 124, 124)
+                        .addComponent(btnsave)))
+                .addContainerGap(9, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -121,7 +156,14 @@ public class category extends javax.swing.JInternalFrame {
                 .addGap(107, 107, 107)
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtcategoryname, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(36, 36, 36)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnadd)
+                    .addComponent(btndelete)
+                    .addComponent(btncancel))
+                .addGap(28, 28, 28)
+                .addComponent(btnsave)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -158,7 +200,7 @@ public class category extends javax.swing.JInternalFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 558, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 586, Short.MAX_VALUE)
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -176,22 +218,168 @@ public class category extends javax.swing.JInternalFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+public void makeEnabled(){
+    txtcategoryname.setEnabled(true);
+}
+public void setDefault(){
+    txtcategoryname.setText("");
+    
+    txtcategoryname.setEnabled(false);
+    btnadd.setEnabled(true);
+    btndelete.setEnabled(false);
+    btncancel.setEnabled(false);
+    
+    populatetable();
+}
+public void populatetable(){
+    int colcount = 0;
+    try{
+        Connection con = sqlconnector.getConnection();
+        Statement st = con.createStatement();
+        String query = "SELECT * FROM category";
+        ResultSet rs = st.executeQuery(query);
+        ResultSetMetaData rsdata = rs.getMetaData();
+        colcount = rsdata.getColumnCount();
+        
+        DefaultTableModel tblmodel =(DefaultTableModel)tblcategory.getModel();
+        tblmodel.setRowCount(0);
+        while(rs.next()){
+            Vector coldata = new Vector();
+            for(int i = 1; i <= colcount; i++){
+                coldata.add(rs.getInt("category_id"));
+                coldata.add(rs.getString("category_name")); 
+                tblmodel.addRow(coldata);
+            }
+        }
+    }catch(SQLException e){
+        JOptionPane.showMessageDialog(null, e);
+    }
+        
+}
+public int generateProductId(int categoryId){
 
-    private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
+    int newId = 0;
+
+    try{
+        Connection con = sqlconnector.getConnection();
+
+        String query = "SELECT MAX(product_id) FROM product WHERE category_id=?";
+        PreparedStatement pst = con.prepareStatement(query);
+        pst.setInt(1, categoryId);
+
+        ResultSet rs = pst.executeQuery();
+
+        if(rs.next() && rs.getInt(1) != 0){
+            newId = rs.getInt(1) + 1; 
+        } else {
+            newId = (categoryId * 100) + 1;
+        }
+
+    }catch(Exception e){
+        JOptionPane.showMessageDialog(null, e);
+    }
+
+    return newId;
+}
+    private void txtcategorynameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtcategorynameActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField2ActionPerformed
+    }//GEN-LAST:event_txtcategorynameActionPerformed
+
+    private void btnaddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnaddActionPerformed
+        // TODO add your handling code here:
+        try {
+        Connection con = sqlconnector.getConnection();
+        String query = "INSERT INTO category (category_name) VALUES (?)";
+        PreparedStatement pst = con.prepareStatement(query);
+
+        pst.setString(1, txtcategoryname.getText());
+
+        pst.executeUpdate();
+
+        JOptionPane.showMessageDialog(null, "Category added successfully!");
+        setDefault();
+
+        } catch (Exception e) {
+        JOptionPane.showMessageDialog(null, e);
+        }
+    }//GEN-LAST:event_btnaddActionPerformed
+
+    private void btndeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btndeleteActionPerformed
+        // TODO add your handling code here:
+        int row = tblcategory.getSelectedRow();
+
+    if (row == -1) {
+        JOptionPane.showMessageDialog(null, "Please select a category first!");
+        return;
+    }
+
+    int categoryId = Integer.parseInt(tblcategory.getValueAt(row, 0).toString());
+
+        int confirm = JOptionPane.showConfirmDialog(null,"Are you sure you want to delete this category?","Confirm",JOptionPane.YES_NO_OPTION);
+
+        if (confirm == JOptionPane.YES_OPTION) {
+        try {
+            Connection con = sqlconnector.getConnection();
+            String query = "DELETE FROM category WHERE category_id = ?";
+            PreparedStatement pst = con.prepareStatement(query);
+
+            pst.setInt(1, categoryId);
+            pst.executeUpdate();
+
+            JOptionPane.showMessageDialog(null, "Category deleted!");
+            setDefault();
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+            }
+        }
+    }//GEN-LAST:event_btndeleteActionPerformed
+
+    private void btnsaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnsaveActionPerformed
+        // TODO add your handling code here:
+        try {
+        Connection con = sqlconnector.getConnection();
+        PreparedStatement pst;
+
+        if (check.equals("add")) {
+
+            String query = "INSERT INTO category (category_name) VALUES (?)";
+            pst = con.prepareStatement(query);
+            pst.setString(1, txtcategoryname.getText());
+
+        } else { // UPDATE
+
+            String query = "UPDATE category SET category_name=? WHERE category_id=?";
+            pst = con.prepareStatement(query);
+            pst.setString(1, txtcategoryname.getText());
+            pst.setInt(2, categoryId);
+        }
+
+        pst.executeUpdate();
+
+        JOptionPane.showMessageDialog(null, "Saved successfully!");
+        setDefault();
+
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(null, e);
+    }
+    }//GEN-LAST:event_btnsaveActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnadd;
+    private javax.swing.JButton btncancel;
+    private javax.swing.JButton btndelete;
+    private javax.swing.JButton btnsave;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
     private javax.swing.JLabel lbladdnew;
+    private javax.swing.JTable tblcategory;
+    private javax.swing.JTextField txtcategoryname;
     // End of variables declaration//GEN-END:variables
 }

@@ -22,7 +22,7 @@ public class Maintenance extends javax.swing.JFrame {
     Color DefaultColor, ClickedColor;
     public Maintenance() {
         initComponents();
-        DefaultColor= new Color(0,0,0);
+        DefaultColor= new Color(255,255,255);
         ClickedColor= new Color(204,0,0);
         
         panelfoodmenu.setBackground(DefaultColor);
@@ -352,12 +352,14 @@ public class Maintenance extends javax.swing.JFrame {
         // TODO add your handling code here:
         panelfoodmenu.setBackground(ClickedColor);
         panelcategory.setBackground(DefaultColor);
+        panellogout.setBackground(DefaultColor);
     }//GEN-LAST:event_panelfoodmenuMousePressed
 
     private void panelcategoryMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelcategoryMousePressed
         // TODO add your handling code here:
-        panelfoodmenu.setBackground(ClickedColor);
-        panelcategory.setBackground(DefaultColor);
+        panelfoodmenu.setBackground(DefaultColor);
+        panelcategory.setBackground(ClickedColor);
+        panellogout.setBackground(DefaultColor);
     }//GEN-LAST:event_panelcategoryMousePressed
 
     private void panelfoodmenuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelfoodmenuMouseClicked

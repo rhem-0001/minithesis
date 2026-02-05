@@ -8,8 +8,15 @@ package minithesis;
  *
  * @author janxt
  */
-public class foodmenu extends javax.swing.JInternalFrame {
+import java.math.BigDecimal;
+import java.sql.*;
+import java.util.Vector;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
+public class foodmenu extends javax.swing.JInternalFrame {
+private String check;
+private int productid;
     /**
      * Creates new form foodmenu
      */
@@ -33,7 +40,7 @@ public class foodmenu extends javax.swing.JInternalFrame {
         jPanel2 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        txtsearch = new javax.swing.JTextField();
+        txtproductname = new javax.swing.JTextField();
         jPanel4 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         txtid = new javax.swing.JTextField();
@@ -69,6 +76,11 @@ public class foodmenu extends javax.swing.JInternalFrame {
                 "ID", "Product", "Category", "Size", "Price", "Quantity"
             }
         ));
+        tblproduct.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblproductMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tblproduct);
 
         jPanel1.setBackground(new java.awt.Color(204, 0, 0));
@@ -81,7 +93,7 @@ public class foodmenu extends javax.swing.JInternalFrame {
         jPanel3.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jLabel1.setText("Search : ");
+        jLabel1.setText("Name:");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -99,7 +111,7 @@ public class foodmenu extends javax.swing.JInternalFrame {
                 .addComponent(jLabel1))
         );
 
-        txtsearch.addActionListener(this::txtsearchActionPerformed);
+        txtproductname.addActionListener(this::txtproductnameActionPerformed);
 
         jPanel4.setBackground(new java.awt.Color(255, 204, 204));
         jPanel4.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -217,15 +229,19 @@ public class foodmenu extends javax.swing.JInternalFrame {
 
         btnupdate.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         btnupdate.setText("Update");
+        btnupdate.addActionListener(this::btnupdateActionPerformed);
 
         btndelete.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         btndelete.setText("Delete");
+        btndelete.addActionListener(this::btndeleteActionPerformed);
 
         btnadd.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         btnadd.setText("Add");
+        btnadd.addActionListener(this::btnaddActionPerformed);
 
         btnsave.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         btnsave.setText("Save");
+        btnsave.addActionListener(this::btnsaveActionPerformed);
 
         btnclose.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         btnclose.setText("Close");
@@ -257,7 +273,7 @@ public class foodmenu extends javax.swing.JInternalFrame {
                             .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                 .addComponent(txtcategory)
                                 .addComponent(txtid)
-                                .addComponent(txtsearch)
+                                .addComponent(txtproductname)
                                 .addComponent(txtprice, javax.swing.GroupLayout.DEFAULT_SIZE, 169, Short.MAX_VALUE)
                                 .addComponent(txtquantity))
                             .addComponent(cmbsize, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -279,7 +295,7 @@ public class foodmenu extends javax.swing.JInternalFrame {
                 .addGap(33, 33, 33)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtsearch, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtproductname, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -300,7 +316,7 @@ public class foodmenu extends javax.swing.JInternalFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(cmbsize))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 168, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 149, Short.MAX_VALUE)
                 .addComponent(btnadd)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -348,10 +364,68 @@ public class foodmenu extends javax.swing.JInternalFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+public void makeEnabled(){
+        txtid.setEnabled(true);
+        txtproductname.setEnabled(true);
+        txtcategory.setEnabled(true);
+        txtprice.setEditable(true);
+        txtquantity.setEnabled(true);
+        cmbsize.setEnabled(true);
+}
+public void setDefault(){
+        txtid.setText("");
+        txtproductname.setText("");
+        txtcategory.setText("");
+        txtprice.setText("");
+        txtquantity.setText("");
 
-    private void txtsearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtsearchActionPerformed
+        txtid.setEnabled(false);
+        txtproductname.setEnabled(false);
+        txtcategory.setEnabled(false);
+        txtprice.setEditable(false);
+        txtquantity.setEnabled(false);
+        cmbsize.setEnabled(false);
+
+        btnadd.setEnabled(true);
+        btnupdate.setEnabled(false);
+        btndelete.setEnabled(false);
+        btnsave.setEnabled(false);
+
+        populatetable();
+
+    }
+public void populatetable(){
+        int colcount = 0;
+    try{
+        Connection con = sqlconnector.getConnection();
+        Statement st = con.createStatement();
+        String query = "SELECT * FROM product";
+        ResultSet rs = st.executeQuery(query);
+        ResultSetMetaData rsdata = rs.getMetaData();
+        colcount = rsdata.getColumnCount();
+
+        DefaultTableModel tblmodel =(DefaultTableModel)tblproduct.getModel();
+        tblmodel.setRowCount(0);
+        while(rs.next()){
+            Vector coldata = new Vector();
+            for(int i = 1; i <= colcount; i++){
+                coldata.add(rs.getInt("product_id"));
+                coldata.add(rs.getString("product_name"));
+                coldata.add(rs.getInt("category_id"));
+                coldata.add(rs.getString("size"));
+                coldata.add(String.format("%.2f", rs.getDouble("price")));
+                coldata.add(rs.getInt("stock_quantity"));
+            }
+            tblmodel.addRow(coldata);
+        }
+    }catch(SQLException e){
+        JOptionPane.showMessageDialog(null, e);
+    }
+}
+
+    private void txtproductnameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtproductnameActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtsearchActionPerformed
+    }//GEN-LAST:event_txtproductnameActionPerformed
 
     private void txtidActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtidActionPerformed
         // TODO add your handling code here:
@@ -368,6 +442,95 @@ public class foodmenu extends javax.swing.JInternalFrame {
     private void txtquantityActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtquantityActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtquantityActionPerformed
+
+    private void btnupdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnupdateActionPerformed
+        // TODO add your handling code here:
+        check = "update";
+        makeEnabled();
+        btndelete.setEnabled(false);
+        btnupdate.setEnabled(false);
+        btnsave.setEnabled(true);
+    }//GEN-LAST:event_btnupdateActionPerformed
+
+    private void btnaddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnaddActionPerformed
+        // TODO add your handling code here:
+        makeEnabled();
+        btnadd.setEnabled(false);
+        btnsave.setEnabled(true);
+        check = "add";
+    }//GEN-LAST:event_btnaddActionPerformed
+
+    private void btnsaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnsaveActionPerformed
+        // TODO add your handling code here:
+        String query = " ";
+
+        try {
+        Connection con = sqlconnector.getConnection();
+        PreparedStatement pst;
+
+        if (check.equals("add")) {
+            query = "INSERT INTO product(product_name, size, price, stock_quantity, category_id) VALUES (?, ?, ?, ?, ?)";
+            pst = con.prepareStatement(query);
+
+            pst.setString(1, txtproductname.getText());
+            pst.setInt(2, Integer.parseInt(txtcategory.getText()));
+            pst.setString(3, cmbsize.getSelectedItem().toString());
+            pst.setBigDecimal(4, new BigDecimal(txtprice.getText()));
+            pst.setInt(5, Integer.parseInt(txtquantity.getText()));
+
+        } else { // UPDATE
+            query = "UPDATE product SET product_name=?, size=?, price=?, stock_quantity=?, category_id=? WHERE product_id=?";
+            pst = con.prepareStatement(query);
+
+            pst.setString(1, txtproductname.getText());
+            pst.setString(2, cmbsize.getSelectedItem().toString());
+            pst.setBigDecimal(3, new BigDecimal(txtprice.getText()));
+            pst.setInt(4, Integer.parseInt(txtquantity.getText()));
+            pst.setInt(5, Integer.parseInt(txtcategory.getText()));
+            pst.setInt(6, productid);
+        }
+
+        pst.executeUpdate();
+        JOptionPane.showMessageDialog(null, "Saved successfully!");
+        setDefault();
+
+        } catch (Exception e) {
+        JOptionPane.showMessageDialog(null, e);
+        }
+    }//GEN-LAST:event_btnsaveActionPerformed
+
+    private void tblproductMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblproductMouseClicked
+        // TODO add your handling code here:
+        DefaultTableModel tblmodel = (DefaultTableModel) tblproduct.getModel();
+        int selectedRow = tblproduct.getSelectedRow();
+
+        productid = Integer.parseInt(tblmodel.getValueAt(selectedRow, 0).toString());
+        txtproductname.setText(tblmodel.getValueAt(selectedRow, 1).toString());
+        txtcategory.setText(tblmodel.getValueAt(selectedRow, 2).toString());
+        cmbsize.setSelectedItem(tblmodel.getValueAt(selectedRow, 3).toString());
+        txtprice.setText(tblmodel.getValueAt(selectedRow, 4).toString());
+        txtquantity.setText(tblmodel.getValueAt(selectedRow, 5).toString());
+
+        btnadd.setEnabled(false);
+        btnupdate.setEnabled(true);
+        btndelete.setEnabled(true);
+    }//GEN-LAST:event_tblproductMouseClicked
+
+    private void btndeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btndeleteActionPerformed
+        // TODO add your handling code here:
+        try{
+            Connection con = sqlconnector.getConnection();
+            PreparedStatement pst = con.prepareStatement("DELETE FROM product WHERE product_id=?");
+            pst.setInt(1, productid);
+
+            pst.executeUpdate();
+            JOptionPane.showMessageDialog(null, "Deleted successfully");
+            setDefault();
+
+        }catch(SQLException e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
+    }//GEN-LAST:event_btndeleteActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -397,7 +560,7 @@ public class foodmenu extends javax.swing.JInternalFrame {
     private javax.swing.JTextField txtcategory;
     private javax.swing.JTextField txtid;
     private javax.swing.JTextField txtprice;
+    private javax.swing.JTextField txtproductname;
     private javax.swing.JTextField txtquantity;
-    private javax.swing.JTextField txtsearch;
     // End of variables declaration//GEN-END:variables
 }
