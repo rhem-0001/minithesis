@@ -15,10 +15,6 @@ public class reservations extends javax.swing.JInternalFrame {
      */
     public reservations() {
         initComponents();
-         setClosable(false);
-        setResizable(false);
-        setMaximizable(false);
-        setIconifiable(false);
     }
 
     /**

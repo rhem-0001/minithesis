@@ -15,10 +15,7 @@ public class stocks extends javax.swing.JInternalFrame {
      */
     public stocks() {
         initComponents();
-         setClosable(false);
-        setResizable(false);
-        setMaximizable(false);
-        setIconifiable(false);
+       
     }
 
     /**

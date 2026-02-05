@@ -15,10 +15,7 @@ public class records extends javax.swing.JInternalFrame {
      */
     public records() {
         initComponents();
-         setClosable(false);
-        setResizable(false);
-        setMaximizable(false);
-        setIconifiable(false);
+         
     }
 
     /**

@@ -15,10 +15,7 @@ public class overview extends javax.swing.JInternalFrame {
      */
     public overview() {
         initComponents();
-         setClosable(false);
-        setResizable(false);
-        setMaximizable(false);
-        setIconifiable(false);
+        
     }
 
     /**
