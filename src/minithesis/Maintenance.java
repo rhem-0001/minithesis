@@ -8,6 +8,10 @@ package minithesis;
  *
  * @author janxt
  */
+import java.sql.*;
+import java.awt.Color;
+import javax.swing.JOptionPane;
+import java.sql.Connection;
 public class Maintenance extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Maintenance.class.getName());
@@ -15,8 +19,14 @@ public class Maintenance extends javax.swing.JFrame {
     /**
      * Creates new form Maintenance
      */
+    Color DefaultColor, ClickedColor;
     public Maintenance() {
         initComponents();
+        DefaultColor= new Color(0,0,0);
+        ClickedColor= new Color(204,0,0);
+        
+        panelfoodmenu.setBackground(DefaultColor);
+        panelcategory.setBackground(DefaultColor);
     }
 
     /**
@@ -31,10 +41,10 @@ public class Maintenance extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        jPanel5 = new javax.swing.JPanel();
-        jLabel3 = new javax.swing.JLabel();
-        jPanel6 = new javax.swing.JPanel();
-        jLabel4 = new javax.swing.JLabel();
+        panelfoodmenu = new javax.swing.JPanel();
+        lblfoodmenu = new javax.swing.JLabel();
+        panelcategory = new javax.swing.JPanel();
+        lblcategory = new javax.swing.JLabel();
         jPanel7 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
         jPanel8 = new javax.swing.JPanel();
@@ -42,12 +52,12 @@ public class Maintenance extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         jPanel9 = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
-        jPanel10 = new javax.swing.JPanel();
+        panellogout = new javax.swing.JPanel();
         jLabel9 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
-        jDesktopPane1 = new javax.swing.JDesktopPane();
+        desktoppane = new javax.swing.JDesktopPane();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -77,47 +87,63 @@ public class Maintenance extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        jPanel5.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        panelfoodmenu.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        panelfoodmenu.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                panelfoodmenuMouseClicked(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                panelfoodmenuMousePressed(evt);
+            }
+        });
 
-        jLabel3.setFont(new java.awt.Font("Script MT Bold", 0, 24)); // NOI18N
-        jLabel3.setText("Food Menu");
+        lblfoodmenu.setFont(new java.awt.Font("Script MT Bold", 0, 24)); // NOI18N
+        lblfoodmenu.setText("Food Menu");
 
-        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
-        jPanel5.setLayout(jPanel5Layout);
-        jPanel5Layout.setHorizontalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel5Layout.createSequentialGroup()
+        javax.swing.GroupLayout panelfoodmenuLayout = new javax.swing.GroupLayout(panelfoodmenu);
+        panelfoodmenu.setLayout(panelfoodmenuLayout);
+        panelfoodmenuLayout.setHorizontalGroup(
+            panelfoodmenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelfoodmenuLayout.createSequentialGroup()
                 .addGap(15, 15, 15)
-                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(lblfoodmenu, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-        jPanel5Layout.setVerticalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel5Layout.createSequentialGroup()
+        panelfoodmenuLayout.setVerticalGroup(
+            panelfoodmenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelfoodmenuLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(lblfoodmenu, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
-        jPanel6.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        panelcategory.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        panelcategory.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                panelcategoryMouseClicked(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                panelcategoryMousePressed(evt);
+            }
+        });
 
-        jLabel4.setFont(new java.awt.Font("Script MT Bold", 0, 24)); // NOI18N
-        jLabel4.setText("Category");
+        lblcategory.setFont(new java.awt.Font("Script MT Bold", 0, 24)); // NOI18N
+        lblcategory.setText("Category");
 
-        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
-        jPanel6.setLayout(jPanel6Layout);
-        jPanel6Layout.setHorizontalGroup(
-            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel6Layout.createSequentialGroup()
+        javax.swing.GroupLayout panelcategoryLayout = new javax.swing.GroupLayout(panelcategory);
+        panelcategory.setLayout(panelcategoryLayout);
+        panelcategoryLayout.setHorizontalGroup(
+            panelcategoryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelcategoryLayout.createSequentialGroup()
                 .addGap(18, 18, 18)
-                .addComponent(jLabel4)
+                .addComponent(lblcategory)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-        jPanel6Layout.setVerticalGroup(
-            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel6Layout.createSequentialGroup()
+        panelcategoryLayout.setVerticalGroup(
+            panelcategoryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelcategoryLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel4)
+                .addComponent(lblcategory)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -191,23 +217,31 @@ public class Maintenance extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jPanel10.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        panellogout.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        panellogout.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                panellogoutMouseClicked(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                panellogoutMousePressed(evt);
+            }
+        });
 
         jLabel9.setFont(new java.awt.Font("Script MT Bold", 0, 24)); // NOI18N
         jLabel9.setText("Logout");
 
-        javax.swing.GroupLayout jPanel10Layout = new javax.swing.GroupLayout(jPanel10);
-        jPanel10.setLayout(jPanel10Layout);
-        jPanel10Layout.setHorizontalGroup(
-            jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel10Layout.createSequentialGroup()
+        javax.swing.GroupLayout panellogoutLayout = new javax.swing.GroupLayout(panellogout);
+        panellogout.setLayout(panellogoutLayout);
+        panellogoutLayout.setHorizontalGroup(
+            panellogoutLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panellogoutLayout.createSequentialGroup()
                 .addGap(35, 35, 35)
                 .addComponent(jLabel9)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-        jPanel10Layout.setVerticalGroup(
-            jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel10Layout.createSequentialGroup()
+        panellogoutLayout.setVerticalGroup(
+            panellogoutLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panellogoutLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel9)
                 .addContainerGap(14, Short.MAX_VALUE))
@@ -221,12 +255,12 @@ public class Maintenance extends javax.swing.JFrame {
                 .addGap(10, 10, 10)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(panelfoodmenu, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(panelcategory, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(panellogout, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(18, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -235,9 +269,9 @@ public class Maintenance extends javax.swing.JFrame {
                 .addGap(22, 22, 22)
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(panelfoodmenu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(panelcategory, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -245,7 +279,7 @@ public class Maintenance extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 203, Short.MAX_VALUE)
-                .addComponent(jPanel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(panellogout, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -278,16 +312,16 @@ public class Maintenance extends javax.swing.JFrame {
 
         jPanel3.setBackground(new java.awt.Color(255, 102, 102));
 
-        jDesktopPane1.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        desktoppane.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
-        javax.swing.GroupLayout jDesktopPane1Layout = new javax.swing.GroupLayout(jDesktopPane1);
-        jDesktopPane1.setLayout(jDesktopPane1Layout);
-        jDesktopPane1Layout.setHorizontalGroup(
-            jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout desktoppaneLayout = new javax.swing.GroupLayout(desktoppane);
+        desktoppane.setLayout(desktoppaneLayout);
+        desktoppaneLayout.setHorizontalGroup(
+            desktoppaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 972, Short.MAX_VALUE)
         );
-        jDesktopPane1Layout.setVerticalGroup(
-            jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        desktoppaneLayout.setVerticalGroup(
+            desktoppaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 632, Short.MAX_VALUE)
         );
 
@@ -297,14 +331,14 @@ public class Maintenance extends javax.swing.JFrame {
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jDesktopPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(desktoppane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jDesktopPane1)
+                .addComponent(desktoppane)
                 .addContainerGap())
         );
 
@@ -313,6 +347,51 @@ public class Maintenance extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void panelfoodmenuMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelfoodmenuMousePressed
+        // TODO add your handling code here:
+        panelfoodmenu.setBackground(ClickedColor);
+        panelcategory.setBackground(DefaultColor);
+    }//GEN-LAST:event_panelfoodmenuMousePressed
+
+    private void panelcategoryMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelcategoryMousePressed
+        // TODO add your handling code here:
+        panelfoodmenu.setBackground(ClickedColor);
+        panelcategory.setBackground(DefaultColor);
+    }//GEN-LAST:event_panelcategoryMousePressed
+
+    private void panelfoodmenuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelfoodmenuMouseClicked
+        // TODO add your handling code here:
+        foodmenu fm = new foodmenu();
+        desktoppane.removeAll();
+        desktoppane.add(fm).setVisible(true);
+    }//GEN-LAST:event_panelfoodmenuMouseClicked
+
+    private void panelcategoryMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelcategoryMouseClicked
+        // TODO add your handling code here:
+        category cat = new category();
+        desktoppane.removeAll();
+        desktoppane.add(cat).setVisible(true);
+    }//GEN-LAST:event_panelcategoryMouseClicked
+
+    private void panellogoutMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panellogoutMousePressed
+        // TODO add your handling code here:
+        panelfoodmenu.setBackground(DefaultColor);
+        panelcategory.setBackground(DefaultColor);
+        panellogout.setBackground(ClickedColor);
+    }//GEN-LAST:event_panellogoutMousePressed
+
+    private void panellogoutMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panellogoutMouseClicked
+        // TODO add your handling code here:
+        int result = JOptionPane.showConfirmDialog(null, "Are you sure you want to Log Out?", "Confirmation", JOptionPane.YES_NO_OPTION);
+        
+        if(result == JOptionPane.YES_OPTION){
+            loginform login = new loginform();
+            login.setVisible(true);
+
+            this.dispose();
+        }
+    }//GEN-LAST:event_panellogoutMouseClicked
 
     /**
      * @param args the command line arguments
@@ -340,25 +419,25 @@ public class Maintenance extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JDesktopPane jDesktopPane1;
+    private javax.swing.JDesktopPane desktoppane;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
-    private javax.swing.JPanel jPanel5;
-    private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
+    private javax.swing.JLabel lblcategory;
+    private javax.swing.JLabel lblfoodmenu;
+    private javax.swing.JPanel panelcategory;
+    private javax.swing.JPanel panelfoodmenu;
+    private javax.swing.JPanel panellogout;
     // End of variables declaration//GEN-END:variables
 }
