@@ -22,6 +22,7 @@ private int productid;
      */
     public foodmenu() {
         initComponents();
+        populatetable();
     }
 
     /**
@@ -111,6 +112,7 @@ private int productid;
                 .addComponent(jLabel1))
         );
 
+        txtproductname.setEnabled(false);
         txtproductname.addActionListener(this::txtproductnameActionPerformed);
 
         jPanel4.setBackground(new java.awt.Color(255, 204, 204));
@@ -133,12 +135,16 @@ private int productid;
             .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
+        txtid.setEnabled(false);
         txtid.addActionListener(this::txtidActionPerformed);
 
+        txtcategory.setEnabled(false);
         txtcategory.addActionListener(this::txtcategoryActionPerformed);
 
+        txtprice.setEnabled(false);
         txtprice.addActionListener(this::txtpriceActionPerformed);
 
+        txtquantity.setEnabled(false);
         txtquantity.addActionListener(this::txtquantityActionPerformed);
 
         jPanel5.setBackground(new java.awt.Color(255, 204, 204));
@@ -226,13 +232,16 @@ private int productid;
 
         cmbsize.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         cmbsize.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Small ", "Regular", "Special", "Petite", "Cutie", "Middie", "Biggie", "Rectangle", "Pack of 3", "Pack of 4", "Pack of 7", "Pack of 8", "Box of 10", "Box of 12", "Box of 20", "Box of 40" }));
+        cmbsize.setEnabled(false);
 
         btnupdate.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         btnupdate.setText("Update");
+        btnupdate.setEnabled(false);
         btnupdate.addActionListener(this::btnupdateActionPerformed);
 
         btndelete.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         btndelete.setText("Delete");
+        btndelete.setEnabled(false);
         btndelete.addActionListener(this::btndeleteActionPerformed);
 
         btnadd.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
@@ -241,6 +250,7 @@ private int productid;
 
         btnsave.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         btnsave.setText("Save");
+        btnsave.setEnabled(false);
         btnsave.addActionListener(this::btnsaveActionPerformed);
 
         btnclose.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
@@ -368,7 +378,7 @@ public void makeEnabled(){
         txtid.setEnabled(true);
         txtproductname.setEnabled(true);
         txtcategory.setEnabled(true);
-        txtprice.setEditable(true);
+        txtprice.setEnabled(true);
         txtquantity.setEnabled(true);
         cmbsize.setEnabled(true);
 }
@@ -422,6 +432,23 @@ public void populatetable(){
         JOptionPane.showMessageDialog(null, e);
     }
 }
+public int getCategoryIdByName(String categoryName){
+        int id = 0;
+        try{
+            Connection con = sqlconnector.getConnection();
+            String sql = "SELECT category_id FROM category WHERE category_name = ?";
+            PreparedStatement pst = con.prepareStatement(sql);
+            pst.setString(1, categoryName);
+            ResultSet rs = pst.executeQuery();
+
+            if(rs.next()){
+                id = rs.getInt("category_id");
+            }
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(null, e);
+        }
+        return id;
+}
 
     private void txtproductnameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtproductnameActionPerformed
         // TODO add your handling code here:
@@ -469,15 +496,25 @@ public void populatetable(){
         PreparedStatement pst;
 
         if (check.equals("add")) {
+
             query = "INSERT INTO product(product_name, size, price, stock_quantity, category_id) VALUES (?, ?, ?, ?, ?)";
             pst = con.prepareStatement(query);
 
             pst.setString(1, txtproductname.getText());
-            pst.setInt(2, Integer.parseInt(txtcategory.getText()));
-            pst.setString(3, cmbsize.getSelectedItem().toString());
-            pst.setBigDecimal(4, new BigDecimal(txtprice.getText()));
-            pst.setInt(5, Integer.parseInt(txtquantity.getText()));
+            pst.setString(2, cmbsize.getSelectedItem().toString());
+            pst.setBigDecimal(3, new BigDecimal(txtprice.getText()));
+            pst.setInt(4, Integer.parseInt(txtquantity.getText()));
 
+            // ⭐ category name → category id
+            String categoryName = txtcategory.getText().trim();
+            int categoryId = getCategoryIdByName(categoryName);
+
+            if(categoryId == 0){
+                JOptionPane.showMessageDialog(null, "Category not found. Add it in Category Dashboard first.");
+                return;
+            }
+
+            pst.setInt(5, categoryId);
         } else { // UPDATE
             query = "UPDATE product SET product_name=?, size=?, price=?, stock_quantity=?, category_id=? WHERE product_id=?";
             pst = con.prepareStatement(query);

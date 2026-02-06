@@ -20,6 +20,7 @@ private String check;
      */
     public category() {
         initComponents();
+        populatetable();
         
     }
 
@@ -46,6 +47,7 @@ private String check;
         btndelete = new javax.swing.JButton();
         btncancel = new javax.swing.JButton();
         btnsave = new javax.swing.JButton();
+        btnupdate = new javax.swing.JButton();
 
         jTextField1.setText("jTextField1");
 
@@ -118,14 +120,18 @@ private String check;
         btnadd.addActionListener(this::btnaddActionPerformed);
 
         btndelete.setText("Delete");
-        btndelete.setEnabled(false);
         btndelete.addActionListener(this::btndeleteActionPerformed);
 
         btncancel.setText("Cancel");
         btncancel.setEnabled(false);
 
         btnsave.setText("Save");
+        btnsave.setEnabled(false);
         btnsave.addActionListener(this::btnsaveActionPerformed);
+
+        btnupdate.setText("Update");
+        btnupdate.setEnabled(false);
+        btnupdate.addActionListener(this::btnupdateActionPerformed);
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -140,14 +146,15 @@ private String check;
                             .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGap(78, 78, 78)
-                        .addComponent(btnadd)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(btnsave)
+                            .addComponent(btnadd))
                         .addGap(18, 18, 18)
-                        .addComponent(btndelete)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(btndelete)
+                            .addComponent(btnupdate))
                         .addGap(117, 117, 117)
-                        .addComponent(btncancel))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(124, 124, 124)
-                        .addComponent(btnsave)))
+                        .addComponent(btncancel)))
                 .addContainerGap(9, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
@@ -162,8 +169,10 @@ private String check;
                     .addComponent(btnadd)
                     .addComponent(btndelete)
                     .addComponent(btncancel))
-                .addGap(28, 28, 28)
-                .addComponent(btnsave)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnsave)
+                    .addComponent(btnupdate))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -226,8 +235,9 @@ public void setDefault(){
     
     txtcategoryname.setEnabled(false);
     btnadd.setEnabled(true);
-    btndelete.setEnabled(false);
+    btndelete.setEnabled(true);
     btncancel.setEnabled(false);
+    btnupdate.setEnabled(false);
     
     populatetable();
 }
@@ -270,7 +280,7 @@ public int generateProductId(int categoryId){
         ResultSet rs = pst.executeQuery();
 
         if(rs.next() && rs.getInt(1) != 0){
-            newId = rs.getInt(1) + 1; 
+            newId = rs.getInt(1); 
         } else {
             newId = (categoryId * 100) + 1;
         }
@@ -287,51 +297,24 @@ public int generateProductId(int categoryId){
 
     private void btnaddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnaddActionPerformed
         // TODO add your handling code here:
-        try {
-        Connection con = sqlconnector.getConnection();
-        String query = "INSERT INTO category (category_name) VALUES (?)";
-        PreparedStatement pst = con.prepareStatement(query);
-
-        pst.setString(1, txtcategoryname.getText());
-
-        pst.executeUpdate();
-
-        JOptionPane.showMessageDialog(null, "Category added successfully!");
-        setDefault();
-
-        } catch (Exception e) {
-        JOptionPane.showMessageDialog(null, e);
-        }
+        makeEnabled();
+        btnadd.setEnabled(false);
+        btnsave.setEnabled(true);
+        check = "add";
     }//GEN-LAST:event_btnaddActionPerformed
 
     private void btndeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btndeleteActionPerformed
-        // TODO add your handling code here:
-        int row = tblcategory.getSelectedRow();
-
-    if (row == -1) {
-        JOptionPane.showMessageDialog(null, "Please select a category first!");
-        return;
-    }
-
-    int categoryId = Integer.parseInt(tblcategory.getValueAt(row, 0).toString());
-
-        int confirm = JOptionPane.showConfirmDialog(null,"Are you sure you want to delete this category?","Confirm",JOptionPane.YES_NO_OPTION);
-
-        if (confirm == JOptionPane.YES_OPTION) {
-        try {
+       try{
             Connection con = sqlconnector.getConnection();
-            String query = "DELETE FROM category WHERE category_id = ?";
-            PreparedStatement pst = con.prepareStatement(query);
-
+            PreparedStatement pst = con.prepareStatement("DELETE FROM product WHERE product_id=?");
             pst.setInt(1, categoryId);
-            pst.executeUpdate();
 
-            JOptionPane.showMessageDialog(null, "Category deleted!");
+            pst.executeUpdate();
+            JOptionPane.showMessageDialog(null, "Deleted successfully");
             setDefault();
 
-        } catch (Exception e) {
+        }catch(SQLException e) {
             JOptionPane.showMessageDialog(null, e);
-            }
         }
     }//GEN-LAST:event_btndeleteActionPerformed
 
@@ -345,6 +328,7 @@ public int generateProductId(int categoryId){
 
             String query = "INSERT INTO category (category_name) VALUES (?)";
             pst = con.prepareStatement(query);
+            
             pst.setString(1, txtcategoryname.getText());
 
         } else { // UPDATE
@@ -365,12 +349,22 @@ public int generateProductId(int categoryId){
     }
     }//GEN-LAST:event_btnsaveActionPerformed
 
+    private void btnupdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnupdateActionPerformed
+        // TODO add your handling code here:
+        check = "update";
+        makeEnabled();
+        btndelete.setEnabled(false);
+        btnupdate.setEnabled(false);
+        btnsave.setEnabled(true);
+    }//GEN-LAST:event_btnupdateActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnadd;
     private javax.swing.JButton btncancel;
     private javax.swing.JButton btndelete;
     private javax.swing.JButton btnsave;
+    private javax.swing.JButton btnupdate;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
