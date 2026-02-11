@@ -45,7 +45,6 @@ private String check;
         lbladdnew = new javax.swing.JLabel();
         btnadd = new javax.swing.JButton();
         btndelete = new javax.swing.JButton();
-        btncancel = new javax.swing.JButton();
         btnsave = new javax.swing.JButton();
         btnupdate = new javax.swing.JButton();
 
@@ -122,9 +121,6 @@ private String check;
         btndelete.setText("Delete");
         btndelete.addActionListener(this::btndeleteActionPerformed);
 
-        btncancel.setText("Cancel");
-        btncancel.setEnabled(false);
-
         btnsave.setText("Save");
         btnsave.setEnabled(false);
         btnsave.addActionListener(this::btnsaveActionPerformed);
@@ -138,41 +134,41 @@ private String check;
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGap(57, 57, 57)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txtcategoryname)
-                            .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtcategoryname, javax.swing.GroupLayout.PREFERRED_SIZE, 402, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(78, 78, 78)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(btnsave)
-                            .addComponent(btnadd))
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(btndelete)
-                            .addComponent(btnupdate))
                         .addGap(117, 117, 117)
-                        .addComponent(btncancel)))
+                        .addComponent(btnsave)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btndelete)
+                        .addGap(63, 63, 63)))
                 .addContainerGap(9, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(btnadd)
+                    .addComponent(btnupdate))
+                .addGap(173, 173, 173))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(107, 107, 107)
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGap(30, 30, 30)
                 .addComponent(txtcategoryname, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(36, 36, 36)
+                .addGap(30, 30, 30)
+                .addComponent(btnadd)
+                .addGap(44, 44, 44)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnadd)
                     .addComponent(btndelete)
-                    .addComponent(btncancel))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnsave)
-                    .addComponent(btnupdate))
+                    .addComponent(btnsave))
+                .addGap(44, 44, 44)
+                .addComponent(btnupdate)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -236,7 +232,7 @@ public void setDefault(){
     txtcategoryname.setEnabled(false);
     btnadd.setEnabled(true);
     btndelete.setEnabled(true);
-    btncancel.setEnabled(false);
+    
     btnupdate.setEnabled(false);
     
     populatetable();
@@ -246,7 +242,7 @@ public void populatetable(){
     try{
         Connection con = sqlconnector.getConnection();
         Statement st = con.createStatement();
-        String query = "SELECT * FROM category";
+        String query = "SELECT category_id, category_name FROM category ORDER BY category_id ASC";
         ResultSet rs = st.executeQuery(query);
         ResultSetMetaData rsdata = rs.getMetaData();
         colcount = rsdata.getColumnCount();
@@ -255,41 +251,32 @@ public void populatetable(){
         tblmodel.setRowCount(0);
         while(rs.next()){
             Vector coldata = new Vector();
-            for(int i = 1; i <= colcount; i++){
                 coldata.add(rs.getInt("category_id"));
                 coldata.add(rs.getString("category_name")); 
                 tblmodel.addRow(coldata);
-            }
         }
     }catch(SQLException e){
         JOptionPane.showMessageDialog(null, e);
     }
         
 }
-public int generateProductId(int categoryId){
+public class CategoryItem {
+    private int id;
+    private String name;
 
-    int newId = 0;
-
-    try{
-        Connection con = sqlconnector.getConnection();
-
-        String query = "SELECT MAX(product_id) FROM product WHERE category_id=?";
-        PreparedStatement pst = con.prepareStatement(query);
-        pst.setInt(1, categoryId);
-
-        ResultSet rs = pst.executeQuery();
-
-        if(rs.next() && rs.getInt(1) != 0){
-            newId = rs.getInt(1); 
-        } else {
-            newId = (categoryId * 100) + 1;
-        }
-
-    }catch(Exception e){
-        JOptionPane.showMessageDialog(null, e);
+    public CategoryItem(int id, String name) {
+        this.id = id;
+        this.name = name;
     }
 
-    return newId;
+    public int getId() {
+        return id;
+    }
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }
     private void txtcategorynameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtcategorynameActionPerformed
         // TODO add your handling code here:
@@ -361,7 +348,6 @@ public int generateProductId(int categoryId){
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnadd;
-    private javax.swing.JButton btncancel;
     private javax.swing.JButton btndelete;
     private javax.swing.JButton btnsave;
     private javax.swing.JButton btnupdate;

@@ -13,16 +13,22 @@ import java.sql.*;
 import java.util.Vector;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import java.util.HashMap;
+import java.util.Map;
 
 public class foodmenu extends javax.swing.JInternalFrame {
 private String check;
 private int productid;
+private int categoryId = -1;
+HashMap<String, Integer> categoryMap = new HashMap<>();
+
     /**
      * Creates new form foodmenu
      */
     public foodmenu() {
         initComponents();
         populatetable();
+        loadCategories();
     }
 
     /**
@@ -42,18 +48,12 @@ private int productid;
         jPanel3 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         txtproductname = new javax.swing.JTextField();
-        jPanel4 = new javax.swing.JPanel();
-        jLabel2 = new javax.swing.JLabel();
-        txtid = new javax.swing.JTextField();
         cmbcategory = new javax.swing.JComboBox<>();
         txtprice = new javax.swing.JTextField();
-        txtquantity = new javax.swing.JTextField();
         jPanel5 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         jPanel6 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
-        jPanel7 = new javax.swing.JPanel();
-        jLabel6 = new javax.swing.JLabel();
         jPanel8 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         cmbsize = new javax.swing.JComboBox<>();
@@ -74,7 +74,7 @@ private int productid;
                 {null, null, null, null, null, null}
             },
             new String [] {
-                "ID", "Product", "Category", "Size", "Price", "Quantity"
+                "Product Code", "Product", "Category", "Size", "Price", "Quantity"
             }
         ));
         tblproduct.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -100,7 +100,9 @@ private int productid;
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -112,26 +114,6 @@ private int productid;
         txtproductname.setEnabled(false);
         txtproductname.addActionListener(this::txtproductnameActionPerformed);
 
-        jPanel4.setBackground(new java.awt.Color(255, 204, 204));
-        jPanel4.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-
-        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jLabel2.setText("ID : ");
-
-        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
-        jPanel4.setLayout(jPanel4Layout);
-        jPanel4Layout.setHorizontalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
-        jPanel4Layout.setVerticalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
-
-        txtid.setEnabled(false);
-        txtid.addActionListener(this::txtidActionPerformed);
-
         cmbcategory.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         cmbcategory.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Bars ", "Cakes", "Cookies", "Cupcakes", "Loaves", "Pies", "Rolls", "Tarts", " ", " " }));
         cmbcategory.setEnabled(false);
@@ -139,9 +121,6 @@ private int productid;
 
         txtprice.setEnabled(false);
         txtprice.addActionListener(this::txtpriceActionPerformed);
-
-        txtquantity.setEnabled(false);
-        txtquantity.addActionListener(this::txtquantityActionPerformed);
 
         jPanel5.setBackground(new java.awt.Color(255, 204, 204));
         jPanel5.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -153,11 +132,11 @@ private int productid;
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 90, Short.MAX_VALUE)
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 27, Short.MAX_VALUE)
         );
 
         jPanel6.setBackground(new java.awt.Color(255, 204, 204));
@@ -170,32 +149,15 @@ private int productid;
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
-                .addComponent(jLabel5)
-                .addGap(0, 0, Short.MAX_VALUE))
-        );
-
-        jPanel7.setBackground(new java.awt.Color(255, 204, 204));
-        jPanel7.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-
-        jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jLabel6.setText("Quantity : ");
-
-        javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
-        jPanel7.setLayout(jPanel7Layout);
-        jPanel7Layout.setHorizontalGroup(
-            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE))
-        );
-        jPanel7Layout.setVerticalGroup(
-            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel5))
         );
 
         jPanel8.setBackground(new java.awt.Color(255, 204, 204));
@@ -212,7 +174,7 @@ private int productid;
         );
         jPanel8Layout.setVerticalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING)
+            .addComponent(jLabel4)
         );
 
         cmbsize.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
@@ -251,34 +213,39 @@ private int productid;
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(83, 202, Short.MAX_VALUE)
+                        .addContainerGap(220, Short.MAX_VALUE)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(btnsave)
                             .addComponent(btnclose)))
                     .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(6, 6, 6)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(jPanel4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jPanel6, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jPanel8, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jPanel7, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jPanel5, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(txtquantity)
-                                    .addComponent(txtprice)
-                                    .addComponent(cmbcategory, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(txtid)
-                                    .addComponent(cmbsize, 0, 136, Short.MAX_VALUE)))
-                            .addComponent(btnupdate)
-                            .addComponent(btnadd)
-                            .addComponent(btndelete))
-                        .addGap(0, 0, Short.MAX_VALUE))
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(btnupdate)
+                                    .addComponent(btnadd)
+                                    .addComponent(btndelete))
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                        .addComponent(jPanel6, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(jPanel8, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                    .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel2Layout.createSequentialGroup()
+                                        .addComponent(cmbsize, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 42, Short.MAX_VALUE))
+                                    .addGroup(jPanel2Layout.createSequentialGroup()
+                                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(cmbcategory, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(txtprice, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGap(0, 0, Short.MAX_VALUE))))))
                     .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addContainerGap()
                         .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtproductname)))
@@ -287,26 +254,18 @@ private int productid;
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(33, 33, 33)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGap(139, 139, 139)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtproductname, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(txtid))
-                .addGap(22, 22, 22)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(cmbcategory))
-                .addGap(22, 22, 22)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(txtprice)
-                    .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(22, 22, 22)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(txtquantity)
-                    .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cmbcategory, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtprice, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -358,26 +317,20 @@ private int productid;
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
 public void makeEnabled(){
-        txtid.setEnabled(true);
         txtproductname.setEnabled(true);
-        txtcategory.setEnabled(true);
+        cmbcategory.setEnabled(true);
         txtprice.setEnabled(true);
-        txtquantity.setEnabled(true);
         cmbsize.setEnabled(true);
 }
 public void setDefault(){
-        txtid.setText("");
         txtproductname.setText("");
-        txtcategory.setText("");
         txtprice.setText("");
-        txtquantity.setText("");
 
-        txtid.setEnabled(false);
         txtproductname.setEnabled(false);
-        txtcategory.setEnabled(false);
+        cmbcategory.setEnabled(false);
         txtprice.setEditable(false);
-        txtquantity.setEnabled(false);
         cmbsize.setEnabled(false);
 
         btnadd.setEnabled(true);
@@ -393,7 +346,7 @@ public void populatetable(){
     try{
         Connection con = sqlconnector.getConnection();
         Statement st = con.createStatement();
-        String query = "SELECT * FROM product";
+        String query = "SELECT p.product_code, p.product_name, c.category_name, " + "p.size, p.price, p.stock_quantity " +"FROM product p " + "JOIN category c ON p.category_id = c.category_id";
         ResultSet rs = st.executeQuery(query);
         ResultSetMetaData rsdata = rs.getMetaData();
         colcount = rsdata.getColumnCount();
@@ -402,10 +355,10 @@ public void populatetable(){
         tblmodel.setRowCount(0);
         while(rs.next()){
             Vector coldata = new Vector();
-            for(int i = 1; i <= colcount; i++){
-                coldata.add(rs.getInt("product_id"));
+            for (int i = 1; i <= colcount; i++) {
+                coldata.add(rs.getInt("product_code"));      
                 coldata.add(rs.getString("product_name"));
-                coldata.add(rs.getInt("category_id"));
+                coldata.add(rs.getString("category_name")); 
                 coldata.add(rs.getString("size"));
                 coldata.add(String.format("%.2f", rs.getDouble("price")));
                 coldata.add(rs.getInt("stock_quantity"));
@@ -416,39 +369,63 @@ public void populatetable(){
         JOptionPane.showMessageDialog(null, e);
     }
 }
-public int getCategoryIdByName(String categoryName){
-        int id = 0;
-        try{
-            Connection con = sqlconnector.getConnection();
-            String sql = "SELECT category_id FROM category WHERE category_name = ?";
-            PreparedStatement pst = con.prepareStatement(sql);
-            pst.setString(1, categoryName);
-            ResultSet rs = pst.executeQuery();
+public void loadCategories() {
+    try {
+        Connection con = sqlconnector.getConnection();
+        String sql = "SELECT category_id, category_name FROM category";
+        PreparedStatement pst = con.prepareStatement(sql);
+        ResultSet rs = pst.executeQuery();
 
-            if(rs.next()){
-                id = rs.getInt("category_id");
-            }
-        }catch(Exception e){
-            JOptionPane.showMessageDialog(null, e);
+        cmbcategory.removeAllItems();
+        categoryMap.clear();
+
+        cmbcategory.addItem("Select Category"); // placeholder
+
+        while (rs.next()) {
+            String name = rs.getString("category_name");
+            int id = rs.getInt("category_id");
+
+            cmbcategory.addItem(name);
+            categoryMap.put(name, id);
         }
-        return id;
+
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(null, e);
+    }
 }
+
+public int generateProductCode(int categoryId) {
+
+    int nextCode = (categoryId * 100) + 1;
+
+    try {
+        Connection con = sqlconnector.getConnection();
+        PreparedStatement pst = con.prepareStatement(
+            "SELECT MAX(product_code) FROM product WHERE category_id=?"
+        );
+        pst.setInt(1, categoryId);
+
+        ResultSet rs = pst.executeQuery();
+
+        if (rs.next() && rs.getInt(1) != 0) {
+            nextCode = rs.getInt(1) + 1;
+        }
+
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(null, e);
+    }
+
+    return nextCode;
+}
+
 
     private void txtproductnameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtproductnameActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtproductnameActionPerformed
 
-    private void txtidActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtidActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtidActionPerformed
-
     private void txtpriceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtpriceActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtpriceActionPerformed
-
-    private void txtquantityActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtquantityActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtquantityActionPerformed
 
     private void btnupdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnupdateActionPerformed
         // TODO add your handling code here:
@@ -462,95 +439,157 @@ public int getCategoryIdByName(String categoryName){
     private void btnaddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnaddActionPerformed
         // TODO add your handling code here:
         makeEnabled();
-        btnadd.setEnabled(false);
-        btnsave.setEnabled(true);
         check = "add";
+        btnsave.setEnabled(true);
     }//GEN-LAST:event_btnaddActionPerformed
 
     private void btnsaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnsaveActionPerformed
         // TODO add your handling code here:
-        String query = " ";
-
-        try {
+            try {
         Connection con = sqlconnector.getConnection();
         PreparedStatement pst;
 
-        if (check.equals("add")) {
-
-            query = "INSERT INTO product(product_name, size, price, stock_quantity, category_id) VALUES (?, ?, ?, ?, ?)";
-            pst = con.prepareStatement(query);
-
-            pst.setString(1, txtproductname.getText());
-            pst.setString(2, cmbsize.getSelectedItem().toString());
-            pst.setBigDecimal(3, new BigDecimal(txtprice.getText()));
-            pst.setInt(4, Integer.parseInt(txtquantity.getText()));
-
-            // ⭐ category name → category id
-            String categoryName = txtcategory.getText().trim();
-            int categoryId = getCategoryIdByName(categoryName);
-
-            if(categoryId == 0){
-                JOptionPane.showMessageDialog(null, "Category not found. Add it in Category Dashboard first.");
-                return;
-            }
-
-            pst.setInt(5, categoryId);
-        } else { // UPDATE
-            query = "UPDATE product SET product_name=?, size=?, price=?, stock_quantity=?, category_id=? WHERE product_id=?";
-            pst = con.prepareStatement(query);
-
-            pst.setString(1, txtproductname.getText());
-            pst.setString(2, cmbsize.getSelectedItem().toString());
-            pst.setBigDecimal(3, new BigDecimal(txtprice.getText()));
-            pst.setInt(4, Integer.parseInt(txtquantity.getText()));
-            pst.setString(5, Integer.parseInt(txtcategory.getText()));
-            pst.setInt(6, productid);
+        if (categoryId <= 0) {
+            JOptionPane.showMessageDialog(null, "Please select a category.");
+            return;
         }
 
-        pst.executeUpdate();
+        if (txtproductname.getText().isEmpty() ||
+            txtprice.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Please fill all fields.");
+            return;
+        }
+
+        if (check.equals("add")) {
+
+            int productCode = generateProductCode(categoryId);
+
+            String sql = "INSERT INTO product " +
+                         "(product_code, product_name, category_id, size, price, stock_quantity) " +
+                         "VALUES (?, ?, ?, ?, ?, ?)";
+
+            pst = con.prepareStatement(sql);
+
+            pst.setInt(1, productCode);
+            pst.setString(2, txtproductname.getText());
+            pst.setInt(3, categoryId);
+            pst.setString(4, cmbsize.getSelectedItem().toString());
+            pst.setBigDecimal(5, new BigDecimal(txtprice.getText()));
+            pst.setInt(6, 0);
+
+            pst.executeUpdate();
+
+        } else if (check.equals("update")) {
+
+            String sql = "UPDATE product SET " +
+                         "product_name=?, size=?, price=?, category_id=? " +
+                         "WHERE product_code=?";
+
+            pst = con.prepareStatement(sql);
+
+            pst.setString(1, txtproductname.getText());
+            pst.setString(2, cmbsize.getSelectedItem().toString());
+            pst.setBigDecimal(3, new BigDecimal(txtprice.getText()));
+            pst.setInt(4, categoryId);
+            pst.setInt(5, productid);
+
+            pst.executeUpdate();
+        }
+
         JOptionPane.showMessageDialog(null, "Saved successfully!");
         setDefault();
 
-        } catch (Exception e) {
+    } catch (Exception e) {
         JOptionPane.showMessageDialog(null, e);
-        }
+        e.printStackTrace();
+    }
     }//GEN-LAST:event_btnsaveActionPerformed
 
     private void tblproductMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblproductMouseClicked
         // TODO add your handling code here:
-        DefaultTableModel tblmodel = (DefaultTableModel) tblproduct.getModel();
+        try {
         int selectedRow = tblproduct.getSelectedRow();
+        if (selectedRow == -1) {
+            return;
+        }
 
-        productid = Integer.parseInt(tblmodel.getValueAt(selectedRow, 0).toString());
-        txtproductname.setText(tblmodel.getValueAt(selectedRow, 1).toString());
-        txtcategory.setText(tblmodel.getValueAt(selectedRow, 2).toString());
-        cmbsize.setSelectedItem(tblmodel.getValueAt(selectedRow, 3).toString());
-        txtprice.setText(tblmodel.getValueAt(selectedRow, 4).toString());
-        txtquantity.setText(tblmodel.getValueAt(selectedRow, 5).toString());
+        DefaultTableModel tblmodel = (DefaultTableModel) tblproduct.getModel();
+        Connection con = sqlconnector.getConnection();
 
-        btnadd.setEnabled(false);
-        btnupdate.setEnabled(true);
-        btndelete.setEnabled(true);
+        int productCode = Integer.parseInt(tblmodel.getValueAt(selectedRow, 0).toString());
+
+        PreparedStatement pst = con.prepareStatement("SELECT product_id FROM product WHERE product_code = ?");
+        pst.setInt(1, productCode);
+
+        ResultSet rs = pst.executeQuery();
+        if (rs.next()) {
+            productid = rs.getInt("product_id");
+        }
+
+            txtproductname.setText(tblmodel.getValueAt(selectedRow, 1).toString());
+            cmbcategory.setSelectedItem(tblmodel.getValueAt(selectedRow, 2).toString());
+            cmbsize.setSelectedItem(tblmodel.getValueAt(selectedRow, 3).toString());
+            txtprice.setText(tblmodel.getValueAt(selectedRow, 4).toString());
+
+            btnupdate.setEnabled(true);
+            btnadd.setEnabled(false);
+            btndelete.setEnabled(true);
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
     }//GEN-LAST:event_tblproductMouseClicked
 
     private void btndeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btndeleteActionPerformed
         // TODO add your handling code here:
-        try{
-            Connection con = sqlconnector.getConnection();
-            PreparedStatement pst = con.prepareStatement("DELETE FROM product WHERE product_id=?");
-            pst.setInt(1, productid);
+        if (productid == 0) {
+            JOptionPane.showMessageDialog(null, "Please select a product.");
+        return;
+        }
 
+        int confirm = JOptionPane.showConfirmDialog(null,"Are you sure you want to delete this product?","Confirm Delete",JOptionPane.YES_NO_OPTION);
+
+        if (confirm != JOptionPane.YES_OPTION) return;
+
+        try {
+            Connection con = sqlconnector.getConnection();
+            PreparedStatement pst = con.prepareStatement("DELETE FROM product WHERE product_id = ?");
+            pst.setInt(1, productid);
             pst.executeUpdate();
-            JOptionPane.showMessageDialog(null, "Deleted successfully");
+
+            JOptionPane.showMessageDialog(null, "Deleted successfully!");
             setDefault();
 
-        }catch(SQLException e) {
+        } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e);
         }
     }//GEN-LAST:event_btndeleteActionPerformed
 
     private void cmbcategoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbcategoryActionPerformed
         // TODO add your handling code here:
+            Object selected = cmbcategory.getSelectedItem();
+
+        if (selected == null || selected.toString().equals("Select Category")) {
+            categoryId = -1;
+            return;
+        }
+
+    try {
+        Connection con = sqlconnector.getConnection();
+        String sql = "SELECT category_id FROM category WHERE category_name = ?";
+        PreparedStatement pst = con.prepareStatement(sql);
+        pst.setString(1, selected.toString());
+
+        ResultSet rs = pst.executeQuery();
+
+        if (rs.next()) {
+            categoryId = rs.getInt("category_id");
+            System.out.println("✔ Category selected ID = " + categoryId);
+        }
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
     }//GEN-LAST:event_cmbcategoryActionPerformed
 
 
@@ -564,24 +603,18 @@ public int getCategoryIdByName(String categoryName){
     private javax.swing.JComboBox<String> cmbsize;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
-    private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tblproduct;
-    private javax.swing.JTextField txtid;
     private javax.swing.JTextField txtprice;
     private javax.swing.JTextField txtproductname;
-    private javax.swing.JTextField txtquantity;
     // End of variables declaration//GEN-END:variables
 }
