@@ -27,21 +27,25 @@ public class overview extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 394, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 274, Short.MAX_VALUE)
-        );
+        OVERVIEW = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
+
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        OVERVIEW.setFont(new java.awt.Font("Showcard Gothic", 1, 55)); // NOI18N
+        OVERVIEW.setForeground(new java.awt.Color(102, 0, 0));
+        OVERVIEW.setText("OVERVIEW");
+        getContentPane().add(OVERVIEW, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, 320, 80));
+
+        jLabel1.setIcon(new javax.swing.ImageIcon("C:\\Users\\shem\\Downloads\\Untitled design.png")); // NOI18N
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 910, 600));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel OVERVIEW;
+    private javax.swing.JLabel jLabel1;
     // End of variables declaration//GEN-END:variables
 }
