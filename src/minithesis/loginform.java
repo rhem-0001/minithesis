@@ -17,7 +17,7 @@ public class loginform extends javax.swing.JFrame {
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(loginform.class.getName());
 
     /**
-     * Creates new form loginform
+     * Creates new form
      */
     public loginform() {
         initComponents();
@@ -106,7 +106,7 @@ public class loginform extends javax.swing.JFrame {
             
         
         this.dispose();
-
+        
 }
     }//GEN-LAST:event_btnloginActionPerformed
 

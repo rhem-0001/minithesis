@@ -18,4 +18,8 @@ public class sqlconnector {
         }
         return connect;
     }
+
+    static Connection connect() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 }

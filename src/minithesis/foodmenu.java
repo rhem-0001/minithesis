@@ -16,19 +16,25 @@ import javax.swing.table.DefaultTableModel;
 import java.util.HashMap;
 import java.util.Map;
 
+
 public class foodmenu extends javax.swing.JInternalFrame {
+
 private String check;
 private int productid;
 private int categoryId = -1;
 HashMap<String, Integer> categoryMap = new HashMap<>();
+public static foodmenu instance;
+// Add this static reference
 
     /**
      * Creates new form foodmenu
      */
     public foodmenu() {
+        instance = this;  // Add this line
         initComponents();
         populatetable();
         loadCategories();
+        loadSizes();
     }
 
     /**
@@ -207,6 +213,7 @@ HashMap<String, Integer> categoryMap = new HashMap<>();
         btnclose.setBackground(new java.awt.Color(255, 204, 204));
         btnclose.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         btnclose.setText("Close");
+        btnclose.addActionListener(this::btncloseActionPerformed);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -214,20 +221,21 @@ HashMap<String, Integer> categoryMap = new HashMap<>();
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addContainerGap(220, Short.MAX_VALUE)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(btnsave)
-                            .addComponent(btnclose)))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                         .addGap(6, 6, 6)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(btnupdate)
-                                    .addComponent(btnadd)
-                                    .addComponent(btndelete))
-                                .addGap(0, 0, Short.MAX_VALUE))
+                                    .addComponent(btnadd))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btnclose)
+                                .addGap(25, 25, 25))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                                .addComponent(btndelete)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btnsave)
+                                .addGap(28, 28, 28))
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
@@ -237,18 +245,16 @@ HashMap<String, Integer> categoryMap = new HashMap<>();
                                 .addGap(18, 18, 18)
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(jPanel2Layout.createSequentialGroup()
-                                        .addComponent(cmbsize, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 42, Short.MAX_VALUE))
-                                    .addGroup(jPanel2Layout.createSequentialGroup()
                                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(cmbcategory, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(cmbsize, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addComponent(txtprice, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGap(0, 0, Short.MAX_VALUE))))))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
+                                        .addGap(0, 0, Short.MAX_VALUE))
+                                    .addComponent(cmbcategory, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtproductname)))
+                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(txtproductname, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -258,7 +264,7 @@ HashMap<String, Integer> categoryMap = new HashMap<>();
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtproductname, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addGap(34, 34, 34)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(cmbcategory, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -270,7 +276,7 @@ HashMap<String, Integer> categoryMap = new HashMap<>();
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(cmbsize))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 93, Short.MAX_VALUE)
                 .addComponent(btnadd)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -305,13 +311,13 @@ HashMap<String, Integer> categoryMap = new HashMap<>();
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 596, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 633, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 602, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 564, Short.MAX_VALUE)
             .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
@@ -346,7 +352,11 @@ public void populatetable(){
     try{
         Connection con = sqlconnector.getConnection();
         Statement st = con.createStatement();
-        String query = "SELECT p.product_code, p.product_name, c.category_name, " + "p.size, p.price, p.stock_quantity " +"FROM product p " + "JOIN category c ON p.category_id = c.category_id";
+        String query = "SELECT p.product_code, p.product_name, c.category_name, " +
+               "s.size_name, p.price, p.stock_quantity " +
+               "FROM product p " +
+               "JOIN category c ON p.category_id = c.category_id " +
+               "LEFT JOIN size s ON p.size_id = s.size_id";
         ResultSet rs = st.executeQuery(query);
         ResultSetMetaData rsdata = rs.getMetaData();
         colcount = rsdata.getColumnCount();
@@ -359,7 +369,7 @@ public void populatetable(){
                 coldata.add(rs.getInt("product_code"));      
                 coldata.add(rs.getString("product_name"));
                 coldata.add(rs.getString("category_name")); 
-                coldata.add(rs.getString("size"));
+                coldata.add(rs.getString("size_name"));
                 coldata.add(String.format("%.2f", rs.getDouble("price")));
                 coldata.add(rs.getInt("stock_quantity"));
             }
@@ -394,6 +404,24 @@ public void loadCategories() {
     }
 }
 
+public void loadSizes() {
+    try {
+        cmbsize.removeAllItems();
+        cmbsize.addItem("Select Size");
+        
+        Connection con = sqlconnector.getConnection();
+        String query = "SELECT * FROM size ORDER BY size_name ASC";
+        Statement st = con.createStatement();
+        ResultSet rs = st.executeQuery(query);
+        
+        while(rs.next()) {
+            String sizeName = rs.getString("size_name");
+            cmbsize.addItem(sizeName);
+        }
+    } catch(Exception e) {
+        JOptionPane.showMessageDialog(null, e);
+    }
+}
 public int generateProductCode(int categoryId) {
 
     int nextCode = (categoryId * 100) + 1;
@@ -465,7 +493,7 @@ public int generateProductCode(int categoryId) {
             int productCode = generateProductCode(categoryId);
 
             String sql = "INSERT INTO product " +
-                         "(product_code, product_name, category_id, size, price, stock_quantity) " +
+                         "(product_code, product_name, category_id, size_id, price, stock_quantity) " +
                          "VALUES (?, ?, ?, ?, ?, ?)";
 
             pst = con.prepareStatement(sql);
@@ -473,7 +501,7 @@ public int generateProductCode(int categoryId) {
             pst.setInt(1, productCode);
             pst.setString(2, txtproductname.getText());
             pst.setInt(3, categoryId);
-            pst.setString(4, cmbsize.getSelectedItem().toString());
+            pst.setInt(4, getSizeIdByName(cmbsize.getSelectedItem().toString()));
             pst.setBigDecimal(5, new BigDecimal(txtprice.getText()));
             pst.setInt(6, 0);
 
@@ -482,13 +510,13 @@ public int generateProductCode(int categoryId) {
         } else if (check.equals("update")) {
 
             String sql = "UPDATE product SET " +
-                         "product_name=?, size=?, price=?, category_id=? " +
+                         "product_name=?, size_id=?, price=?, category_id=? " +
                          "WHERE product_code=?";
 
             pst = con.prepareStatement(sql);
 
             pst.setString(1, txtproductname.getText());
-            pst.setString(2, cmbsize.getSelectedItem().toString());
+            pst.setInt(2, getSizeIdByName(cmbsize.getSelectedItem().toString()));
             pst.setBigDecimal(3, new BigDecimal(txtprice.getText()));
             pst.setInt(4, categoryId);
             pst.setInt(5, productid);
@@ -504,9 +532,24 @@ public int generateProductCode(int categoryId) {
         e.printStackTrace();
     }
     }//GEN-LAST:event_btnsaveActionPerformed
-
+private int getSizeIdByName(String sizeName) {
+    try {
+        Connection con = sqlconnector.getConnection();
+        String query = "SELECT size_id FROM size WHERE size_name = ?";
+        PreparedStatement pst = con.prepareStatement(query);
+        pst.setString(1, sizeName);
+        ResultSet rs = pst.executeQuery();
+        
+        if (rs.next()) {
+            return rs.getInt("size_id");
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    return 0;
+}
     private void tblproductMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblproductMouseClicked
-        // TODO add your handling code here:
+            // TODO add your handling code here:
         try {
         int selectedRow = tblproduct.getSelectedRow();
         if (selectedRow == -1) {
@@ -591,6 +634,11 @@ public int generateProductCode(int categoryId) {
             JOptionPane.showMessageDialog(null, e);
         }
     }//GEN-LAST:event_cmbcategoryActionPerformed
+
+    private void btncloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncloseActionPerformed
+        // TODO add your handling code here:
+        this.dispose();
+    }//GEN-LAST:event_btncloseActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
