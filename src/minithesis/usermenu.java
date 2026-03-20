@@ -8,7 +8,10 @@ public class usermenu extends javax.swing.JFrame {
 
     public usermenu() {
         initComponents();
+        
+        System.out.print("Hello");
     }
+    
     
     public void init(){
         
