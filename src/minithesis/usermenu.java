@@ -9,7 +9,7 @@ public class usermenu extends javax.swing.JFrame {
     public usermenu() {
         initComponents();
         
-        System.out.print("Hello");
+        System.out.print("Hi");
     }
     
     
