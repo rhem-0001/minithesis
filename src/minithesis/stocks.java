@@ -310,55 +310,53 @@ private String check;
     private void btnsaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnsaveActionPerformed
         // TODO add your handling code here:
         try {
-            Connection con = sqlconnector.getConnection();
-            PreparedStatement pst;
+        Connection con = sqlconnector.getConnection();
+        PreparedStatement pst;
 
-            if (check.equals("add")) {
+        if (check.equals("add")) {
+            // For adding: we actually add variants in foodmenu, so this might not be needed
+            // But if you want to add stock here, you need product_name + size
+            JOptionPane.showMessageDialog(null, "Please add products with sizes in Food Menu first!");
+            return;
 
-                String query = "INSERT INTO product(product_name, stock_quantity) VALUES (?,?)";
-                pst = con.prepareStatement(query);
-                pst.setString(1, txtproduct.getText());
-                pst.setInt(2, Integer.parseInt(txtquantity.getText()));
-
-            } else { // UPDATE
-
-                String query = "UPDATE product SET product_name=?, stock_quantity=? WHERE product_id=?";
-                pst = con.prepareStatement(query);
-                pst.setString(1, txtproduct.getText());
-                pst.setInt(2, Integer.parseInt(txtquantity.getText()));
-                pst.setInt(3, stockID);
-                
-            }
-
+        } else { // UPDATE stock quantity for a variant
+            String query = "UPDATE product_variant SET stock_quantity = ? WHERE variant_id = ?";
+            pst = con.prepareStatement(query);
+            pst.setInt(1, Integer.parseInt(txtquantity.getText()));
+            pst.setInt(2, stockID); // stockID is now variant_id
             pst.executeUpdate();
-            
-            JOptionPane.showMessageDialog(null, "Saved successfully!");
-            setDefault();
-            
-            if (foodmenu.instance != null) {
-                foodmenu.instance.populatetable();
-            }
-            
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, e);
         }
+
+        pst.executeUpdate();
+        
+        JOptionPane.showMessageDialog(null, "Saved successfully!");
+        setDefault();
+        
+        if (foodmenu.instance != null) {
+            foodmenu.instance.populatetable();
+        }
+        
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(null, e);
+    }
 
     }//GEN-LAST:event_btnsaveActionPerformed
 
     private void tblstockMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblstockMouseClicked
         // TODO add your handling code here:
-       try {
-
+        try {
         int selectedRow = tblstock.getSelectedRow();
         if (selectedRow == -1) return;
 
         DefaultTableModel model = (DefaultTableModel) tblstock.getModel();
 
-        stockID = Integer.parseInt(model.getValueAt(selectedRow, 0).toString());
+        // Get variant_id (hidden column 4) for updates/deletes
+        stockID = Integer.parseInt(model.getValueAt(selectedRow, 4).toString());
 
-        txtid.setText(model.getValueAt(selectedRow, 0).toString());
-        txtproduct.setText(model.getValueAt(selectedRow, 1).toString());
-        txtquantity.setText(model.getValueAt(selectedRow, 2).toString());
+        txtid.setText(model.getValueAt(selectedRow, 0).toString());  // product_code
+        txtproduct.setText(model.getValueAt(selectedRow, 1).toString() + " (" + 
+                          model.getValueAt(selectedRow, 2).toString() + ")"); // Name + Size
+        txtquantity.setText(model.getValueAt(selectedRow, 3).toString());
 
         btnupdate.setEnabled(true);
         btndelete.setEnabled(true);
@@ -366,6 +364,7 @@ private String check;
     } catch (Exception e) {
         JOptionPane.showMessageDialog(null, e);
     }
+       
     }//GEN-LAST:event_tblstockMouseClicked
 
     private void btnupdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnupdateActionPerformed
@@ -396,21 +395,34 @@ private String check;
 
     private void btndeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btndeleteActionPerformed
         // TODO add your handling code here:
-        try{
-            Connection con = sqlconnector.getConnection();
-            PreparedStatement pst = con.prepareStatement("DELETE FROM product WHERE product_id=?");
-            pst.setInt(1, stockID);
+        if (stockID == 0) {
+        JOptionPane.showMessageDialog(null, "Please select a variant to delete.");
+        return;
+    }
+    
+    int confirm = JOptionPane.showConfirmDialog(null, 
+        "Delete this size variant?", 
+        "Confirm Delete", 
+        JOptionPane.YES_NO_OPTION);
+    if (confirm != JOptionPane.YES_OPTION) return;
+    
+    try{
+        Connection con = sqlconnector.getConnection();
+        
+        // Delete ONLY the variant from product_variant table
+        PreparedStatement pst = con.prepareStatement("DELETE FROM product_variant WHERE variant_id = ?");
+        pst.setInt(1, stockID); // stockID is variant_id
+        pst.executeUpdate();
 
-            pst.executeUpdate();
-            JOptionPane.showMessageDialog(null, "Deleted successfully");
-            setDefault();
-            
-            if (foodmenu.instance != null) {
-                foodmenu.instance.populatetable();
-            }   
-        }catch(SQLException e) {
-            JOptionPane.showMessageDialog(null, e);
-        }
+        JOptionPane.showMessageDialog(null, "Variant deleted successfully!");
+        setDefault();
+        
+        if (foodmenu.instance != null) {
+            foodmenu.instance.populatetable();
+        }   
+    } catch(SQLException e) {
+        JOptionPane.showMessageDialog(null, e);
+    }
     }//GEN-LAST:event_btndeleteActionPerformed
 
     private void txtquantityActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtquantityActionPerformed
@@ -434,37 +446,27 @@ private String check;
     }
     
     try {
-        // Get current quantity from text field
         String currentText = txtquantity.getText().trim();
-        int currentQty = 0;
+        int currentQty = currentText.isEmpty() ? 0 : Integer.parseInt(currentText);
         
-        if (!currentText.isEmpty()) {
-            currentQty = Integer.parseInt(currentText);
-        }
-        
-        // Check if quantity is greater than 0
         if (currentQty <= 0) {
             JOptionPane.showMessageDialog(null, "Quantity cannot be negative!");
             return;
         }
         
-        // Decrease by 1
         int newQty = currentQty - 1;
         txtquantity.setText(String.valueOf(newQty));
         
-        // Update in database immediately
+        // Update product_variant table (not product!)
         Connection con = sqlconnector.getConnection();
-        String query = "UPDATE product SET stock_quantity = ? WHERE product_id = ?";
+        String query = "UPDATE product_variant SET stock_quantity = ? WHERE variant_id = ?";
         PreparedStatement pst = con.prepareStatement(query);
         pst.setInt(1, newQty);
-        pst.setInt(2, stockID);
-        
+        pst.setInt(2, stockID); // variant_id
         pst.executeUpdate();
         
-        // Refresh tables
         populatetable();
         
-        // Refresh foodmenu
         if (foodmenu.instance != null) {
             foodmenu.instance.populatetable();
         }
@@ -472,7 +474,7 @@ private String check;
     } catch (NumberFormatException e) {
         JOptionPane.showMessageDialog(null, "Please enter a valid number!");
     } catch (Exception e) {
-        JOptionPane.showMessageDialog(null, "Error updating quantity: " + e.getMessage());
+        JOptionPane.showMessageDialog(null, "Error: " + e.getMessage());
     }
     }//GEN-LAST:event_btnDecreaseQtyActionPerformed
 
@@ -484,31 +486,22 @@ private String check;
     }
     
     try {
-        // Get current quantity from text field
         String currentText = txtquantity.getText().trim();
-        int currentQty = 0;
+        int currentQty = currentText.isEmpty() ? 0 : Integer.parseInt(currentText);
         
-        if (!currentText.isEmpty()) {
-            currentQty = Integer.parseInt(currentText);
-        }
-        
-        // Increase by 1
         int newQty = currentQty + 1;
         txtquantity.setText(String.valueOf(newQty));
         
-        // Update in database immediately
+        // Update product_variant table (not product!)
         Connection con = sqlconnector.getConnection();
-        String query = "UPDATE product SET stock_quantity = ? WHERE product_id = ?";
+        String query = "UPDATE product_variant SET stock_quantity = ? WHERE variant_id = ?";
         PreparedStatement pst = con.prepareStatement(query);
         pst.setInt(1, newQty);
-        pst.setInt(2, stockID);
-        
+        pst.setInt(2, stockID); // variant_id
         pst.executeUpdate();
         
-        // Refresh tables
         populatetable();
         
-        // Refresh foodmenu
         if (foodmenu.instance != null) {
             foodmenu.instance.populatetable();
         }
@@ -516,7 +509,7 @@ private String check;
     } catch (NumberFormatException e) {
         JOptionPane.showMessageDialog(null, "Please enter a valid number!");
     } catch (Exception e) {
-        JOptionPane.showMessageDialog(null, "Error updating quantity: " + e.getMessage());
+        JOptionPane.showMessageDialog(null, "Error: " + e.getMessage());
     }
     }//GEN-LAST:event_btnIncreaseQtyActionPerformed
 public void makeEnabled(){
@@ -545,25 +538,33 @@ public void setDefault(){
     populatetable();
 }
 public void populatetable(){
-    int colcount = 0;
-    try{
+     try{
         Connection con = sqlconnector.getConnection();
-        Statement st = con.createStatement();
-        String query = "SELECT product_id, product_name, stock_quantity FROM product ORDER BY product_id ASC";
-        ResultSet rs = st.executeQuery(query);
-        ResultSetMetaData rsdata = rs.getMetaData();
-        colcount = rsdata.getColumnCount();
         
-        DefaultTableModel tblmodel =(DefaultTableModel)tblstock.getModel();
+        // Query to show EACH SIZE VARIANT with its own stock
+        String query = "SELECT p.product_code, p.product_name, s.size_name, " +
+                       "pv.stock_quantity, pv.variant_id " +
+                       "FROM product p " +
+                       "JOIN product_variant pv ON p.product_id = pv.product_id " +
+                       "LEFT JOIN size s ON pv.size_id = s.size_id " +
+                       "ORDER BY p.product_name, s.size_name";
+        
+        Statement st = con.createStatement();
+        ResultSet rs = st.executeQuery(query);
+        
+        DefaultTableModel tblmodel = (DefaultTableModel)tblstock.getModel();
         tblmodel.setRowCount(0);
+        
         while(rs.next()){
             Vector coldata = new Vector();
-                coldata.add(rs.getInt("product_id"));
-                coldata.add(rs.getString("product_name"));
-                coldata.add(rs.getInt("stock_quantity"));
-                tblmodel.addRow(coldata);
+            coldata.add(rs.getInt("product_code"));       // Column 0: Product Code (201, 202) ✓
+            coldata.add(rs.getString("product_name"));    // Column 1: Product Name
+            coldata.add(rs.getString("size_name"));       // Column 2: Size (Large, Regular)
+            coldata.add(rs.getInt("stock_quantity"));     // Column 3: Quantity
+            coldata.add(rs.getInt("variant_id"));         // Column 4: Hidden (for updates)
+            tblmodel.addRow(coldata);
         }
-    }catch(SQLException e){
+    } catch(SQLException e){
         JOptionPane.showMessageDialog(null, e);
     }
         

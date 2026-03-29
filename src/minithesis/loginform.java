@@ -106,8 +106,13 @@ public class loginform extends javax.swing.JFrame {
             
         
         this.dispose();
+        }else if(uname.equals("user") && upass.equals("456")){
+            
+            usermenu um = new usermenu();
+            um.setVisible(true);
         
-}
+            this.dispose();
+        }
     }//GEN-LAST:event_btnloginActionPerformed
 
     private void cbxpasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxpasswordActionPerformed

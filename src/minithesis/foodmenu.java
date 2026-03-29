@@ -18,7 +18,7 @@ import java.util.Map;
 
 
 public class foodmenu extends javax.swing.JInternalFrame {
-
+private int currentVariantId = 0;
 private String check;
 private int productid;
 private int categoryId = -1;
@@ -36,6 +36,22 @@ public static foodmenu instance;
         loadCategories();
         loadSizes();
     }
+    public Integer getProductIDByName(String productName) {
+    try {
+        Connection con = sqlconnector.getConnection();
+        String sql = "SELECT product_id FROM product WHERE product_name = ?";
+        PreparedStatement pst = con.prepareStatement(sql);
+        pst.setString(1, productName);
+        ResultSet rs = pst.executeQuery();
+        
+        if (rs.next()) {
+            return rs.getInt("product_id");
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    return null;
+}
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -348,34 +364,35 @@ public void setDefault(){
 
     }
 public void populatetable(){
-        int colcount = 0;
     try{
         Connection con = sqlconnector.getConnection();
+        // JOIN with product_variant table
+        String query = "SELECT p.product_id, p.product_code, p.product_name, c.category_name, " +
+                       "s.size_name, pv.price, pv.stock_quantity, pv.variant_id " +
+                       "FROM product p " +
+                       "JOIN category c ON p.category_id = c.category_id " +
+                       "JOIN product_variant pv ON p.product_id = pv.product_id " +
+                       "LEFT JOIN size s ON pv.size_id = s.size_id " +
+                       "ORDER BY p.product_name, s.size_name";
+        
         Statement st = con.createStatement();
-        String query = "SELECT p.product_code, p.product_name, c.category_name, " +
-               "s.size_name, p.price, p.stock_quantity " +
-               "FROM product p " +
-               "JOIN category c ON p.category_id = c.category_id " +
-               "LEFT JOIN size s ON p.size_id = s.size_id";
         ResultSet rs = st.executeQuery(query);
-        ResultSetMetaData rsdata = rs.getMetaData();
-        colcount = rsdata.getColumnCount();
-
-        DefaultTableModel tblmodel =(DefaultTableModel)tblproduct.getModel();
+        
+        DefaultTableModel tblmodel = (DefaultTableModel)tblproduct.getModel();
         tblmodel.setRowCount(0);
+        
         while(rs.next()){
             Vector coldata = new Vector();
-            for (int i = 1; i <= colcount; i++) {
-                coldata.add(rs.getInt("product_code"));      
-                coldata.add(rs.getString("product_name"));
-                coldata.add(rs.getString("category_name")); 
-                coldata.add(rs.getString("size_name"));
-                coldata.add(String.format("%.2f", rs.getDouble("price")));
-                coldata.add(rs.getInt("stock_quantity"));
-            }
+            coldata.add(rs.getInt("product_code"));        // Column 0
+            coldata.add(rs.getString("product_name"));     // Column 1
+            coldata.add(rs.getString("category_name"));    // Column 2
+            coldata.add(rs.getString("size_name"));        // Column 3
+            coldata.add(String.format("%.2f", rs.getDouble("price"))); // Column 4
+            coldata.add(rs.getInt("stock_quantity"));      // Column 5
+            coldata.add(rs.getInt("variant_id"));          // Column 6 (hidden, for edit/delete)
             tblmodel.addRow(coldata);
         }
-    }catch(SQLException e){
+    } catch(SQLException e){
         JOptionPane.showMessageDialog(null, e);
     }
 }
@@ -473,7 +490,7 @@ public int generateProductCode(int categoryId) {
 
     private void btnsaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnsaveActionPerformed
         // TODO add your handling code here:
-            try {
+    try {
         Connection con = sqlconnector.getConnection();
         PreparedStatement pst;
 
@@ -482,53 +499,92 @@ public int generateProductCode(int categoryId) {
             return;
         }
 
-        if (txtproductname.getText().isEmpty() ||
-            txtprice.getText().isEmpty()) {
+        if (txtproductname.getText().isEmpty() || txtprice.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Please fill all fields.");
             return;
         }
 
-        if (check.equals("add")) {
-
+        String productName = txtproductname.getText().trim();
+        int sizeId = getSizeIdByName(cmbsize.getSelectedItem().toString());
+        BigDecimal price = new BigDecimal(txtprice.getText());
+        
+        // STEP 1: Get or Create Product (ONE entry in product table)
+        Integer existingProductId = getProductIDByName(productName);
+        int productId;
+        
+        if (existingProductId == null) {
+            // NEW product: insert into product table
             int productCode = generateProductCode(categoryId);
-
-            String sql = "INSERT INTO product " +
-                         "(product_code, product_name, category_id, size_id, price, stock_quantity) " +
-                         "VALUES (?, ?, ?, ?, ?, ?)";
-
-            pst = con.prepareStatement(sql);
-
-            pst.setInt(1, productCode);
-            pst.setString(2, txtproductname.getText());
-            pst.setInt(3, categoryId);
-            pst.setInt(4, getSizeIdByName(cmbsize.getSelectedItem().toString()));
-            pst.setBigDecimal(5, new BigDecimal(txtprice.getText()));
-            pst.setInt(6, 0);
-
-            pst.executeUpdate();
-
+            
+            String insertProduct = "INSERT INTO product (product_code, product_name, category_id) VALUES (?, ?, ?)";
+            PreparedStatement pstProduct = con.prepareStatement(insertProduct, Statement.RETURN_GENERATED_KEYS);
+            pstProduct.setInt(1, productCode);
+            pstProduct.setString(2, productName);
+            pstProduct.setInt(3, categoryId);
+            pstProduct.executeUpdate();
+            
+            // Get the new product_id
+            ResultSet keys = pstProduct.getGeneratedKeys();
+            if (keys.next()) {
+                productId = keys.getInt(1);
+            } else {
+                throw new SQLException("Failed to get product ID");
+            }
+        } else {
+            // EXISTING product: reuse its ID
+            productId = existingProductId;
+        }
+        
+        // STEP 2: Handle variant (size + price)
+        if (check.equals("add")) {
+            // Check if this size already exists for this product
+            String checkVariant = "SELECT variant_id FROM product_variant WHERE product_id = ? AND size_id = ?";
+            PreparedStatement pstCheck = con.prepareStatement(checkVariant);
+            pstCheck.setInt(1, productId);
+            pstCheck.setInt(2, sizeId);
+            ResultSet rsCheck = pstCheck.executeQuery();
+            
+            if (rsCheck.next()) {
+                // UPDATE existing variant
+                int variantId = rsCheck.getInt("variant_id");
+                String updateVariant = "UPDATE product_variant SET price = ?, stock_quantity = ? WHERE variant_id = ?";
+                PreparedStatement pstUpdate = con.prepareStatement(updateVariant);
+                pstUpdate.setBigDecimal(1, price);
+                pstUpdate.setInt(2, 0); // stock_quantity
+                pstUpdate.setInt(3, variantId);
+                pstUpdate.executeUpdate();
+                JOptionPane.showMessageDialog(null, "Size variant updated!");
+            } else {
+                // INSERT new variant
+                String insertVariant = "INSERT INTO product_variant (product_id, size_id, price, stock_quantity) VALUES (?, ?, ?, ?)";
+                PreparedStatement pstVariant = con.prepareStatement(insertVariant);
+                pstVariant.setInt(1, productId);
+                pstVariant.setInt(2, sizeId);
+                pstVariant.setBigDecimal(3, price);
+                pstVariant.setInt(4, 0); // stock_quantity
+                pstVariant.executeUpdate();
+                JOptionPane.showMessageDialog(null, "New size added to product!");
+            }
+            
         } else if (check.equals("update")) {
-
-            String sql = "UPDATE product SET " +
-                         "product_name=?, size_id=?, price=?, category_id=? " +
-                         "WHERE product_code=?";
-
-            pst = con.prepareStatement(sql);
-
-            pst.setString(1, txtproductname.getText());
-            pst.setInt(2, getSizeIdByName(cmbsize.getSelectedItem().toString()));
-            pst.setBigDecimal(3, new BigDecimal(txtprice.getText()));
-            pst.setInt(4, categoryId);
-            pst.setInt(5, productid);
-
-            pst.executeUpdate();
+            // UPDATE existing variant (using currentVariantId)
+            if (currentVariantId > 0) {
+                String updateVariant = "UPDATE product_variant SET price = ?, stock_quantity = ? WHERE variant_id = ?";
+                PreparedStatement pstUpdate = con.prepareStatement(updateVariant);
+                pstUpdate.setBigDecimal(1, price);
+                pstUpdate.setInt(2, 0);
+                pstUpdate.setInt(3, currentVariantId);
+                pstUpdate.executeUpdate();
+                JOptionPane.showMessageDialog(null, "Variant updated!");
+            }
         }
 
         JOptionPane.showMessageDialog(null, "Saved successfully!");
         setDefault();
+        populatetable();
 
     } catch (Exception e) {
-        JOptionPane.showMessageDialog(null, e);
+        JOptionPane.showMessageDialog(null, "Error: " + e.getMessage());
         e.printStackTrace();
     }
     }//GEN-LAST:event_btnsaveActionPerformed
@@ -552,56 +608,65 @@ private int getSizeIdByName(String sizeName) {
             // TODO add your handling code here:
         try {
         int selectedRow = tblproduct.getSelectedRow();
-        if (selectedRow == -1) {
-            return;
-        }
+        if (selectedRow == -1) return;
 
         DefaultTableModel tblmodel = (DefaultTableModel) tblproduct.getModel();
-        Connection con = sqlconnector.getConnection();
-
+        
+        // Get values from table (match column indices above)
         int productCode = Integer.parseInt(tblmodel.getValueAt(selectedRow, 0).toString());
-
+        String productName = tblmodel.getValueAt(selectedRow, 1).toString();
+        String category = tblmodel.getValueAt(selectedRow, 2).toString();
+        String size = tblmodel.getValueAt(selectedRow, 3).toString();
+        String price = tblmodel.getValueAt(selectedRow, 4).toString();
+        currentVariantId = Integer.parseInt(tblmodel.getValueAt(selectedRow, 6).toString()); // Hidden column
+        
+        // Fill form
+        txtproductname.setText(productName);
+        cmbcategory.setSelectedItem(category);
+        cmbsize.setSelectedItem(size);
+        txtprice.setText(price);
+        
+        // Get product_id for reference (if needed)
+        Connection con = sqlconnector.getConnection();
         PreparedStatement pst = con.prepareStatement("SELECT product_id FROM product WHERE product_code = ?");
         pst.setInt(1, productCode);
-
         ResultSet rs = pst.executeQuery();
         if (rs.next()) {
             productid = rs.getInt("product_id");
         }
 
-            txtproductname.setText(tblmodel.getValueAt(selectedRow, 1).toString());
-            cmbcategory.setSelectedItem(tblmodel.getValueAt(selectedRow, 2).toString());
-            cmbsize.setSelectedItem(tblmodel.getValueAt(selectedRow, 3).toString());
-            txtprice.setText(tblmodel.getValueAt(selectedRow, 4).toString());
+        btnupdate.setEnabled(true);
+        btnadd.setEnabled(false);
+        btndelete.setEnabled(true);
+        check = "update";
 
-            btnupdate.setEnabled(true);
-            btnadd.setEnabled(false);
-            btndelete.setEnabled(true);
-
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, e);
-        }
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(null, e);
+    }
     }//GEN-LAST:event_tblproductMouseClicked
 
     private void btndeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btndeleteActionPerformed
         // TODO add your handling code here:
-        if (productid == 0) {
-            JOptionPane.showMessageDialog(null, "Please select a product.");
-        return;
+        if (currentVariantId == 0) {
+            JOptionPane.showMessageDialog(null, "Please select a product variant to delete.");
+            return;
         }
 
-        int confirm = JOptionPane.showConfirmDialog(null,"Are you sure you want to delete this product?","Confirm Delete",JOptionPane.YES_NO_OPTION);
+        int confirm = JOptionPane.showConfirmDialog(null,"Delete this size variant?","Confirm Delete",JOptionPane.YES_NO_OPTION);
 
         if (confirm != JOptionPane.YES_OPTION) return;
 
         try {
             Connection con = sqlconnector.getConnection();
-            PreparedStatement pst = con.prepareStatement("DELETE FROM product WHERE product_id = ?");
-            pst.setInt(1, productid);
+        
+        // Delete ONLY the variant, not the whole product
+            PreparedStatement pst = con.prepareStatement("DELETE FROM product_variant WHERE variant_id = ?");
+            pst.setInt(1, currentVariantId);
             pst.executeUpdate();
 
-            JOptionPane.showMessageDialog(null, "Deleted successfully!");
+            JOptionPane.showMessageDialog(null, "Variant deleted successfully!");
             setDefault();
+            populatetable();
 
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e);

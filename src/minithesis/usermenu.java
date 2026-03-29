@@ -1,15 +1,20 @@
 package minithesis;
 
+import java.awt.Color;
 import javax.swing.JOptionPane;
 
 public class usermenu extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(usermenu.class.getName());
 
+    Color DefaultColor, ClickedColor;
     public usermenu() {
         initComponents();
+        DefaultColor = new Color(255,255,255);
+        ClickedColor = new Color(204,0,0);
         
-        System.out.print("Hii");
+        
+        
     }
     
     
@@ -33,19 +38,40 @@ public class usermenu extends javax.swing.JFrame {
         jPanel21 = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
         jTextField1 = new javax.swing.JTextField();
+        barspanel = new javax.swing.JPanel();
+        lblbars = new javax.swing.JLabel();
+        cakespanel = new javax.swing.JPanel();
+        lblcakes = new javax.swing.JLabel();
+        cookiespanel = new javax.swing.JPanel();
+        lblcookies = new javax.swing.JLabel();
+        cupcakespanel = new javax.swing.JPanel();
+        lblcupcakes = new javax.swing.JLabel();
+        loavespanel = new javax.swing.JPanel();
+        lblloaves = new javax.swing.JLabel();
+        piespanel = new javax.swing.JPanel();
+        lblpies = new javax.swing.JLabel();
+        rollspanel = new javax.swing.JPanel();
+        lblrolls = new javax.swing.JLabel();
+        tartspanel = new javax.swing.JPanel();
+        lbltarts = new javax.swing.JLabel();
+        otherpanel = new javax.swing.JPanel();
+        lblothers = new javax.swing.JLabel();
+        Logoutpanel = new javax.swing.JPanel();
+        lbllogout = new javax.swing.JLabel();
+        receiptpanel = new javax.swing.JPanel();
+        lblreceipt = new javax.swing.JLabel();
+        resetpanel = new javax.swing.JPanel();
+        lblreset = new javax.swing.JLabel();
+        totalpanel = new javax.swing.JPanel();
+        lbltotal = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
-        jPanel5 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        Txtbars = new javax.swing.JTextField();
-        txtCakes = new javax.swing.JTextField();
-        txtCookies = new javax.swing.JTextField();
-        txtCupcakes = new javax.swing.JTextField();
-        txtLoaves = new javax.swing.JTextField();
-        txtPies = new javax.swing.JTextField();
-        txtRolls = new javax.swing.JTextField();
-        txtTarts = new javax.swing.JTextField();
-        txtOthers = new javax.swing.JTextField();
         jPanel3 = new javax.swing.JPanel();
+        lblttl = new javax.swing.JLabel();
+        jPanel4 = new javax.swing.JPanel();
+        lblcash = new javax.swing.JLabel();
+        jPanel5 = new javax.swing.JPanel();
+        lblchange = new javax.swing.JLabel();
+        desktoppane = new javax.swing.JDesktopPane();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -63,171 +89,445 @@ public class usermenu extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 882, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 1249, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jTextField1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 84, Short.MAX_VALUE)
         );
 
-        jPanel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(230, 230, 230)));
-
-        jLabel1.setFont(new java.awt.Font("Arial", 1, 23)); // NOI18N
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("Categories");
-
-        Txtbars.setBackground(new java.awt.Color(255, 204, 204));
-        Txtbars.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
-        Txtbars.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        Txtbars.setText("Bars");
-        Txtbars.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(230, 230, 230)));
-        Txtbars.addMouseListener(new java.awt.event.MouseAdapter() {
+        barspanel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                TxtbarsMouseClicked(evt);
+                barspanelMouseClicked(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                barspanelMousePressed(evt);
             }
         });
-        Txtbars.addActionListener(this::TxtbarsActionPerformed);
 
-        txtCakes.setBackground(new java.awt.Color(255, 204, 204));
-        txtCakes.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
-        txtCakes.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        txtCakes.setText("Cakes");
-        txtCakes.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(230, 230, 230)));
-        txtCakes.addActionListener(this::txtCakesActionPerformed);
+        lblbars.setText("Bars");
 
-        txtCookies.setBackground(new java.awt.Color(255, 204, 204));
-        txtCookies.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
-        txtCookies.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        txtCookies.setText("Cookies");
-        txtCookies.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(230, 230, 230)));
-        txtCookies.addActionListener(this::txtCookiesActionPerformed);
+        javax.swing.GroupLayout barspanelLayout = new javax.swing.GroupLayout(barspanel);
+        barspanel.setLayout(barspanelLayout);
+        barspanelLayout.setHorizontalGroup(
+            barspanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(barspanelLayout.createSequentialGroup()
+                .addGap(35, 35, 35)
+                .addComponent(lblbars)
+                .addContainerGap(43, Short.MAX_VALUE))
+        );
+        barspanelLayout.setVerticalGroup(
+            barspanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(lblbars, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
 
-        txtCupcakes.setBackground(new java.awt.Color(255, 204, 204));
-        txtCupcakes.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
-        txtCupcakes.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        txtCupcakes.setText("Cupcakes");
-        txtCupcakes.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(230, 230, 230)));
+        cakespanel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                cakespanelMousePressed(evt);
+            }
+        });
 
-        txtLoaves.setBackground(new java.awt.Color(255, 204, 204));
-        txtLoaves.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
-        txtLoaves.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        txtLoaves.setText("Loaves");
-        txtLoaves.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(230, 230, 230)));
+        lblcakes.setText("Cakes");
 
-        txtPies.setBackground(new java.awt.Color(255, 204, 204));
-        txtPies.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
-        txtPies.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        txtPies.setText("Pies");
-        txtPies.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(230, 230, 230)));
-
-        txtRolls.setBackground(new java.awt.Color(255, 204, 204));
-        txtRolls.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
-        txtRolls.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        txtRolls.setText("Rolls");
-        txtRolls.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(230, 230, 230)));
-
-        txtTarts.setBackground(new java.awt.Color(255, 204, 204));
-        txtTarts.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
-        txtTarts.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        txtTarts.setText("Tarts");
-        txtTarts.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(230, 230, 230)));
-
-        txtOthers.setBackground(new java.awt.Color(255, 204, 204));
-        txtOthers.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
-        txtOthers.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        txtOthers.setText("Others");
-        txtOthers.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(230, 230, 230)));
-
-        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
-        jPanel5.setLayout(jPanel5Layout);
-        jPanel5Layout.setHorizontalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel5Layout.createSequentialGroup()
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addGap(277, 277, 277)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 281, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(Txtbars, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(txtCakes, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(txtCookies, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(txtCupcakes, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(txtLoaves, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(txtPies, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(txtRolls, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(txtTarts, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(txtOthers, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)))
+        javax.swing.GroupLayout cakespanelLayout = new javax.swing.GroupLayout(cakespanel);
+        cakespanel.setLayout(cakespanelLayout);
+        cakespanelLayout.setHorizontalGroup(
+            cakespanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(cakespanelLayout.createSequentialGroup()
+                .addGap(29, 29, 29)
+                .addComponent(lblcakes, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(34, Short.MAX_VALUE))
+        );
+        cakespanelLayout.setVerticalGroup(
+            cakespanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(cakespanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblcakes, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)
                 .addContainerGap())
         );
-        jPanel5Layout.setVerticalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel5Layout.createSequentialGroup()
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(Txtbars, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtCakes, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtCookies, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtCupcakes, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtLoaves, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtPies, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtRolls, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtTarts, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtOthers, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 15, Short.MAX_VALUE))
+
+        cookiespanel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                cookiespanelMousePressed(evt);
+            }
+        });
+
+        lblcookies.setText("Cookies");
+
+        javax.swing.GroupLayout cookiespanelLayout = new javax.swing.GroupLayout(cookiespanel);
+        cookiespanel.setLayout(cookiespanelLayout);
+        cookiespanelLayout.setHorizontalGroup(
+            cookiespanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(cookiespanelLayout.createSequentialGroup()
+                .addGap(29, 29, 29)
+                .addComponent(lblcookies)
+                .addContainerGap(29, Short.MAX_VALUE))
+        );
+        cookiespanelLayout.setVerticalGroup(
+            cookiespanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(cookiespanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblcookies, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
-        jPanel3.setBackground(new java.awt.Color(255, 255, 255));
+        cupcakespanel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                cupcakespanelMousePressed(evt);
+            }
+        });
 
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+        lblcupcakes.setText("Cupcakes");
+
+        javax.swing.GroupLayout cupcakespanelLayout = new javax.swing.GroupLayout(cupcakespanel);
+        cupcakespanel.setLayout(cupcakespanelLayout);
+        cupcakespanelLayout.setHorizontalGroup(
+            cupcakespanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, cupcakespanelLayout.createSequentialGroup()
+                .addContainerGap(26, Short.MAX_VALUE)
+                .addComponent(lblcupcakes)
+                .addGap(24, 24, 24))
         );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 512, Short.MAX_VALUE)
+        cupcakespanelLayout.setVerticalGroup(
+            cupcakespanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(cupcakespanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblcupcakes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        loavespanel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                loavespanelMousePressed(evt);
+            }
+        });
+
+        lblloaves.setText("Loaves");
+
+        javax.swing.GroupLayout loavespanelLayout = new javax.swing.GroupLayout(loavespanel);
+        loavespanel.setLayout(loavespanelLayout);
+        loavespanelLayout.setHorizontalGroup(
+            loavespanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, loavespanelLayout.createSequentialGroup()
+                .addContainerGap(33, Short.MAX_VALUE)
+                .addComponent(lblloaves, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(30, 30, 30))
+        );
+        loavespanelLayout.setVerticalGroup(
+            loavespanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(loavespanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblloaves, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        piespanel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                piespanelMousePressed(evt);
+            }
+        });
+
+        lblpies.setText("Pies");
+
+        javax.swing.GroupLayout piespanelLayout = new javax.swing.GroupLayout(piespanel);
+        piespanel.setLayout(piespanelLayout);
+        piespanelLayout.setHorizontalGroup(
+            piespanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(piespanelLayout.createSequentialGroup()
+                .addGap(37, 37, 37)
+                .addComponent(lblpies)
+                .addContainerGap(42, Short.MAX_VALUE))
+        );
+        piespanelLayout.setVerticalGroup(
+            piespanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(piespanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblpies, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        rollspanel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                rollspanelMousePressed(evt);
+            }
+        });
+
+        lblrolls.setText("Rolls");
+
+        javax.swing.GroupLayout rollspanelLayout = new javax.swing.GroupLayout(rollspanel);
+        rollspanel.setLayout(rollspanelLayout);
+        rollspanelLayout.setHorizontalGroup(
+            rollspanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(rollspanelLayout.createSequentialGroup()
+                .addGap(35, 35, 35)
+                .addComponent(lblrolls)
+                .addContainerGap(39, Short.MAX_VALUE))
+        );
+        rollspanelLayout.setVerticalGroup(
+            rollspanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(rollspanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblrolls, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        tartspanel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                tartspanelMousePressed(evt);
+            }
+        });
+
+        lbltarts.setText("Tarts");
+
+        javax.swing.GroupLayout tartspanelLayout = new javax.swing.GroupLayout(tartspanel);
+        tartspanel.setLayout(tartspanelLayout);
+        tartspanelLayout.setHorizontalGroup(
+            tartspanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(tartspanelLayout.createSequentialGroup()
+                .addGap(36, 36, 36)
+                .addComponent(lbltarts)
+                .addContainerGap(38, Short.MAX_VALUE))
+        );
+        tartspanelLayout.setVerticalGroup(
+            tartspanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(tartspanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lbltarts, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        otherpanel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                otherpanelMousePressed(evt);
+            }
+        });
+
+        lblothers.setText("Others");
+
+        javax.swing.GroupLayout otherpanelLayout = new javax.swing.GroupLayout(otherpanel);
+        otherpanel.setLayout(otherpanelLayout);
+        otherpanelLayout.setHorizontalGroup(
+            otherpanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, otherpanelLayout.createSequentialGroup()
+                .addContainerGap(34, Short.MAX_VALUE)
+                .addComponent(lblothers, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(29, 29, 29))
+        );
+        otherpanelLayout.setVerticalGroup(
+            otherpanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(otherpanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblothers, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        Logoutpanel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                LogoutpanelMouseClicked(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                LogoutpanelMousePressed(evt);
+            }
+        });
+
+        lbllogout.setText("LogOut");
+
+        javax.swing.GroupLayout LogoutpanelLayout = new javax.swing.GroupLayout(Logoutpanel);
+        Logoutpanel.setLayout(LogoutpanelLayout);
+        LogoutpanelLayout.setHorizontalGroup(
+            LogoutpanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(LogoutpanelLayout.createSequentialGroup()
+                .addGap(36, 36, 36)
+                .addComponent(lbllogout)
+                .addContainerGap(43, Short.MAX_VALUE))
+        );
+        LogoutpanelLayout.setVerticalGroup(
+            LogoutpanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(LogoutpanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lbllogout, javax.swing.GroupLayout.DEFAULT_SIZE, 26, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        lblreceipt.setText("Receipt");
+
+        javax.swing.GroupLayout receiptpanelLayout = new javax.swing.GroupLayout(receiptpanel);
+        receiptpanel.setLayout(receiptpanelLayout);
+        receiptpanelLayout.setHorizontalGroup(
+            receiptpanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, receiptpanelLayout.createSequentialGroup()
+                .addContainerGap(34, Short.MAX_VALUE)
+                .addComponent(lblreceipt)
+                .addGap(32, 32, 32))
+        );
+        receiptpanelLayout.setVerticalGroup(
+            receiptpanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(receiptpanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblreceipt, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        lblreset.setText("Reset");
+
+        javax.swing.GroupLayout resetpanelLayout = new javax.swing.GroupLayout(resetpanel);
+        resetpanel.setLayout(resetpanelLayout);
+        resetpanelLayout.setHorizontalGroup(
+            resetpanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(resetpanelLayout.createSequentialGroup()
+                .addGap(38, 38, 38)
+                .addComponent(lblreset)
+                .addContainerGap(39, Short.MAX_VALUE))
+        );
+        resetpanelLayout.setVerticalGroup(
+            resetpanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(resetpanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblreset, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        lbltotal.setText("Total");
+
+        javax.swing.GroupLayout totalpanelLayout = new javax.swing.GroupLayout(totalpanel);
+        totalpanel.setLayout(totalpanelLayout);
+        totalpanelLayout.setHorizontalGroup(
+            totalpanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(totalpanelLayout.createSequentialGroup()
+                .addGap(33, 33, 33)
+                .addComponent(lbltotal)
+                .addContainerGap(34, Short.MAX_VALUE))
+        );
+        totalpanelLayout.setVerticalGroup(
+            totalpanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(totalpanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lbltotal, javax.swing.GroupLayout.DEFAULT_SIZE, 26, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+            .addGap(0, 0, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+
+        lblttl.setText("TOTAL");
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(30, 30, 30)
+                .addComponent(lblttl)
+                .addContainerGap(32, Short.MAX_VALUE))
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(lblttl, javax.swing.GroupLayout.DEFAULT_SIZE, 29, Short.MAX_VALUE)
+        );
+
+        lblcash.setText("CASH");
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addGap(32, 32, 32)
+                .addComponent(lblcash, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(31, Short.MAX_VALUE))
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblcash, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        lblchange.setText("CHANGE");
+
+        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
+        jPanel5.setLayout(jPanel5Layout);
+        jPanel5Layout.setHorizontalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addGap(27, 27, 27)
+                .addComponent(lblchange)
+                .addContainerGap(26, Short.MAX_VALUE))
+        );
+        jPanel5Layout.setVerticalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(lblchange, javax.swing.GroupLayout.DEFAULT_SIZE, 27, Short.MAX_VALUE)
+        );
+
+        javax.swing.GroupLayout desktoppaneLayout = new javax.swing.GroupLayout(desktoppane);
+        desktoppane.setLayout(desktoppaneLayout);
+        desktoppaneLayout.setHorizontalGroup(
+            desktoppaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 948, Short.MAX_VALUE)
+        );
+        desktoppaneLayout.setVerticalGroup(
+            desktoppaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 552, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout jPanel21Layout = new javax.swing.GroupLayout(jPanel21);
         jPanel21.setLayout(jPanel21Layout);
         jPanel21Layout.setHorizontalGroup(
             jPanel21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel21Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(jPanel21Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel21Layout.createSequentialGroup()
+                        .addGap(0, 1, Short.MAX_VALUE)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel21Layout.createSequentialGroup()
+                        .addGroup(jPanel21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel21Layout.createSequentialGroup()
+                                .addComponent(barspanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(cakespanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(cookiespanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(cupcakespanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(loavespanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(piespanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(rollspanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(tartspanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(otherpanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel21Layout.createSequentialGroup()
+                                .addGap(23, 23, 23)
+                                .addComponent(Logoutpanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(31, 31, 31)
+                                .addComponent(receiptpanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(35, 35, 35)
+                                .addComponent(resetpanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(44, 44, 44)
+                                .addComponent(totalpanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(desktoppane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(jPanel21Layout.createSequentialGroup()
+                                .addGroup(jPanel21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(0, 0, Short.MAX_VALUE)))))
                 .addContainerGap())
         );
         jPanel21Layout.setVerticalGroup(
@@ -236,8 +536,37 @@ public class usermenu extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addGroup(jPanel21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel21Layout.createSequentialGroup()
+                        .addGroup(jPanel21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(barspanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(cakespanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(cookiespanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(cupcakespanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(loavespanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(piespanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(rollspanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(tartspanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(otherpanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(desktoppane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(jPanel21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(Logoutpanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(receiptpanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(resetpanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(totalpanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel21Layout.createSequentialGroup()
+                        .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(85, 85, 85))))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -255,21 +584,176 @@ public class usermenu extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void TxtbarsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TxtbarsActionPerformed
+    private void barspanelMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_barspanelMousePressed
         // TODO add your handling code here:
-    }//GEN-LAST:event_TxtbarsActionPerformed
+      barspanel.setBackground(ClickedColor);
+      cakespanel.setBackground(DefaultColor);
+      cookiespanel.setBackground(DefaultColor);
+      cupcakespanel.setBackground(DefaultColor);
+      loavespanel.setBackground(DefaultColor);
+      piespanel.setBackground(DefaultColor);
+      rollspanel.setBackground(DefaultColor);
+      tartspanel.setBackground(DefaultColor);
+      otherpanel.setBackground(DefaultColor);
+      
+      Logoutpanel.setBackground(DefaultColor);
+      
+    }//GEN-LAST:event_barspanelMousePressed
 
-    private void txtCakesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCakesActionPerformed
+    private void cakespanelMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cakespanelMousePressed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtCakesActionPerformed
+      barspanel.setBackground(DefaultColor);
+      cakespanel.setBackground(ClickedColor);
+      cookiespanel.setBackground(DefaultColor);
+      cupcakespanel.setBackground(DefaultColor);
+      loavespanel.setBackground(DefaultColor);
+      piespanel.setBackground(DefaultColor);
+      rollspanel.setBackground(DefaultColor);
+      tartspanel.setBackground(DefaultColor);
+      otherpanel.setBackground(DefaultColor);
+      
+      Logoutpanel.setBackground(DefaultColor);
+    }//GEN-LAST:event_cakespanelMousePressed
 
-    private void txtCookiesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCookiesActionPerformed
+    private void cookiespanelMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cookiespanelMousePressed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtCookiesActionPerformed
+      barspanel.setBackground(DefaultColor);
+      cakespanel.setBackground(DefaultColor);
+      cookiespanel.setBackground(ClickedColor);
+      cupcakespanel.setBackground(DefaultColor);
+      loavespanel.setBackground(DefaultColor);
+      piespanel.setBackground(DefaultColor);
+      rollspanel.setBackground(DefaultColor);
+      tartspanel.setBackground(DefaultColor);
+      otherpanel.setBackground(DefaultColor);
+      
+      Logoutpanel.setBackground(DefaultColor);
+    }//GEN-LAST:event_cookiespanelMousePressed
 
-    private void TxtbarsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TxtbarsMouseClicked
+    private void cupcakespanelMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cupcakespanelMousePressed
+        // TODO add your handling code here:
+      barspanel.setBackground(DefaultColor);
+      cakespanel.setBackground(DefaultColor);
+      cookiespanel.setBackground(DefaultColor);
+      cupcakespanel.setBackground(ClickedColor);
+      loavespanel.setBackground(DefaultColor);
+      piespanel.setBackground(DefaultColor);
+      rollspanel.setBackground(DefaultColor);
+      tartspanel.setBackground(DefaultColor);
+      otherpanel.setBackground(DefaultColor);
+      
+      Logoutpanel.setBackground(DefaultColor);
+    }//GEN-LAST:event_cupcakespanelMousePressed
 
-    }//GEN-LAST:event_TxtbarsMouseClicked
+    private void loavespanelMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_loavespanelMousePressed
+        // TODO add your handling code here:
+      barspanel.setBackground(DefaultColor);
+      cakespanel.setBackground(DefaultColor);
+      cookiespanel.setBackground(DefaultColor);
+      cupcakespanel.setBackground(DefaultColor);
+      loavespanel.setBackground(ClickedColor);
+      piespanel.setBackground(DefaultColor);
+      rollspanel.setBackground(DefaultColor);
+      tartspanel.setBackground(DefaultColor);
+      otherpanel.setBackground(DefaultColor);
+      
+      Logoutpanel.setBackground(DefaultColor);
+    }//GEN-LAST:event_loavespanelMousePressed
+
+    private void piespanelMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_piespanelMousePressed
+        // TODO add your handling code here:
+      barspanel.setBackground(DefaultColor);
+      cakespanel.setBackground(DefaultColor);
+      cookiespanel.setBackground(DefaultColor);
+      cupcakespanel.setBackground(DefaultColor);
+      loavespanel.setBackground(DefaultColor);
+      piespanel.setBackground(ClickedColor);
+      rollspanel.setBackground(DefaultColor);
+      tartspanel.setBackground(DefaultColor);
+      otherpanel.setBackground(DefaultColor);
+      
+      Logoutpanel.setBackground(DefaultColor);
+    }//GEN-LAST:event_piespanelMousePressed
+
+    private void rollspanelMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_rollspanelMousePressed
+        // TODO add your handling code here:
+      barspanel.setBackground(DefaultColor);
+      cakespanel.setBackground(DefaultColor);
+      cookiespanel.setBackground(DefaultColor);
+      cupcakespanel.setBackground(DefaultColor);
+      loavespanel.setBackground(DefaultColor);
+      piespanel.setBackground(DefaultColor);
+      rollspanel.setBackground(ClickedColor);
+      tartspanel.setBackground(DefaultColor);
+      otherpanel.setBackground(DefaultColor);
+      
+      Logoutpanel.setBackground(DefaultColor);
+    }//GEN-LAST:event_rollspanelMousePressed
+
+    private void tartspanelMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tartspanelMousePressed
+        // TODO add your handling code here:
+      barspanel.setBackground(DefaultColor);
+      cakespanel.setBackground(DefaultColor);
+      cookiespanel.setBackground(DefaultColor);
+      cupcakespanel.setBackground(DefaultColor);
+      loavespanel.setBackground(DefaultColor);
+      piespanel.setBackground(DefaultColor);
+      rollspanel.setBackground(DefaultColor);
+      tartspanel.setBackground(ClickedColor);
+      otherpanel.setBackground(DefaultColor);
+      
+      Logoutpanel.setBackground(DefaultColor);
+    }//GEN-LAST:event_tartspanelMousePressed
+
+    private void otherpanelMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_otherpanelMousePressed
+        // TODO add your handling code here:
+      barspanel.setBackground(DefaultColor);
+      cakespanel.setBackground(DefaultColor);
+      cookiespanel.setBackground(DefaultColor);
+      cupcakespanel.setBackground(DefaultColor);
+      loavespanel.setBackground(DefaultColor);
+      piespanel.setBackground(DefaultColor);
+      rollspanel.setBackground(DefaultColor);
+      tartspanel.setBackground(DefaultColor);
+      otherpanel.setBackground(ClickedColor);
+      
+      Logoutpanel.setBackground(DefaultColor);
+    }//GEN-LAST:event_otherpanelMousePressed
+
+    private void barspanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_barspanelMouseClicked
+        // TODO add your handling code here:
+        barscategory bc = new barscategory();
+        desktoppane.removeAll();
+        desktoppane.add(bc).setVisible(true);
+    }//GEN-LAST:event_barspanelMouseClicked
+
+    private void LogoutpanelMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_LogoutpanelMousePressed
+        // TODO add your handling code here:
+      barspanel.setBackground(DefaultColor);
+      cakespanel.setBackground(DefaultColor);
+      cookiespanel.setBackground(DefaultColor);
+      cupcakespanel.setBackground(DefaultColor);
+      loavespanel.setBackground(DefaultColor);
+      piespanel.setBackground(DefaultColor);
+      rollspanel.setBackground(DefaultColor);
+      tartspanel.setBackground(DefaultColor);
+      otherpanel.setBackground(DefaultColor);
+      
+      Logoutpanel.setBackground(ClickedColor);
+        
+    }//GEN-LAST:event_LogoutpanelMousePressed
+
+    private void LogoutpanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_LogoutpanelMouseClicked
+        // TODO add your handling code here:
+        int result = JOptionPane.showConfirmDialog(null, "Are you sure you want to Log Out?", "Confirmation", JOptionPane.YES_NO_OPTION);
+        
+        if(result == JOptionPane.YES_OPTION){
+            loginform login = new loginform();
+            login.setVisible(true);
+
+            this.dispose();
+        }
+    }//GEN-LAST:event_LogoutpanelMouseClicked
 
   
     /**
@@ -298,21 +782,42 @@ public class usermenu extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextField Txtbars;
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JPanel Logoutpanel;
+    private javax.swing.JPanel barspanel;
+    private javax.swing.JPanel cakespanel;
+    private javax.swing.JPanel cookiespanel;
+    private javax.swing.JPanel cupcakespanel;
+    private javax.swing.JDesktopPane desktoppane;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel21;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField txtCakes;
-    private javax.swing.JTextField txtCookies;
-    private javax.swing.JTextField txtCupcakes;
-    private javax.swing.JTextField txtLoaves;
-    private javax.swing.JTextField txtOthers;
-    private javax.swing.JTextField txtPies;
-    private javax.swing.JTextField txtRolls;
-    private javax.swing.JTextField txtTarts;
+    private javax.swing.JLabel lblbars;
+    private javax.swing.JLabel lblcakes;
+    private javax.swing.JLabel lblcash;
+    private javax.swing.JLabel lblchange;
+    private javax.swing.JLabel lblcookies;
+    private javax.swing.JLabel lblcupcakes;
+    private javax.swing.JLabel lblloaves;
+    private javax.swing.JLabel lbllogout;
+    private javax.swing.JLabel lblothers;
+    private javax.swing.JLabel lblpies;
+    private javax.swing.JLabel lblreceipt;
+    private javax.swing.JLabel lblreset;
+    private javax.swing.JLabel lblrolls;
+    private javax.swing.JLabel lbltarts;
+    private javax.swing.JLabel lbltotal;
+    private javax.swing.JLabel lblttl;
+    private javax.swing.JPanel loavespanel;
+    private javax.swing.JPanel otherpanel;
+    private javax.swing.JPanel piespanel;
+    private javax.swing.JPanel receiptpanel;
+    private javax.swing.JPanel resetpanel;
+    private javax.swing.JPanel rollspanel;
+    private javax.swing.JPanel tartspanel;
+    private javax.swing.JPanel totalpanel;
     // End of variables declaration//GEN-END:variables
 }
