@@ -122,6 +122,9 @@ public class usermenu extends javax.swing.JFrame {
         );
 
         cakespanel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                cakespanelMouseClicked(evt);
+            }
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 cakespanelMousePressed(evt);
             }
@@ -147,6 +150,9 @@ public class usermenu extends javax.swing.JFrame {
         );
 
         cookiespanel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                cookiespanelMouseClicked(evt);
+            }
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 cookiespanelMousePressed(evt);
             }
@@ -172,6 +178,9 @@ public class usermenu extends javax.swing.JFrame {
         );
 
         cupcakespanel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                cupcakespanelMouseClicked(evt);
+            }
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 cupcakespanelMousePressed(evt);
             }
@@ -197,6 +206,9 @@ public class usermenu extends javax.swing.JFrame {
         );
 
         loavespanel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                loavespanelMouseClicked(evt);
+            }
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 loavespanelMousePressed(evt);
             }
@@ -222,6 +234,9 @@ public class usermenu extends javax.swing.JFrame {
         );
 
         piespanel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                piespanelMouseClicked(evt);
+            }
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 piespanelMousePressed(evt);
             }
@@ -247,6 +262,9 @@ public class usermenu extends javax.swing.JFrame {
         );
 
         rollspanel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                rollspanelMouseClicked(evt);
+            }
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 rollspanelMousePressed(evt);
             }
@@ -272,6 +290,9 @@ public class usermenu extends javax.swing.JFrame {
         );
 
         tartspanel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tartspanelMouseClicked(evt);
+            }
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 tartspanelMousePressed(evt);
             }
@@ -297,6 +318,9 @@ public class usermenu extends javax.swing.JFrame {
         );
 
         otherpanel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                otherpanelMouseClicked(evt);
+            }
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 otherpanelMousePressed(evt);
             }
@@ -754,6 +778,62 @@ public class usermenu extends javax.swing.JFrame {
             this.dispose();
         }
     }//GEN-LAST:event_LogoutpanelMouseClicked
+
+    private void cakespanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cakespanelMouseClicked
+        // TODO add your handling code here:
+        cakescategory cc = new cakescategory();
+        desktoppane.removeAll();
+        desktoppane.add(cc).setVisible(true);
+    }//GEN-LAST:event_cakespanelMouseClicked
+
+    private void cookiespanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cookiespanelMouseClicked
+        // TODO add your handling code here:
+        cookiescategory coc = new cookiescategory();
+        desktoppane.removeAll();
+        desktoppane.add(coc).setVisible(true);
+    }//GEN-LAST:event_cookiespanelMouseClicked
+
+    private void cupcakespanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cupcakespanelMouseClicked
+        // TODO add your handling code here:
+        cupcakescategory cupc = new cupcakescategory();
+        desktoppane.removeAll();
+        desktoppane.add(cupc).setVisible(true);
+    }//GEN-LAST:event_cupcakespanelMouseClicked
+
+    private void loavespanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_loavespanelMouseClicked
+        // TODO add your handling code here:
+        loavescategory lc = new loavescategory();
+        desktoppane.removeAll();
+        desktoppane.add(lc).setVisible(true);
+    }//GEN-LAST:event_loavespanelMouseClicked
+
+    private void piespanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_piespanelMouseClicked
+        // TODO add your handling code here:
+        piescategory piec = new piescategory();
+        desktoppane.removeAll();
+        desktoppane.add(piec).setVisible(true);
+    }//GEN-LAST:event_piespanelMouseClicked
+
+    private void rollspanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_rollspanelMouseClicked
+        // TODO add your handling code here:
+        rollscategory rc = new rollscategory();
+        desktoppane.removeAll();
+        desktoppane.add(rc).setVisible(true);
+    }//GEN-LAST:event_rollspanelMouseClicked
+
+    private void tartspanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tartspanelMouseClicked
+        // TODO add your handling code here:
+        tartscategory tc = new tartscategory();
+        desktoppane.removeAll();
+        desktoppane.add(tc).setVisible(true);
+    }//GEN-LAST:event_tartspanelMouseClicked
+
+    private void otherpanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_otherpanelMouseClicked
+        // TODO add your handling code here:
+        otherscategory oc = new otherscategory();
+        desktoppane.removeAll();
+        desktoppane.add(oc).setVisible(true);
+    }//GEN-LAST:event_otherpanelMouseClicked
 
   
     /**
