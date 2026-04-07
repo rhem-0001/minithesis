@@ -58,8 +58,6 @@ public class usermenu extends javax.swing.JFrame {
         lblothers = new javax.swing.JLabel();
         Logoutpanel = new javax.swing.JPanel();
         lbllogout = new javax.swing.JLabel();
-        receiptpanel = new javax.swing.JPanel();
-        lblreceipt = new javax.swing.JLabel();
         resetpanel = new javax.swing.JPanel();
         lblreset = new javax.swing.JLabel();
         totalpanel = new javax.swing.JPanel();
@@ -373,24 +371,11 @@ public class usermenu extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        lblreceipt.setText("Receipt");
-
-        javax.swing.GroupLayout receiptpanelLayout = new javax.swing.GroupLayout(receiptpanel);
-        receiptpanel.setLayout(receiptpanelLayout);
-        receiptpanelLayout.setHorizontalGroup(
-            receiptpanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, receiptpanelLayout.createSequentialGroup()
-                .addContainerGap(34, Short.MAX_VALUE)
-                .addComponent(lblreceipt)
-                .addGap(32, 32, 32))
-        );
-        receiptpanelLayout.setVerticalGroup(
-            receiptpanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(receiptpanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(lblreceipt, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
-        );
+        resetpanel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                resetpanelMousePressed(evt);
+            }
+        });
 
         lblreset.setText("Reset");
 
@@ -410,6 +395,12 @@ public class usermenu extends javax.swing.JFrame {
                 .addComponent(lblreset, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
+
+        totalpanel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                totalpanelMousePressed(evt);
+            }
+        });
 
         lbltotal.setText("Total");
 
@@ -536,11 +527,9 @@ public class usermenu extends javax.swing.JFrame {
                             .addGroup(jPanel21Layout.createSequentialGroup()
                                 .addGap(23, 23, 23)
                                 .addComponent(Logoutpanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(31, 31, 31)
-                                .addComponent(receiptpanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(35, 35, 35)
+                                .addGap(38, 38, 38)
                                 .addComponent(resetpanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(44, 44, 44)
+                                .addGap(43, 43, 43)
                                 .addComponent(totalpanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(desktoppane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -578,7 +567,6 @@ public class usermenu extends javax.swing.JFrame {
                         .addGroup(jPanel21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(jPanel21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                 .addComponent(Logoutpanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(receiptpanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(resetpanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addComponent(totalpanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -835,6 +823,40 @@ public class usermenu extends javax.swing.JFrame {
         desktoppane.add(oc).setVisible(true);
     }//GEN-LAST:event_otherpanelMouseClicked
 
+    private void resetpanelMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_resetpanelMousePressed
+        // TODO add your handling code here:
+      barspanel.setBackground(DefaultColor);
+      cakespanel.setBackground(DefaultColor);
+      cookiespanel.setBackground(DefaultColor);
+      cupcakespanel.setBackground(DefaultColor);
+      loavespanel.setBackground(DefaultColor);
+      piespanel.setBackground(DefaultColor);
+      rollspanel.setBackground(DefaultColor);
+      tartspanel.setBackground(DefaultColor);
+      otherpanel.setBackground(DefaultColor);
+      
+      Logoutpanel.setBackground(DefaultColor);
+      resetpanel.setBackground(ClickedColor);
+      totalpanel.setBackground(DefaultColor);
+    }//GEN-LAST:event_resetpanelMousePressed
+
+    private void totalpanelMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_totalpanelMousePressed
+        // TODO add your handling code here:
+      barspanel.setBackground(DefaultColor);
+      cakespanel.setBackground(DefaultColor);
+      cookiespanel.setBackground(DefaultColor);
+      cupcakespanel.setBackground(DefaultColor);
+      loavespanel.setBackground(DefaultColor);
+      piespanel.setBackground(DefaultColor);
+      rollspanel.setBackground(DefaultColor);
+      tartspanel.setBackground(DefaultColor);
+      otherpanel.setBackground(DefaultColor);
+      
+      Logoutpanel.setBackground(DefaultColor);
+      resetpanel.setBackground(DefaultColor);
+      totalpanel.setBackground(ClickedColor);
+    }//GEN-LAST:event_totalpanelMousePressed
+
   
     /**
      * @param args the command line arguments
@@ -885,7 +907,6 @@ public class usermenu extends javax.swing.JFrame {
     private javax.swing.JLabel lbllogout;
     private javax.swing.JLabel lblothers;
     private javax.swing.JLabel lblpies;
-    private javax.swing.JLabel lblreceipt;
     private javax.swing.JLabel lblreset;
     private javax.swing.JLabel lblrolls;
     private javax.swing.JLabel lbltarts;
@@ -894,7 +915,6 @@ public class usermenu extends javax.swing.JFrame {
     private javax.swing.JPanel loavespanel;
     private javax.swing.JPanel otherpanel;
     private javax.swing.JPanel piespanel;
-    private javax.swing.JPanel receiptpanel;
     private javax.swing.JPanel resetpanel;
     private javax.swing.JPanel rollspanel;
     private javax.swing.JPanel tartspanel;

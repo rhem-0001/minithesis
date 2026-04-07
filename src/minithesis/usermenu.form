@@ -82,11 +82,9 @@
                               <Group type="102" alignment="0" attributes="0">
                                   <EmptySpace min="-2" pref="23" max="-2" attributes="0"/>
                                   <Component id="Logoutpanel" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
-                                  <Component id="receiptpanel" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace min="-2" pref="35" max="-2" attributes="0"/>
+                                  <EmptySpace min="-2" pref="38" max="-2" attributes="0"/>
                                   <Component id="resetpanel" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace min="-2" pref="44" max="-2" attributes="0"/>
+                                  <EmptySpace min="-2" pref="43" max="-2" attributes="0"/>
                                   <Component id="totalpanel" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <Component id="desktoppane" min="-2" max="-2" attributes="0"/>
@@ -134,7 +132,6 @@
                           <Group type="103" groupAlignment="1" attributes="0">
                               <Group type="103" groupAlignment="0" max="-2" attributes="0">
                                   <Component id="Logoutpanel" max="32767" attributes="0"/>
-                                  <Component id="receiptpanel" max="32767" attributes="0"/>
                                   <Component id="resetpanel" max="32767" attributes="0"/>
                               </Group>
                               <Component id="totalpanel" min="-2" max="-2" attributes="0"/>
@@ -522,37 +519,10 @@
             </Component>
           </SubComponents>
         </Container>
-        <Container class="javax.swing.JPanel" name="receiptpanel">
-
-          <Layout>
-            <DimensionLayout dim="0">
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" alignment="1" attributes="0">
-                      <EmptySpace pref="34" max="32767" attributes="0"/>
-                      <Component id="lblreceipt" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
-                  </Group>
-              </Group>
-            </DimensionLayout>
-            <DimensionLayout dim="1">
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="lblreceipt" max="32767" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                  </Group>
-              </Group>
-            </DimensionLayout>
-          </Layout>
-          <SubComponents>
-            <Component class="javax.swing.JLabel" name="lblreceipt">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Receipt"/>
-              </Properties>
-            </Component>
-          </SubComponents>
-        </Container>
         <Container class="javax.swing.JPanel" name="resetpanel">
+          <Events>
+            <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="resetpanelMousePressed"/>
+          </Events>
 
           <Layout>
             <DimensionLayout dim="0">
@@ -583,6 +553,9 @@
           </SubComponents>
         </Container>
         <Container class="javax.swing.JPanel" name="totalpanel">
+          <Events>
+            <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="totalpanelMousePressed"/>
+          </Events>
 
           <Layout>
             <DimensionLayout dim="0">

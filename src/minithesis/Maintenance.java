@@ -49,8 +49,7 @@ public class Maintenance extends javax.swing.JFrame {
         lblfoodmenu = new javax.swing.JLabel();
         panelcategory = new javax.swing.JPanel();
         lblcategory = new javax.swing.JLabel();
-        panelreservations = new javax.swing.JPanel();
-        lblreservations = new javax.swing.JLabel();
+        lblcategory1 = new javax.swing.JLabel();
         panelstocks = new javax.swing.JPanel();
         lblstocks = new javax.swing.JLabel();
         panelrecords = new javax.swing.JPanel();
@@ -173,13 +172,19 @@ public class Maintenance extends javax.swing.JFrame {
         lblcategory.setForeground(new java.awt.Color(102, 0, 0));
         lblcategory.setText("Category");
 
+        lblcategory1.setFont(new java.awt.Font("Script MT Bold", 0, 24)); // NOI18N
+        lblcategory1.setForeground(new java.awt.Color(102, 0, 0));
+        lblcategory1.setText("and Size");
+
         javax.swing.GroupLayout panelcategoryLayout = new javax.swing.GroupLayout(panelcategory);
         panelcategory.setLayout(panelcategoryLayout);
         panelcategoryLayout.setHorizontalGroup(
             panelcategoryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelcategoryLayout.createSequentialGroup()
                 .addGap(25, 25, 25)
-                .addComponent(lblcategory)
+                .addGroup(panelcategoryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblcategory1)
+                    .addComponent(lblcategory))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         panelcategoryLayout.setVerticalGroup(
@@ -187,30 +192,9 @@ public class Maintenance extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelcategoryLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(lblcategory)
+                .addGap(5, 5, 5)
+                .addComponent(lblcategory1)
                 .addContainerGap())
-        );
-
-        panelreservations.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-
-        lblreservations.setFont(new java.awt.Font("Script MT Bold", 0, 24)); // NOI18N
-        lblreservations.setForeground(new java.awt.Color(102, 0, 0));
-        lblreservations.setText("Reservations");
-
-        javax.swing.GroupLayout panelreservationsLayout = new javax.swing.GroupLayout(panelreservations);
-        panelreservations.setLayout(panelreservationsLayout);
-        panelreservationsLayout.setHorizontalGroup(
-            panelreservationsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelreservationsLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(lblreservations, javax.swing.GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-        panelreservationsLayout.setVerticalGroup(
-            panelreservationsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelreservationsLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(lblreservations)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         panelstocks.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -245,6 +229,14 @@ public class Maintenance extends javax.swing.JFrame {
         );
 
         panelrecords.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        panelrecords.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                panelrecordsMouseClicked(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                panelrecordsMousePressed(evt);
+            }
+        });
 
         lblrecords.setFont(new java.awt.Font("Script MT Bold", 0, 24)); // NOI18N
         lblrecords.setForeground(new java.awt.Color(102, 0, 0));
@@ -307,7 +299,6 @@ public class Maintenance extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(paneloverview, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(panelfoodmenu, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(panelreservations, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(panelcategory, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(panelstocks, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(panelrecords, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -319,15 +310,13 @@ public class Maintenance extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(22, 22, 22)
                 .addComponent(paneloverview, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGap(29, 29, 29)
                 .addComponent(panelfoodmenu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGap(26, 26, 26)
                 .addComponent(panelcategory, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(panelreservations, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGap(32, 32, 32)
                 .addComponent(panelstocks, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGap(35, 35, 35)
                 .addComponent(panelrecords, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(panellogout, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -367,6 +356,7 @@ public class Maintenance extends javax.swing.JFrame {
         panelfoodmenu.setBackground(ClickedColor);
         panelcategory.setBackground(DefaultColor);
         panellogout.setBackground(DefaultColor);
+        panelrecords.setBackground(DefaultColor);
     }//GEN-LAST:event_panelfoodmenuMousePressed
 
     private void panelcategoryMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelcategoryMousePressed
@@ -375,6 +365,7 @@ public class Maintenance extends javax.swing.JFrame {
         panelfoodmenu.setBackground(DefaultColor);
         panelcategory.setBackground(ClickedColor);
         panellogout.setBackground(DefaultColor);
+        panelrecords.setBackground(DefaultColor);
     }//GEN-LAST:event_panelcategoryMousePressed
 
     private void panelfoodmenuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelfoodmenuMouseClicked
@@ -397,6 +388,7 @@ public class Maintenance extends javax.swing.JFrame {
         panelfoodmenu.setBackground(DefaultColor);
         panelcategory.setBackground(DefaultColor);
         panellogout.setBackground(ClickedColor);
+        panelrecords.setBackground(DefaultColor);
     }//GEN-LAST:event_panellogoutMousePressed
 
     private void panellogoutMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panellogoutMouseClicked
@@ -417,6 +409,7 @@ public class Maintenance extends javax.swing.JFrame {
         panelfoodmenu.setBackground(DefaultColor);
         panelcategory.setBackground(DefaultColor);
         panellogout.setBackground(DefaultColor);
+        panelrecords.setBackground(DefaultColor);
     }//GEN-LAST:event_panelstocksMousePressed
 
     private void panelstocksMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelstocksMouseClicked
@@ -425,6 +418,22 @@ public class Maintenance extends javax.swing.JFrame {
         desktoppane.removeAll();
         desktoppane.add(st).setVisible(true);
     }//GEN-LAST:event_panelstocksMouseClicked
+
+    private void panelrecordsMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelrecordsMousePressed
+        // TODO add your handling code here:
+        panelstocks.setBackground(DefaultColor);
+        panelfoodmenu.setBackground(DefaultColor);
+        panelcategory.setBackground(DefaultColor);
+        panellogout.setBackground(DefaultColor);
+        panelrecords.setBackground(ClickedColor);
+    }//GEN-LAST:event_panelrecordsMousePressed
+
+    private void panelrecordsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelrecordsMouseClicked
+        // TODO add your handling code here:
+        records r = new records();
+        desktoppane.removeAll();
+        desktoppane.add(r).setVisible(true);
+    }//GEN-LAST:event_panelrecordsMouseClicked
 
     /**
      * @param args the command line arguments
@@ -459,17 +468,16 @@ public class Maintenance extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JLabel lblcategory;
+    private javax.swing.JLabel lblcategory1;
     private javax.swing.JLabel lblfoodmenu;
     private javax.swing.JLabel lbloverview;
     private javax.swing.JLabel lblrecords;
-    private javax.swing.JLabel lblreservations;
     private javax.swing.JLabel lblstocks;
     private javax.swing.JPanel panelcategory;
     private javax.swing.JPanel panelfoodmenu;
     private javax.swing.JPanel panellogout;
     private javax.swing.JPanel paneloverview;
     private javax.swing.JPanel panelrecords;
-    private javax.swing.JPanel panelreservations;
     private javax.swing.JPanel panelstocks;
     // End of variables declaration//GEN-END:variables
 }
