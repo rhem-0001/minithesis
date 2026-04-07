@@ -24,7 +24,7 @@ public class usermenu extends javax.swing.JFrame {
     
     public boolean qtyIsZero(int qty){
         if(qty==0){
-            JOptionPane.showMessageDialog(null, "Please increase the item quantity");
+            JOptionPane.showMessageDialog(null, "Please increase the item quantity!");
             return false;
         }
         return true;
