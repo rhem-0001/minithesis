@@ -1217,7 +1217,7 @@ public class barscategory extends javax.swing.JInternalFrame {
                 return;
             }
             
-            if (parentMenu != null) {
+             if (parentMenu != null){
                 parentMenu.addToCart(
                     selected.variantId,
                     selected.productId, 
