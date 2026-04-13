@@ -3,19 +3,209 @@ package minithesis;
 import java.awt.Color;
 import javax.swing.JOptionPane;
 import java.sql.*;
-import java.util.ArrayList;
+import java.math.BigDecimal;
 import javax.swing.table.DefaultTableModel;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class usermenu extends javax.swing.JFrame {
     
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(usermenu.class.getName());
+    private static final Logger logger = Logger.getLogger(usermenu.class.getName());
 
     Color DefaultColor, ClickedColor;
-    private ArrayList<PurchaseItem> purchaseList = new ArrayList<>();
     private double totalAmount = 0;
+    
+    public usermenu() {
+        initComponents();
+        barscategory barsFrame = new barscategory(this);
+        desktoppane.add(barsFrame);
+        barsFrame.setVisible(true);
 
-    void addToCart(int variantId, String productId, String productIdByName, String brownies, String sizeName, double price, int qty) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        try {
+            barsFrame.setSelected(true);
+        } catch (java.beans.PropertyVetoException e) {
+            e.printStackTrace();
+        }
+        
+        DefaultColor = new Color(255,255,255);
+        ClickedColor = new Color(204,0,0);
+        
+        // Initialize table and fields
+        txtTotal.setText("0.00");
+        txtCash.setText("");
+        txtChange.setText("0.00");
+    }
+    
+     // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    private void calculateGrandTotal() {
+        double total = 0.0;
+    DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+    for (int i = 0; i < model.getRowCount(); i++) {
+        Object val = model.getValueAt(i, 4); // Column 4 = Line Total
+        if (val != null) total += Double.parseDouble(val.toString());
+    }
+    txtTotal.setText(String.format("%.2f", total));
+    calculateChange();
+    }
+    
+    
+    private void calculateChange() {
+        try {
+            double total = txtTotal.getText().isEmpty() ? 0.0 : Double.parseDouble(txtTotal.getText());
+            double cash = txtCash.getText().isEmpty() ? 0.0 : Double.parseDouble(txtCash.getText());
+            
+            double change = cash - total;
+            txtChange.setText(String.format("%.2f", change));
+        } catch (NumberFormatException e) {
+            txtChange.setText("0.00");
+        }
+    }
+    
+    
+    public void addToCart(int variantId, String productId, String productIdByName, String productName, String sizeName, double price, int qty) {
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        
+        // Check if item already exists
+         boolean itemExists = false;
+    
+    // Check if this exact variant is already in cart
+    for (int i = 0; i < model.getRowCount(); i++) {
+        Object existingVariantObj = model.getValueAt(i, 0);
+        Object existingProductObj = model.getValueAt(i, 1);
+        Object existingSizeObj = model.getValueAt(i, 2);
+        
+        if (existingVariantObj != null && existingProductObj != null && existingSizeObj != null) {
+            int existingVariantId = Integer.parseInt(existingVariantObj.toString());
+            String existingProductName = existingProductObj.toString();
+            String existingSize = existingSizeObj.toString();
+            
+            // Only combine if variantId AND product name AND size ALL match
+            if (existingVariantId == variantId && 
+                existingProductName.equals(productName) && 
+                existingSize.equals(sizeName)) {
+                
+                // Update quantity
+                int currentQty = Integer.parseInt(model.getValueAt(i, 3).toString());
+                int newQty = currentQty + qty;
+                model.setValueAt(newQty, i, 3);
+                
+                // Update subtotal (Price column)
+                double subtotal = price * newQty;
+                model.setValueAt(String.format("%.2f", subtotal), i, 4);
+                
+                itemExists = true;
+                break;
+            }
+        }
+    }
+    
+    // Add as NEW row if different product
+    if (!itemExists) {
+        double subtotal = price * qty;
+        model.addRow(new Object[]{
+            variantId,
+            productName,
+            sizeName,
+            qty,
+            String.format("%.2f", subtotal)  // This shows as "Price" in your UI
+        });
+    }
+    
+    calculateGrandTotal();
+    deductStock(variantId, qty);
+    }
+    
+    private void deductStock(int variantId, int quantity) {
+        try {
+            Connection con = sqlconnector.getConnection();
+            
+            String checkSQL = "SELECT stock_quantity FROM product_variant WHERE variant_id = ?";
+            PreparedStatement pstCheck = con.prepareStatement(checkSQL);
+            pstCheck.setInt(1, variantId);
+            ResultSet rs = pstCheck.executeQuery();
+            
+            if (rs.next()) {
+                int currentStock = rs.getInt("stock_quantity");
+                if (currentStock < quantity) {
+                    JOptionPane.showMessageDialog(this, 
+                        "Insufficient stock! Only " + currentStock + " available.", 
+                        "Stock Error", JOptionPane.ERROR_MESSAGE);
+                    rs.close();
+                    pstCheck.close();
+                    con.close();
+                    return;
+                }
+            }
+            
+            String sql = "UPDATE product_variant SET stock_quantity = stock_quantity - ? WHERE variant_id = ?";
+            PreparedStatement pst = con.prepareStatement(sql);
+            pst.setInt(1, quantity);
+            pst.setInt(2, variantId);
+            pst.executeUpdate();
+            
+            rs.close();
+            pstCheck.close();
+            pst.close();
+            con.close();
+            
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error updating stock: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+    
+    private void refreshFoodMenuStock() {
+    try {
+        if (foodmenu.instance != null) {
+            // Use SwingUtilities to ensure it runs on EDT
+            javax.swing.SwingUtilities.invokeLater(() -> {
+                foodmenu.instance.populatetable();
+            });
+        }
+        
+        if (stocks.instance != null) {
+            javax.swing.SwingUtilities.invokeLater(() -> {
+                stocks.instance.populatetable();
+            });
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    }
+    
+    private void refreshAllTables() {
+        try {
+            if (foodmenu.instance != null) {
+                javax.swing.SwingUtilities.invokeLater(() -> {
+                    foodmenu.instance.populatetable();
+                });
+            }
+            
+            if (stocks.instance != null) {
+                javax.swing.SwingUtilities.invokeLater(() -> {
+                    stocks.instance.populatetable();
+                });
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    private void txtCashActionPerformed(java.awt.event.ActionEvent evt) {
+    calculateChange();
+    }
+
+    // Also add a focus listener or document listener if you want real-time update
+    private void txtCashFocusLost(java.awt.event.FocusEvent evt) {
+    calculateChange();
+    }
+ 
+    private void clearCart() {
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        model.setRowCount(0);
+        txtTotal.setText("0.00");
+        txtCash.setText("");
+        txtChange.setText("0.00");
     }
     
     class PurchaseItem {
@@ -36,21 +226,6 @@ public class usermenu extends javax.swing.JFrame {
         double getSubtotal() {
             return price * quantity;
         }
-    }
-     
-    public usermenu() {
-        initComponents();
-        barscategory barsFrame = new barscategory();
-        desktoppane.add(barsFrame);  // ← Replace jDesktopPane1 with YOUR desktop pane name
-        barsFrame.setVisible(true);
-
-    try {
-        barsFrame.setSelected(true);
-    } catch (java.beans.PropertyVetoException e) {
-        e.printStackTrace();
-    }
-        DefaultColor = new Color(255,255,255);
-        ClickedColor = new Color(204,0,0);    
     }
     
     public void init(){
@@ -95,7 +270,7 @@ public class usermenu extends javax.swing.JFrame {
         lbllogout = new javax.swing.JLabel();
         resetpanel = new javax.swing.JPanel();
         lblreset = new javax.swing.JLabel();
-        totalpanel = new javax.swing.JPanel();
+        recordpanel = new javax.swing.JPanel();
         lbltotal = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -107,9 +282,9 @@ public class usermenu extends javax.swing.JFrame {
         jPanel5 = new javax.swing.JPanel();
         lblchange = new javax.swing.JLabel();
         desktoppane = new javax.swing.JDesktopPane();
-        jPanel6 = new javax.swing.JPanel();
-        jPanel7 = new javax.swing.JPanel();
-        jPanel8 = new javax.swing.JPanel();
+        txtTotal = new javax.swing.JTextField();
+        txtCash = new javax.swing.JTextField();
+        txtChange = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -412,6 +587,9 @@ public class usermenu extends javax.swing.JFrame {
         );
 
         resetpanel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                resetpanelMouseClicked(evt);
+            }
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 resetpanelMousePressed(evt);
             }
@@ -436,26 +614,34 @@ public class usermenu extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        totalpanel.addMouseListener(new java.awt.event.MouseAdapter() {
+        recordpanel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                recordpanelMouseClicked(evt);
+            }
             public void mousePressed(java.awt.event.MouseEvent evt) {
-                totalpanelMousePressed(evt);
+                recordpanelMousePressed(evt);
             }
         });
 
         lbltotal.setText("Record");
+        lbltotal.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lbltotalMouseClicked(evt);
+            }
+        });
 
-        javax.swing.GroupLayout totalpanelLayout = new javax.swing.GroupLayout(totalpanel);
-        totalpanel.setLayout(totalpanelLayout);
-        totalpanelLayout.setHorizontalGroup(
-            totalpanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(totalpanelLayout.createSequentialGroup()
+        javax.swing.GroupLayout recordpanelLayout = new javax.swing.GroupLayout(recordpanel);
+        recordpanel.setLayout(recordpanelLayout);
+        recordpanelLayout.setHorizontalGroup(
+            recordpanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(recordpanelLayout.createSequentialGroup()
                 .addGap(33, 33, 33)
                 .addComponent(lbltotal)
                 .addContainerGap(34, Short.MAX_VALUE))
         );
-        totalpanelLayout.setVerticalGroup(
-            totalpanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(totalpanelLayout.createSequentialGroup()
+        recordpanelLayout.setVerticalGroup(
+            recordpanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(recordpanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lbltotal, javax.swing.GroupLayout.DEFAULT_SIZE, 26, Short.MAX_VALUE)
                 .addContainerGap())
@@ -463,13 +649,13 @@ public class usermenu extends javax.swing.JFrame {
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "Product ID", "Product Name", "Size", "Price"
+                "Product ID", "Product Name", "Size", "Quantity", "Price"
             }
         ));
         jScrollPane1.setViewportView(jTable1);
@@ -555,38 +741,7 @@ public class usermenu extends javax.swing.JFrame {
             .addGap(0, 552, Short.MAX_VALUE)
         );
 
-        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
-        jPanel6.setLayout(jPanel6Layout);
-        jPanel6Layout.setHorizontalGroup(
-            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 220, Short.MAX_VALUE)
-        );
-        jPanel6Layout.setVerticalGroup(
-            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 28, Short.MAX_VALUE)
-        );
-
-        javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
-        jPanel7.setLayout(jPanel7Layout);
-        jPanel7Layout.setHorizontalGroup(
-            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 220, Short.MAX_VALUE)
-        );
-        jPanel7Layout.setVerticalGroup(
-            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 28, Short.MAX_VALUE)
-        );
-
-        javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
-        jPanel8.setLayout(jPanel8Layout);
-        jPanel8Layout.setHorizontalGroup(
-            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 220, Short.MAX_VALUE)
-        );
-        jPanel8Layout.setVerticalGroup(
-            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 28, Short.MAX_VALUE)
-        );
+        txtTotal.addActionListener(this::txtTotalActionPerformed);
 
         javax.swing.GroupLayout jPanel21Layout = new javax.swing.GroupLayout(jPanel21);
         jPanel21.setLayout(jPanel21Layout);
@@ -623,14 +778,14 @@ public class usermenu extends javax.swing.JFrame {
                                 .addGap(18, 18, 18)
                                 .addComponent(resetpanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
-                                .addComponent(totalpanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(recordpanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(desktoppane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(jPanel21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(jPanel21Layout.createSequentialGroup()
                                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(txtChange))
                             .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel21Layout.createSequentialGroup()
                                 .addGroup(jPanel21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
@@ -638,8 +793,8 @@ public class usermenu extends javax.swing.JFrame {
                                     .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(jPanel21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jPanel7, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                    .addComponent(txtTotal)
+                                    .addComponent(txtCash))))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -668,23 +823,23 @@ public class usermenu extends javax.swing.JFrame {
                             .addGroup(jPanel21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                 .addComponent(Logoutpanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(resetpanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addComponent(totalpanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(recordpanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel21Layout.createSequentialGroup()
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(jPanel21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanel21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(txtTotal)
+                            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanel21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanel21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(txtCash))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanel21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(107, 107, 107))))
+                        .addGroup(jPanel21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(txtChange))
+                        .addGap(108, 108, 108))))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -704,160 +859,170 @@ public class usermenu extends javax.swing.JFrame {
       
     private void barspanelMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_barspanelMousePressed
         // TODO add your handling code here:
-      barspanel.setBackground(ClickedColor);
-      cakespanel.setBackground(DefaultColor);
-      cookiespanel.setBackground(DefaultColor);
-      cupcakespanel.setBackground(DefaultColor);
-      loavespanel.setBackground(DefaultColor);
-      piespanel.setBackground(DefaultColor);
-      rollspanel.setBackground(DefaultColor);
-      tartspanel.setBackground(DefaultColor);
-      otherpanel.setBackground(DefaultColor);
-      
-      Logoutpanel.setBackground(DefaultColor);
+        barspanel.setBackground(ClickedColor);
+        cakespanel.setBackground(DefaultColor);
+        cookiespanel.setBackground(DefaultColor);
+        cupcakespanel.setBackground(DefaultColor);
+        loavespanel.setBackground(DefaultColor);
+        piespanel.setBackground(DefaultColor);
+        rollspanel.setBackground(DefaultColor);
+        tartspanel.setBackground(DefaultColor);
+        otherpanel.setBackground(DefaultColor);
+        Logoutpanel.setBackground(DefaultColor);
+        resetpanel.setBackground(DefaultColor);
+        recordpanel.setBackground(DefaultColor);
       
     }//GEN-LAST:event_barspanelMousePressed
 
     private void cakespanelMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cakespanelMousePressed
         // TODO add your handling code here:
-      barspanel.setBackground(DefaultColor);
-      cakespanel.setBackground(ClickedColor);
-      cookiespanel.setBackground(DefaultColor);
-      cupcakespanel.setBackground(DefaultColor);
-      loavespanel.setBackground(DefaultColor);
-      piespanel.setBackground(DefaultColor);
-      rollspanel.setBackground(DefaultColor);
-      tartspanel.setBackground(DefaultColor);
-      otherpanel.setBackground(DefaultColor);
-      
-      Logoutpanel.setBackground(DefaultColor);
+        barspanel.setBackground(DefaultColor);
+        cakespanel.setBackground(ClickedColor);
+        cookiespanel.setBackground(DefaultColor);
+        cupcakespanel.setBackground(DefaultColor);
+        loavespanel.setBackground(DefaultColor);
+        piespanel.setBackground(DefaultColor);
+        rollspanel.setBackground(DefaultColor);
+        tartspanel.setBackground(DefaultColor);
+        otherpanel.setBackground(DefaultColor);
+        Logoutpanel.setBackground(DefaultColor);
+        resetpanel.setBackground(DefaultColor);
+        recordpanel.setBackground(DefaultColor);
     }//GEN-LAST:event_cakespanelMousePressed
 
     private void cookiespanelMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cookiespanelMousePressed
         // TODO add your handling code here:
-      barspanel.setBackground(DefaultColor);
-      cakespanel.setBackground(DefaultColor);
-      cookiespanel.setBackground(ClickedColor);
-      cupcakespanel.setBackground(DefaultColor);
-      loavespanel.setBackground(DefaultColor);
-      piespanel.setBackground(DefaultColor);
-      rollspanel.setBackground(DefaultColor);
-      tartspanel.setBackground(DefaultColor);
-      otherpanel.setBackground(DefaultColor);
-      
-      Logoutpanel.setBackground(DefaultColor);
+        barspanel.setBackground(DefaultColor);
+        cakespanel.setBackground(DefaultColor);
+        cookiespanel.setBackground(ClickedColor);
+        cupcakespanel.setBackground(DefaultColor);
+        loavespanel.setBackground(DefaultColor);
+        piespanel.setBackground(DefaultColor);
+        rollspanel.setBackground(DefaultColor);
+        tartspanel.setBackground(DefaultColor);
+        otherpanel.setBackground(DefaultColor);
+        Logoutpanel.setBackground(DefaultColor);
+        resetpanel.setBackground(DefaultColor);
+        recordpanel.setBackground(DefaultColor);
     }//GEN-LAST:event_cookiespanelMousePressed
 
     private void cupcakespanelMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cupcakespanelMousePressed
         // TODO add your handling code here:
-      barspanel.setBackground(DefaultColor);
-      cakespanel.setBackground(DefaultColor);
-      cookiespanel.setBackground(DefaultColor);
-      cupcakespanel.setBackground(ClickedColor);
-      loavespanel.setBackground(DefaultColor);
-      piespanel.setBackground(DefaultColor);
-      rollspanel.setBackground(DefaultColor);
-      tartspanel.setBackground(DefaultColor);
-      otherpanel.setBackground(DefaultColor);
-      
-      Logoutpanel.setBackground(DefaultColor);
+        barspanel.setBackground(DefaultColor);
+        cakespanel.setBackground(DefaultColor);
+        cookiespanel.setBackground(DefaultColor);
+        cupcakespanel.setBackground(ClickedColor);
+        loavespanel.setBackground(DefaultColor);
+        piespanel.setBackground(DefaultColor);
+        rollspanel.setBackground(DefaultColor);
+        tartspanel.setBackground(DefaultColor);
+        otherpanel.setBackground(DefaultColor);
+        Logoutpanel.setBackground(DefaultColor);
+        resetpanel.setBackground(DefaultColor);
+        recordpanel.setBackground(DefaultColor);
     }//GEN-LAST:event_cupcakespanelMousePressed
 
     private void loavespanelMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_loavespanelMousePressed
         // TODO add your handling code here:
-      barspanel.setBackground(DefaultColor);
-      cakespanel.setBackground(DefaultColor);
-      cookiespanel.setBackground(DefaultColor);
-      cupcakespanel.setBackground(DefaultColor);
-      loavespanel.setBackground(ClickedColor);
-      piespanel.setBackground(DefaultColor);
-      rollspanel.setBackground(DefaultColor);
-      tartspanel.setBackground(DefaultColor);
-      otherpanel.setBackground(DefaultColor);
-      
-      Logoutpanel.setBackground(DefaultColor);
+        barspanel.setBackground(DefaultColor);
+        cakespanel.setBackground(DefaultColor);
+        cookiespanel.setBackground(DefaultColor);
+        cupcakespanel.setBackground(DefaultColor);
+        loavespanel.setBackground(ClickedColor);
+        piespanel.setBackground(DefaultColor);
+        rollspanel.setBackground(DefaultColor);
+        tartspanel.setBackground(DefaultColor);
+        otherpanel.setBackground(DefaultColor);
+        Logoutpanel.setBackground(DefaultColor);
+        resetpanel.setBackground(DefaultColor);
+        recordpanel.setBackground(DefaultColor);
     }//GEN-LAST:event_loavespanelMousePressed
 
     private void piespanelMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_piespanelMousePressed
         // TODO add your handling code here:
-      barspanel.setBackground(DefaultColor);
-      cakespanel.setBackground(DefaultColor);
-      cookiespanel.setBackground(DefaultColor);
-      cupcakespanel.setBackground(DefaultColor);
-      loavespanel.setBackground(DefaultColor);
-      piespanel.setBackground(ClickedColor);
-      rollspanel.setBackground(DefaultColor);
-      tartspanel.setBackground(DefaultColor);
-      otherpanel.setBackground(DefaultColor);
-      
-      Logoutpanel.setBackground(DefaultColor);
+        barspanel.setBackground(DefaultColor);
+        cakespanel.setBackground(DefaultColor);
+        cookiespanel.setBackground(DefaultColor);
+        cupcakespanel.setBackground(DefaultColor);
+        loavespanel.setBackground(DefaultColor);
+        piespanel.setBackground(ClickedColor);
+        rollspanel.setBackground(DefaultColor);
+        tartspanel.setBackground(DefaultColor);
+        otherpanel.setBackground(DefaultColor);
+        Logoutpanel.setBackground(DefaultColor);
+        resetpanel.setBackground(DefaultColor);
+        recordpanel.setBackground(DefaultColor);
     }//GEN-LAST:event_piespanelMousePressed
 
     private void rollspanelMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_rollspanelMousePressed
         // TODO add your handling code here:
-      barspanel.setBackground(DefaultColor);
-      cakespanel.setBackground(DefaultColor);
-      cookiespanel.setBackground(DefaultColor);
-      cupcakespanel.setBackground(DefaultColor);
-      loavespanel.setBackground(DefaultColor);
-      piespanel.setBackground(DefaultColor);
-      rollspanel.setBackground(ClickedColor);
-      tartspanel.setBackground(DefaultColor);
-      otherpanel.setBackground(DefaultColor);
-      
-      Logoutpanel.setBackground(DefaultColor);
+        barspanel.setBackground(DefaultColor);
+        cakespanel.setBackground(DefaultColor);
+        cookiespanel.setBackground(DefaultColor);
+        cupcakespanel.setBackground(DefaultColor);
+        loavespanel.setBackground(DefaultColor);
+        piespanel.setBackground(DefaultColor);
+        rollspanel.setBackground(ClickedColor);
+        tartspanel.setBackground(DefaultColor);
+        otherpanel.setBackground(DefaultColor);
+        Logoutpanel.setBackground(DefaultColor);
+        resetpanel.setBackground(DefaultColor);
+        recordpanel.setBackground(DefaultColor);
     }//GEN-LAST:event_rollspanelMousePressed
 
     private void tartspanelMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tartspanelMousePressed
         // TODO add your handling code here:
-      barspanel.setBackground(DefaultColor);
-      cakespanel.setBackground(DefaultColor);
-      cookiespanel.setBackground(DefaultColor);
-      cupcakespanel.setBackground(DefaultColor);
-      loavespanel.setBackground(DefaultColor);
-      piespanel.setBackground(DefaultColor);
-      rollspanel.setBackground(DefaultColor);
-      tartspanel.setBackground(ClickedColor);
-      otherpanel.setBackground(DefaultColor);
-      
-      Logoutpanel.setBackground(DefaultColor);
+        barspanel.setBackground(DefaultColor);
+        cakespanel.setBackground(DefaultColor);
+        cookiespanel.setBackground(DefaultColor);
+        cupcakespanel.setBackground(DefaultColor);
+        loavespanel.setBackground(DefaultColor);
+        piespanel.setBackground(DefaultColor);
+        rollspanel.setBackground(DefaultColor);
+        tartspanel.setBackground(ClickedColor);
+        otherpanel.setBackground(DefaultColor);
+        Logoutpanel.setBackground(DefaultColor);
+        resetpanel.setBackground(DefaultColor);
+        recordpanel.setBackground(DefaultColor);
     }//GEN-LAST:event_tartspanelMousePressed
 
     private void otherpanelMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_otherpanelMousePressed
         // TODO add your handling code here:
-      barspanel.setBackground(DefaultColor);
-      cakespanel.setBackground(DefaultColor);
-      cookiespanel.setBackground(DefaultColor);
-      cupcakespanel.setBackground(DefaultColor);
-      loavespanel.setBackground(DefaultColor);
-      piespanel.setBackground(DefaultColor);
-      rollspanel.setBackground(DefaultColor);
-      tartspanel.setBackground(DefaultColor);
-      otherpanel.setBackground(ClickedColor);
-      
-      Logoutpanel.setBackground(DefaultColor);
+        barspanel.setBackground(DefaultColor);
+        cakespanel.setBackground(DefaultColor);
+        cookiespanel.setBackground(DefaultColor);
+        cupcakespanel.setBackground(DefaultColor);
+        loavespanel.setBackground(DefaultColor);
+        piespanel.setBackground(DefaultColor);
+        rollspanel.setBackground(DefaultColor);
+        tartspanel.setBackground(DefaultColor);
+        otherpanel.setBackground(ClickedColor);
+        Logoutpanel.setBackground(DefaultColor);
+        resetpanel.setBackground(DefaultColor);
+        recordpanel.setBackground(DefaultColor);
     }//GEN-LAST:event_otherpanelMousePressed
 
     private void barspanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_barspanelMouseClicked
         // TODO add your handling code here:
-        barscategory bc = new barscategory();
+        barscategory bc = new barscategory(this);
         desktoppane.removeAll();
         desktoppane.add(bc).setVisible(true);
     }//GEN-LAST:event_barspanelMouseClicked
 
     private void LogoutpanelMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_LogoutpanelMousePressed
         // TODO add your handling code here:
-      barspanel.setBackground(DefaultColor);
-      cakespanel.setBackground(DefaultColor);
-      cookiespanel.setBackground(DefaultColor);
-      cupcakespanel.setBackground(DefaultColor);
-      loavespanel.setBackground(DefaultColor);
-      piespanel.setBackground(DefaultColor);
-      rollspanel.setBackground(DefaultColor);
-      tartspanel.setBackground(DefaultColor);
-      otherpanel.setBackground(DefaultColor);
-      
-      Logoutpanel.setBackground(ClickedColor);
+        barspanel.setBackground(DefaultColor);
+        cakespanel.setBackground(DefaultColor);
+        cookiespanel.setBackground(DefaultColor);
+        cupcakespanel.setBackground(DefaultColor);
+        loavespanel.setBackground(DefaultColor);
+        piespanel.setBackground(DefaultColor);
+        rollspanel.setBackground(DefaultColor);
+        tartspanel.setBackground(DefaultColor);
+        otherpanel.setBackground(DefaultColor);
+        Logoutpanel.setBackground(ClickedColor);
+        resetpanel.setBackground(DefaultColor);
+        recordpanel.setBackground(DefaultColor);
         
     }//GEN-LAST:event_LogoutpanelMousePressed
 
@@ -931,37 +1096,124 @@ public class usermenu extends javax.swing.JFrame {
 
     private void resetpanelMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_resetpanelMousePressed
         // TODO add your handling code here:
-      barspanel.setBackground(DefaultColor);
-      cakespanel.setBackground(DefaultColor);
-      cookiespanel.setBackground(DefaultColor);
-      cupcakespanel.setBackground(DefaultColor);
-      loavespanel.setBackground(DefaultColor);
-      piespanel.setBackground(DefaultColor);
-      rollspanel.setBackground(DefaultColor);
-      tartspanel.setBackground(DefaultColor);
-      otherpanel.setBackground(DefaultColor);
-      
-      Logoutpanel.setBackground(DefaultColor);
-      resetpanel.setBackground(ClickedColor);
-      totalpanel.setBackground(DefaultColor);
+        barspanel.setBackground(DefaultColor);
+        cakespanel.setBackground(DefaultColor);
+        cookiespanel.setBackground(DefaultColor);
+        cupcakespanel.setBackground(DefaultColor);
+        loavespanel.setBackground(DefaultColor);
+        piespanel.setBackground(DefaultColor);
+        rollspanel.setBackground(DefaultColor);
+        tartspanel.setBackground(DefaultColor);
+        otherpanel.setBackground(DefaultColor);
+        Logoutpanel.setBackground(DefaultColor);
+        resetpanel.setBackground(ClickedColor);
+        recordpanel.setBackground(DefaultColor);
     }//GEN-LAST:event_resetpanelMousePressed
 
-    private void totalpanelMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_totalpanelMousePressed
+    private void recordpanelMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_recordpanelMousePressed
         // TODO add your handling code here:
-      barspanel.setBackground(DefaultColor);
-      cakespanel.setBackground(DefaultColor);
-      cookiespanel.setBackground(DefaultColor);
-      cupcakespanel.setBackground(DefaultColor);
-      loavespanel.setBackground(DefaultColor);
-      piespanel.setBackground(DefaultColor);
-      rollspanel.setBackground(DefaultColor);
-      tartspanel.setBackground(DefaultColor);
-      otherpanel.setBackground(DefaultColor);
-      
-      Logoutpanel.setBackground(DefaultColor);
-      resetpanel.setBackground(DefaultColor);
-      totalpanel.setBackground(ClickedColor);
-    }//GEN-LAST:event_totalpanelMousePressed
+        barspanel.setBackground(DefaultColor);
+        cakespanel.setBackground(DefaultColor);
+        cookiespanel.setBackground(DefaultColor);
+        cupcakespanel.setBackground(DefaultColor);
+        loavespanel.setBackground(DefaultColor);
+        piespanel.setBackground(DefaultColor);
+        rollspanel.setBackground(DefaultColor);
+        tartspanel.setBackground(DefaultColor);
+        otherpanel.setBackground(DefaultColor);
+        Logoutpanel.setBackground(DefaultColor);
+        resetpanel.setBackground(DefaultColor);
+        recordpanel.setBackground(ClickedColor);
+    }//GEN-LAST:event_recordpanelMousePressed
+
+    private void txtTotalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTotalActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtTotalActionPerformed
+
+    private void lbltotalMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbltotalMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_lbltotalMouseClicked
+
+    private void recordpanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_recordpanelMouseClicked
+        // TODO add your handling code here:
+        if (jTable1.getRowCount() == 0) {
+        JOptionPane.showMessageDialog(this, "Cart is empty! Please add items first.", "Empty Cart", JOptionPane.WARNING_MESSAGE);
+        return;
+    }
+    
+    double total = txtTotal.getText().isEmpty() ? 0.0 : Double.parseDouble(txtTotal.getText());
+    double cash = txtCash.getText().isEmpty() ? 0.0 : Double.parseDouble(txtCash.getText());
+    
+    if (cash < total) {
+        JOptionPane.showMessageDialog(this, "Insufficient cash!\nTotal: ₱" + String.format("%.2f", total), "Payment Error", JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+    
+    try {
+        Connection con = sqlconnector.getConnection();
+        con.setAutoCommit(false);
+        
+        // 1. Insert Order (without order_details)
+        String orderSQL = "INSERT INTO orders (order_date, order_status, total_amount) VALUES (CURDATE(), 'Completed', ?)";
+        PreparedStatement pstOrder = con.prepareStatement(orderSQL, Statement.RETURN_GENERATED_KEYS);
+        pstOrder.setDouble(1, total);
+        pstOrder.executeUpdate();
+        
+        // Get Order ID
+        ResultSet rsKeys = pstOrder.getGeneratedKeys();
+        int orderId = 0;
+        if (rsKeys.next()) {
+            orderId = rsKeys.getInt(1);
+        }
+        
+        // 2. Insert Payment
+        String paySQL = "INSERT INTO payment (payment_date, payment_method, payment_status, amount_paid, order_id) VALUES (CURDATE(), 'Cash', 'Paid', ?, ?)";
+        PreparedStatement pstPay = con.prepareStatement(paySQL);
+        pstPay.setDouble(1, cash);
+        pstPay.setInt(2, orderId);
+        pstPay.executeUpdate();
+        
+        // 3. Update Daily Sales
+        String salesSQL = "INSERT INTO daily_sales (sales_date, total_orders, total_sales_amount) VALUES (CURDATE(), 1, ?) ON DUPLICATE KEY UPDATE total_orders = total_orders + 1, total_sales_amount = total_sales_amount + ?";
+        PreparedStatement pstSales = con.prepareStatement(salesSQL);
+        pstSales.setDouble(1, total);
+        pstSales.setDouble(2, total);
+        pstSales.executeUpdate();
+        
+        con.commit();
+        
+        double change = cash - total;
+        JOptionPane.showMessageDialog(this, 
+            "✅ Transaction Successful!\nOrder ID: " + orderId + 
+            "\nTotal: ₱" + String.format("%.2f", total) +
+            "\nChange: ₱" + String.format("%.2f", change), "Success", JOptionPane.INFORMATION_MESSAGE);
+        
+        clearCart();
+        refreshFoodMenuStock();
+        
+        pstOrder.close();
+        pstPay.close();
+        pstSales.close();
+        con.close();
+        
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "❌ Error: " + e.getMessage(), "Transaction Failed", JOptionPane.ERROR_MESSAGE);
+        e.printStackTrace();
+    }
+    }//GEN-LAST:event_recordpanelMouseClicked
+
+    private void resetpanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_resetpanelMouseClicked
+        // TODO add your handling code here:
+        int confirm = JOptionPane.showConfirmDialog(this, 
+            "Are you sure you want to clear the cart?", 
+            "Confirm Reset", 
+            JOptionPane.YES_NO_OPTION);
+        
+        if (confirm == JOptionPane.YES_OPTION) {
+            clearCart();
+            JOptionPane.showMessageDialog(this, "Cart cleared successfully!");
+        }
+    }//GEN-LAST:event_resetpanelMouseClicked
 
   
     /**
@@ -1002,9 +1254,6 @@ public class usermenu extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
-    private javax.swing.JPanel jPanel6;
-    private javax.swing.JPanel jPanel7;
-    private javax.swing.JPanel jPanel8;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
     private javax.swing.JTextField jTextField1;
@@ -1026,9 +1275,12 @@ public class usermenu extends javax.swing.JFrame {
     private javax.swing.JPanel loavespanel;
     private javax.swing.JPanel otherpanel;
     private javax.swing.JPanel piespanel;
+    private javax.swing.JPanel recordpanel;
     private javax.swing.JPanel resetpanel;
     private javax.swing.JPanel rollspanel;
     private javax.swing.JPanel tartspanel;
-    private javax.swing.JPanel totalpanel;
+    private javax.swing.JTextField txtCash;
+    private javax.swing.JTextField txtChange;
+    private javax.swing.JTextField txtTotal;
     // End of variables declaration//GEN-END:variables
 }
