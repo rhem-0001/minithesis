@@ -19,10 +19,13 @@ public class stocks extends javax.swing.JInternalFrame {
 DefaultTableModel model;
 private int stockID;
 private String check;
+
+    public static stocks instance;
     /**
      * Creates new form stocks
      */
     public stocks() {
+        instance = this;
         initComponents();
         populatetable();
         
@@ -44,14 +47,14 @@ private String check;
         jPanel4 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
-        lblid = new javax.swing.JLabel();
+        lblSize = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         lblquantity = new javax.swing.JLabel();
         txtquantity = new javax.swing.JTextField();
         jPanel7 = new javax.swing.JPanel();
         lblproduct = new javax.swing.JLabel();
         txtproduct = new javax.swing.JTextField();
-        txtid = new javax.swing.JTextField();
+        txtSize = new javax.swing.JTextField();
         btnupdate = new javax.swing.JButton();
         btnsave = new javax.swing.JButton();
         btnclose = new javax.swing.JButton();
@@ -65,15 +68,23 @@ private String check;
         tblstock.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         tblstock.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "ID", "Product ", "Quantity"
+                "ID", "Product ", "Size", "Quantity", "Hidden_ID"
             }
-        ));
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.String.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
         tblstock.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tblstockMouseClicked(evt);
@@ -89,8 +100,8 @@ private String check;
 
         jPanel5.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
-        lblid.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        lblid.setText("ID");
+        lblSize.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        lblSize.setText("Size");
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
@@ -98,14 +109,14 @@ private String check;
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(lblid, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(lblSize, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(lblid)
+                .addComponent(lblSize)
                 .addContainerGap())
         );
 
@@ -159,8 +170,8 @@ private String check;
         txtproduct.setEnabled(false);
         txtproduct.addActionListener(this::txtproductActionPerformed);
 
-        txtid.setEnabled(false);
-        txtid.addActionListener(this::txtidActionPerformed);
+        txtSize.setEnabled(false);
+        txtSize.addActionListener(this::txtSizeActionPerformed);
 
         btnupdate.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnupdate.setText("Update");
@@ -211,7 +222,7 @@ private String check;
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(txtproduct)
-                                    .addComponent(txtid, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE))))
+                                    .addComponent(txtSize, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE))))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnDecreaseQty)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -232,7 +243,7 @@ private String check;
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(txtid))
+                    .addComponent(txtSize))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(txtproduct)
@@ -310,34 +321,40 @@ private String check;
     private void btnsaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnsaveActionPerformed
         // TODO add your handling code here:
         try {
-        Connection con = sqlconnector.getConnection();
-        PreparedStatement pst;
-
-        if (check.equals("add")) {
-            // For adding: we actually add variants in foodmenu, so this might not be needed
-            // But if you want to add stock here, you need product_name + size
-            JOptionPane.showMessageDialog(null, "Please add products with sizes in Food Menu first!");
+        // 1. GET THE NUMBER FROM THE TEXT FIELD
+        // This line gets what the user typed and turns it into an integer
+        String textValue = txtquantity.getText();
+        
+        // Check if it's empty to avoid errors
+        if (textValue.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Please enter a quantity!");
             return;
-
-        } else { // UPDATE stock quantity for a variant
-            String query = "UPDATE product_variant SET stock_quantity = ? WHERE variant_id = ?";
-            pst = con.prepareStatement(query);
-            pst.setInt(1, Integer.parseInt(txtquantity.getText()));
-            pst.setInt(2, stockID); // stockID is now variant_id
-            pst.executeUpdate();
         }
 
+        int newQuantity = Integer.parseInt(textValue);
+
+        // 2. UPDATE THE DATABASE
+        Connection con = sqlconnector.getConnection();
+        
+        // Use the 'stockID' (which is actually the variant_id) you saved when clicking the row
+        String query = "UPDATE product_variant SET stock_quantity = ? WHERE variant_id = ?";
+        PreparedStatement pst = con.prepareStatement(query);
+        
+        // Set the parameters
+        pst.setInt(1, newQuantity);  // <--- This uses the value from the text field
+        pst.setInt(2, stockID);      // <--- This uses the ID from the selected row
+        
         pst.executeUpdate();
         
-        JOptionPane.showMessageDialog(null, "Saved successfully!");
-        setDefault();
+        JOptionPane.showMessageDialog(null, "Stock updated successfully!");
         
-        if (foodmenu.instance != null) {
-            foodmenu.instance.populatetable();
-        }
+        // 3. REFRESH THE TABLE
+        populatetable();
         
+    } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(null, "Please enter a valid number!");
     } catch (Exception e) {
-        JOptionPane.showMessageDialog(null, e);
+        JOptionPane.showMessageDialog(null, "Error: " + e.getMessage());
     }
 
     }//GEN-LAST:event_btnsaveActionPerformed
@@ -350,21 +367,28 @@ private String check;
 
         DefaultTableModel model = (DefaultTableModel) tblstock.getModel();
 
-        // Get variant_id (hidden column 4) for updates/deletes
-        stockID = Integer.parseInt(model.getValueAt(selectedRow, 4).toString());
+        // Get the HIDDEN variant_id from Column 4
+        // This is the unique ID we need to update the correct stock!
+        int variantId = Integer.parseInt(model.getValueAt(selectedRow, 4).toString());
+        stockID = variantId; // Save to class variable
 
-        txtid.setText(model.getValueAt(selectedRow, 0).toString());  // product_code
-        txtproduct.setText(model.getValueAt(selectedRow, 1).toString() + " (" + 
-                          model.getValueAt(selectedRow, 2).toString() + ")"); // Name + Size
-        txtquantity.setText(model.getValueAt(selectedRow, 3).toString());
+        // Fill the text fields
+        txtSize.setText(model.getValueAt(selectedRow, 0).toString()); // Product Code
+        
+        // Combine Name and Size for display
+        String name = model.getValueAt(selectedRow, 1).toString();
+        String size = model.getValueAt(selectedRow, 2).toString();
+        txtproduct.setText(name + " (" + size + ")"); 
+        
+        txtquantity.setText(model.getValueAt(selectedRow, 3).toString()); // Quantity
 
         btnupdate.setEnabled(true);
         btndelete.setEnabled(true);
 
     } catch (Exception e) {
-        JOptionPane.showMessageDialog(null, e);
+        JOptionPane.showMessageDialog(null, "Error: " + e.getMessage());
+        e.printStackTrace();
     }
-       
     }//GEN-LAST:event_tblstockMouseClicked
 
     private void btnupdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnupdateActionPerformed
@@ -430,9 +454,9 @@ private String check;
 
     }//GEN-LAST:event_txtquantityActionPerformed
 
-    private void txtidActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtidActionPerformed
+    private void txtSizeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSizeActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtidActionPerformed
+    }//GEN-LAST:event_txtSizeActionPerformed
 
     private void txtproductActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtproductActionPerformed
         // TODO add your handling code here:
@@ -518,11 +542,11 @@ public void makeEnabled(){
     txtquantity.setEditable(true); 
 }    
 public void setDefault(){
-    txtid.setText("");
+    txtSize.setText("");
     txtproduct.setText("");
     txtquantity.setText("");
     
-    txtid.setEnabled(false);
+    txtSize.setEnabled(false);
     txtproduct.setEnabled(false);
     txtquantity.setEnabled(false);
     txtquantity.setEditable(false);  // Disable editing when reset
@@ -538,16 +562,14 @@ public void setDefault(){
     populatetable();
 }
 public void populatetable(){
-     try{
+      try{
         Connection con = sqlconnector.getConnection();
         
-        // Query to show EACH SIZE VARIANT with its own stock
-        String query = "SELECT p.product_code, p.product_name, s.size_name, " +
-                       "pv.stock_quantity, pv.variant_id " +
+        // Get 5 pieces of data
+        String query = "SELECT p.product_code, p.product_name, s.size_name, pv.stock_quantity, pv.variant_id " +
                        "FROM product p " +
                        "JOIN product_variant pv ON p.product_id = pv.product_id " +
-                       "LEFT JOIN size s ON pv.size_id = s.size_id " +
-                       "ORDER BY p.product_name, s.size_name";
+                       "LEFT JOIN size s ON pv.size_id = s.size_id";
         
         Statement st = con.createStatement();
         ResultSet rs = st.executeQuery(query);
@@ -557,14 +579,24 @@ public void populatetable(){
         
         while(rs.next()){
             Vector coldata = new Vector();
-            coldata.add(rs.getInt("product_code"));       // Column 0: Product Code (201, 202) ✓
-            coldata.add(rs.getString("product_name"));    // Column 1: Product Name
-            coldata.add(rs.getString("size_name"));       // Column 2: Size (Large, Regular)
-            coldata.add(rs.getInt("stock_quantity"));     // Column 3: Quantity
-            coldata.add(rs.getInt("variant_id"));         // Column 4: Hidden (for updates)
+            coldata.add(rs.getInt("product_code"));        // Column 0: ID
+            coldata.add(rs.getString("product_name"));     // Column 1: Product
+            coldata.add(rs.getString("size_name"));        // Column 2: Size
+            coldata.add(rs.getInt("stock_quantity"));      // Column 3: Quantity
+            coldata.add(rs.getInt("variant_id"));          // Column 4: Hidden Variant ID
+            
             tblmodel.addRow(coldata);
         }
+        
+        // HIDE the 5th column (Index 4) so users don't see it
+        if (tblstock.getColumnCount() > 4) {
+            tblstock.getColumnModel().getColumn(4).setMinWidth(0);
+            tblstock.getColumnModel().getColumn(4).setMaxWidth(0);
+            tblstock.getColumnModel().getColumn(4).setWidth(0);
+        }
+        
     } catch(SQLException e){
+        e.printStackTrace();
         JOptionPane.showMessageDialog(null, e);
     }
         
@@ -583,11 +615,11 @@ public void populatetable(){
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JLabel lblid;
+    private javax.swing.JLabel lblSize;
     private javax.swing.JLabel lblproduct;
     private javax.swing.JLabel lblquantity;
     private javax.swing.JTable tblstock;
-    private javax.swing.JTextField txtid;
+    private javax.swing.JTextField txtSize;
     private javax.swing.JTextField txtproduct;
     private javax.swing.JTextField txtquantity;
     // End of variables declaration//GEN-END:variables
