@@ -90,13 +90,13 @@ public static foodmenu instance;
         tblproduct.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         tblproduct.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
             },
             new String [] {
-                "Product Code", "Product", "Category", "Size", "Price", "Quantity"
+                "Product Code", "Product", "Category", "Size", "Price", "Quantity", "VariantID"
             }
         ));
         tblproduct.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -392,6 +392,13 @@ public void populatetable(){
             coldata.add(rs.getInt("variant_id"));          // Column 6 (hidden, for edit/delete)
             tblmodel.addRow(coldata);
         }
+        
+        if (tblproduct.getColumnCount() > 6) {
+            tblproduct.getColumnModel().getColumn(6).setMinWidth(0);
+            tblproduct.getColumnModel().getColumn(6).setMaxWidth(0);
+            tblproduct.getColumnModel().getColumn(6).setWidth(0);
+        }
+        
     } catch(SQLException e){
         JOptionPane.showMessageDialog(null, e);
     }
@@ -610,15 +617,18 @@ private int getSizeIdByName(String sizeName) {
         int selectedRow = tblproduct.getSelectedRow();
         if (selectedRow == -1) return;
 
-        DefaultTableModel tblmodel = (DefaultTableModel) tblproduct.getModel();
+        DefaultTableModel model = (DefaultTableModel) tblproduct.getModel();
         
-        // Get values from table (match column indices above)
-        int productCode = Integer.parseInt(tblmodel.getValueAt(selectedRow, 0).toString());
-        String productName = tblmodel.getValueAt(selectedRow, 1).toString();
-        String category = tblmodel.getValueAt(selectedRow, 2).toString();
-        String size = tblmodel.getValueAt(selectedRow, 3).toString();
-        String price = tblmodel.getValueAt(selectedRow, 4).toString();
-        currentVariantId = Integer.parseInt(tblmodel.getValueAt(selectedRow, 6).toString()); // Hidden column
+        // Get values from table
+        String productCode = model.getValueAt(selectedRow, 0).toString();
+        String productName = model.getValueAt(selectedRow, 1).toString();
+        String category = model.getValueAt(selectedRow, 2).toString();
+        String size = model.getValueAt(selectedRow, 3).toString();
+        String price = model.getValueAt(selectedRow, 4).toString();
+        String quantity = model.getValueAt(selectedRow, 5).toString();
+        
+        // Get hidden variant_id from column 6
+        int variantId = Integer.parseInt(model.getValueAt(selectedRow, 6).toString());
         
         // Fill form
         txtproductname.setText(productName);
@@ -626,19 +636,12 @@ private int getSizeIdByName(String sizeName) {
         cmbsize.setSelectedItem(size);
         txtprice.setText(price);
         
-        // Get product_id for reference (if needed)
-        Connection con = sqlconnector.getConnection();
-        PreparedStatement pst = con.prepareStatement("SELECT product_id FROM product WHERE product_code = ?");
-        pst.setInt(1, productCode);
-        ResultSet rs = pst.executeQuery();
-        if (rs.next()) {
-            productid = rs.getInt("product_id");
-        }
-
+        // Store variantId for updates
+        currentVariantId = variantId;
+        
         btnupdate.setEnabled(true);
         btnadd.setEnabled(false);
         btndelete.setEnabled(true);
-        check = "update";
 
     } catch (Exception e) {
         JOptionPane.showMessageDialog(null, e);
