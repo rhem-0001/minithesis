@@ -13,6 +13,10 @@ public class usermenu extends javax.swing.JFrame {
     Color DefaultColor, ClickedColor;
     private ArrayList<PurchaseItem> purchaseList = new ArrayList<>();
     private double totalAmount = 0;
+
+    void addToCart(int variantId, String productId, String productIdByName, String brownies, String sizeName, double price, int qty) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
     
     class PurchaseItem {
         String productId;
@@ -36,6 +40,15 @@ public class usermenu extends javax.swing.JFrame {
      
     public usermenu() {
         initComponents();
+        barscategory barsFrame = new barscategory();
+        desktoppane.add(barsFrame);  // ← Replace jDesktopPane1 with YOUR desktop pane name
+        barsFrame.setVisible(true);
+
+    try {
+        barsFrame.setSelected(true);
+    } catch (java.beans.PropertyVetoException e) {
+        e.printStackTrace();
+    }
         DefaultColor = new Color(255,255,255);
         ClickedColor = new Color(204,0,0);    
     }

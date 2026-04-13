@@ -14,6 +14,10 @@ import javax.swing.JOptionPane;
 public class barscategory extends javax.swing.JInternalFrame {
     public usermenu parentMenu;
     
+    public barscategory() {
+        initComponents();
+        // Add any other initialization code here
+    }
     /**
      * Creates new form barscategory
      */
@@ -985,7 +989,7 @@ public class barscategory extends javax.swing.JInternalFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel15, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(81, Short.MAX_VALUE))
+                .addContainerGap(84, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
