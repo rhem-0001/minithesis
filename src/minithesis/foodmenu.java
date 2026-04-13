@@ -352,7 +352,7 @@ public void setDefault(){
 
         txtproductname.setEnabled(false);
         cmbcategory.setEnabled(false);
-        txtprice.setEditable(false);
+        txtprice.setEnabled(false);
         cmbsize.setEnabled(false);
 
         btnadd.setEnabled(true);

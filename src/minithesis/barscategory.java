@@ -208,11 +208,13 @@ public class barscategory extends javax.swing.JInternalFrame {
         lblPriceBrownies.setFont(new java.awt.Font("Times New Roman", 1, 13)); // NOI18N
         lblPriceBrownies.setText("100");
 
+        jTextField2.setEditable(false);
         jTextField2.setBackground(new java.awt.Color(255, 204, 204));
         jTextField2.setFont(new java.awt.Font("Times New Roman", 1, 16)); // NOI18N
         jTextField2.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         jTextField2.setText("Brownies");
         jTextField2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(230, 230, 230)));
+        jTextField2.addActionListener(this::jTextField2ActionPerformed);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -286,6 +288,7 @@ public class barscategory extends javax.swing.JInternalFrame {
         lblPriceButterscotch.setFont(new java.awt.Font("Times New Roman", 1, 13)); // NOI18N
         lblPriceButterscotch.setText("100");
 
+        jTextField1.setEditable(false);
         jTextField1.setBackground(new java.awt.Color(255, 204, 204));
         jTextField1.setFont(new java.awt.Font("Times New Roman", 1, 16)); // NOI18N
         jTextField1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
@@ -364,6 +367,7 @@ public class barscategory extends javax.swing.JInternalFrame {
         jLabel15.setFont(new java.awt.Font("Times New Roman", 1, 13)); // NOI18N
         jLabel15.setText("100");
 
+        jTextField3.setEditable(false);
         jTextField3.setBackground(new java.awt.Color(255, 204, 204));
         jTextField3.setFont(new java.awt.Font("Times New Roman", 1, 16)); // NOI18N
         jTextField3.setHorizontalAlignment(javax.swing.JTextField.CENTER);
@@ -442,6 +446,7 @@ public class barscategory extends javax.swing.JInternalFrame {
         jLabel20.setFont(new java.awt.Font("Times New Roman", 1, 13)); // NOI18N
         jLabel20.setText("100");
 
+        jTextField4.setEditable(false);
         jTextField4.setBackground(new java.awt.Color(255, 204, 204));
         jTextField4.setFont(new java.awt.Font("Times New Roman", 1, 16)); // NOI18N
         jTextField4.setHorizontalAlignment(javax.swing.JTextField.CENTER);
@@ -520,6 +525,7 @@ public class barscategory extends javax.swing.JInternalFrame {
         jLabel25.setFont(new java.awt.Font("Times New Roman", 1, 13)); // NOI18N
         jLabel25.setText("100");
 
+        jTextField5.setEditable(false);
         jTextField5.setBackground(new java.awt.Color(255, 204, 204));
         jTextField5.setFont(new java.awt.Font("Times New Roman", 1, 16)); // NOI18N
         jTextField5.setHorizontalAlignment(javax.swing.JTextField.CENTER);
@@ -598,6 +604,7 @@ public class barscategory extends javax.swing.JInternalFrame {
         jLabel30.setFont(new java.awt.Font("Times New Roman", 1, 13)); // NOI18N
         jLabel30.setText("100");
 
+        jTextField6.setEditable(false);
         jTextField6.setBackground(new java.awt.Color(255, 204, 204));
         jTextField6.setFont(new java.awt.Font("Times New Roman", 1, 16)); // NOI18N
         jTextField6.setHorizontalAlignment(javax.swing.JTextField.CENTER);
@@ -676,6 +683,7 @@ public class barscategory extends javax.swing.JInternalFrame {
         jLabel35.setFont(new java.awt.Font("Times New Roman", 1, 13)); // NOI18N
         jLabel35.setText("100");
 
+        jTextField7.setEditable(false);
         jTextField7.setBackground(new java.awt.Color(255, 204, 204));
         jTextField7.setFont(new java.awt.Font("Times New Roman", 1, 16)); // NOI18N
         jTextField7.setHorizontalAlignment(javax.swing.JTextField.CENTER);
@@ -754,6 +762,7 @@ public class barscategory extends javax.swing.JInternalFrame {
         jLabel40.setFont(new java.awt.Font("Times New Roman", 1, 13)); // NOI18N
         jLabel40.setText("100");
 
+        jTextField8.setEditable(false);
         jTextField8.setBackground(new java.awt.Color(255, 204, 204));
         jTextField8.setFont(new java.awt.Font("Times New Roman", 1, 16)); // NOI18N
         jTextField8.setHorizontalAlignment(javax.swing.JTextField.CENTER);
@@ -832,6 +841,7 @@ public class barscategory extends javax.swing.JInternalFrame {
         jLabel45.setFont(new java.awt.Font("Times New Roman", 1, 13)); // NOI18N
         jLabel45.setText("100");
 
+        jTextField9.setEditable(false);
         jTextField9.setBackground(new java.awt.Color(255, 204, 204));
         jTextField9.setFont(new java.awt.Font("Times New Roman", 1, 16)); // NOI18N
         jTextField9.setHorizontalAlignment(javax.swing.JTextField.CENTER);
@@ -910,6 +920,7 @@ public class barscategory extends javax.swing.JInternalFrame {
         jLabel65.setFont(new java.awt.Font("Times New Roman", 1, 13)); // NOI18N
         jLabel65.setText("100");
 
+        jTextField13.setEditable(false);
         jTextField13.setBackground(new java.awt.Color(255, 204, 204));
         jTextField13.setFont(new java.awt.Font("Times New Roman", 1, 16)); // NOI18N
         jTextField13.setHorizontalAlignment(javax.swing.JTextField.CENTER);
@@ -1222,6 +1233,10 @@ public class barscategory extends javax.swing.JInternalFrame {
             chkBrownies.setSelected(false);
         }
     }//GEN-LAST:event_chkBrowniesActionPerformed
+
+    private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField2ActionPerformed
 
 private String getProductIdByName(String productName) {
         try {
