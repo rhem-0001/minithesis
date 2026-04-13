@@ -421,6 +421,9 @@
                   <Font name="Times New Roman" size="12" style="1"/>
                 </Property>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="chkButterscotchActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JLabel" name="lblPriceButterscotch">
               <Properties>
@@ -483,9 +486,9 @@
                               </Group>
                               <EmptySpace max="32767" attributes="0"/>
                               <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                  <Component id="spnCassavaa" alignment="0" max="32767" attributes="0"/>
+                                  <Component id="spnCassava" alignment="0" max="32767" attributes="0"/>
                                   <Component id="cmbSizeCassava" alignment="0" pref="91" max="32767" attributes="0"/>
-                                  <Component id="jLabel15" alignment="0" max="32767" attributes="0"/>
+                                  <Component id="lblPriceCassava" alignment="0" max="32767" attributes="0"/>
                               </Group>
                           </Group>
                       </Group>
@@ -500,7 +503,7 @@
                       <Component id="jTextField3" min="-2" pref="61" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="jLabel15" alignment="3" pref="26" max="32767" attributes="0"/>
+                          <Component id="lblPriceCassava" alignment="3" pref="26" max="32767" attributes="0"/>
                           <Component id="jLabel11" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
@@ -511,7 +514,7 @@
                       <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="jLabel13" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="spnCassavaa" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="spnCassava" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" pref="23" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
@@ -574,7 +577,7 @@
                 <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
               </AuxValues>
             </Component>
-            <Component class="javax.swing.JSpinner" name="spnCassavaa">
+            <Component class="javax.swing.JSpinner" name="spnCassava">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Times New Roman" size="12" style="1"/>
@@ -587,8 +590,11 @@
                   <Font name="Times New Roman" size="12" style="1"/>
                 </Property>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="chkCassavaActionPerformed"/>
+              </Events>
             </Component>
-            <Component class="javax.swing.JLabel" name="jLabel15">
+            <Component class="javax.swing.JLabel" name="lblPriceCassava">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Times New Roman" size="13" style="1"/>
@@ -638,7 +644,7 @@
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="jLabel19" min="-2" max="-2" attributes="0"/>
                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                              <Component id="chkCheeseBars" min="-2" max="-2" attributes="0"/>
+                              <Component id="chkCheese" min="-2" max="-2" attributes="0"/>
                               <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                           </Group>
                           <Group type="102" alignment="1" attributes="0">
@@ -649,9 +655,9 @@
                               </Group>
                               <EmptySpace max="32767" attributes="0"/>
                               <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                  <Component id="spnCheeseBars" alignment="0" max="32767" attributes="0"/>
-                                  <Component id="cmbSizeCheeseBars" alignment="0" pref="91" max="32767" attributes="0"/>
-                                  <Component id="jLabel20" alignment="0" max="32767" attributes="0"/>
+                                  <Component id="spnCheese" alignment="0" max="32767" attributes="0"/>
+                                  <Component id="cmbSizeCheese" alignment="0" pref="91" max="32767" attributes="0"/>
+                                  <Component id="lblPriceCheese" alignment="0" max="32767" attributes="0"/>
                               </Group>
                           </Group>
                       </Group>
@@ -666,22 +672,22 @@
                       <Component id="jTextField4" min="-2" pref="61" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="jLabel20" alignment="3" pref="26" max="32767" attributes="0"/>
+                          <Component id="lblPriceCheese" alignment="3" pref="26" max="32767" attributes="0"/>
                           <Component id="jLabel16" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="jLabel17" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="cmbSizeCheeseBars" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="cmbSizeCheese" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="jLabel18" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="spnCheeseBars" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="spnCheese" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" pref="23" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="chkCheeseBars" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="chkCheese" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Component id="jLabel19" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" pref="14" max="-2" attributes="0"/>
@@ -722,7 +728,7 @@
                 <Property name="text" type="java.lang.String" value="Purchase:"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JComboBox" name="cmbSizeCheeseBars">
+            <Component class="javax.swing.JComboBox" name="cmbSizeCheese">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Times New Roman" size="12" style="1"/>
@@ -740,21 +746,24 @@
                 <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
               </AuxValues>
             </Component>
-            <Component class="javax.swing.JSpinner" name="spnCheeseBars">
+            <Component class="javax.swing.JSpinner" name="spnCheese">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Times New Roman" size="12" style="1"/>
                 </Property>
               </Properties>
             </Component>
-            <Component class="javax.swing.JCheckBox" name="chkCheeseBars">
+            <Component class="javax.swing.JCheckBox" name="chkCheese">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Times New Roman" size="12" style="1"/>
                 </Property>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="chkCheeseActionPerformed"/>
+              </Events>
             </Component>
-            <Component class="javax.swing.JLabel" name="jLabel20">
+            <Component class="javax.swing.JLabel" name="lblPriceCheese">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Times New Roman" size="13" style="1"/>
@@ -804,7 +813,7 @@
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="jLabel24" min="-2" max="-2" attributes="0"/>
                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                              <Component id="chkRevelBars" min="-2" max="-2" attributes="0"/>
+                              <Component id="chkRevel" min="-2" max="-2" attributes="0"/>
                               <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                           </Group>
                           <Group type="102" alignment="1" attributes="0">
@@ -815,9 +824,9 @@
                               </Group>
                               <EmptySpace max="32767" attributes="0"/>
                               <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                  <Component id="spnRevelBars" alignment="0" max="32767" attributes="0"/>
-                                  <Component id="cmbSizeRevelBars" alignment="0" pref="91" max="32767" attributes="0"/>
-                                  <Component id="jLabel25" alignment="0" max="32767" attributes="0"/>
+                                  <Component id="spnRevel" alignment="0" max="32767" attributes="0"/>
+                                  <Component id="cmbSizeRevel" alignment="0" pref="91" max="32767" attributes="0"/>
+                                  <Component id="lblPriceRevel" alignment="0" max="32767" attributes="0"/>
                               </Group>
                           </Group>
                       </Group>
@@ -832,22 +841,22 @@
                       <Component id="jTextField5" min="-2" pref="61" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="jLabel25" alignment="3" pref="26" max="32767" attributes="0"/>
+                          <Component id="lblPriceRevel" alignment="3" pref="26" max="32767" attributes="0"/>
                           <Component id="jLabel21" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="jLabel22" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="cmbSizeRevelBars" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="cmbSizeRevel" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="jLabel23" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="spnRevelBars" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="spnRevel" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" pref="23" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="chkRevelBars" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="chkRevel" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Component id="jLabel24" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" pref="14" max="-2" attributes="0"/>
@@ -888,7 +897,7 @@
                 <Property name="text" type="java.lang.String" value="Purchase:"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JComboBox" name="cmbSizeRevelBars">
+            <Component class="javax.swing.JComboBox" name="cmbSizeRevel">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Times New Roman" size="12" style="1"/>
@@ -902,25 +911,31 @@
                   </StringArray>
                 </Property>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cmbSizeRevelActionPerformed"/>
+              </Events>
               <AuxValues>
                 <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
               </AuxValues>
             </Component>
-            <Component class="javax.swing.JSpinner" name="spnRevelBars">
+            <Component class="javax.swing.JSpinner" name="spnRevel">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Times New Roman" size="12" style="1"/>
                 </Property>
               </Properties>
             </Component>
-            <Component class="javax.swing.JCheckBox" name="chkRevelBars">
+            <Component class="javax.swing.JCheckBox" name="chkRevel">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Times New Roman" size="12" style="1"/>
                 </Property>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="chkRevelActionPerformed"/>
+              </Events>
             </Component>
-            <Component class="javax.swing.JLabel" name="jLabel25">
+            <Component class="javax.swing.JLabel" name="lblPriceRevel">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Times New Roman" size="13" style="1"/>
@@ -970,7 +985,7 @@
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="jLabel29" min="-2" max="-2" attributes="0"/>
                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                              <Component id="chkMangoCake" min="-2" max="-2" attributes="0"/>
+                              <Component id="chkMango" min="-2" max="-2" attributes="0"/>
                               <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                           </Group>
                           <Group type="102" alignment="1" attributes="0">
@@ -981,9 +996,9 @@
                               </Group>
                               <EmptySpace max="32767" attributes="0"/>
                               <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                  <Component id="spnMangoCake" alignment="0" max="32767" attributes="0"/>
-                                  <Component id="cmbMangoCake" alignment="0" pref="91" max="32767" attributes="0"/>
-                                  <Component id="jLabel30" alignment="0" max="32767" attributes="0"/>
+                                  <Component id="spnMango" alignment="0" max="32767" attributes="0"/>
+                                  <Component id="cmbSizeMango" alignment="0" pref="91" max="32767" attributes="0"/>
+                                  <Component id="lblPriceMango" alignment="0" max="32767" attributes="0"/>
                               </Group>
                           </Group>
                       </Group>
@@ -998,22 +1013,22 @@
                       <Component id="jTextField6" min="-2" pref="61" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="jLabel30" alignment="3" pref="26" max="32767" attributes="0"/>
+                          <Component id="lblPriceMango" alignment="3" pref="26" max="32767" attributes="0"/>
                           <Component id="jLabel26" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="jLabel27" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="cmbMangoCake" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="cmbSizeMango" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="jLabel28" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="spnMangoCake" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="spnMango" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" pref="23" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="chkMangoCake" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="chkMango" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Component id="jLabel29" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" pref="14" max="-2" attributes="0"/>
@@ -1054,7 +1069,7 @@
                 <Property name="text" type="java.lang.String" value="Purchase:"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JComboBox" name="cmbMangoCake">
+            <Component class="javax.swing.JComboBox" name="cmbSizeMango">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Times New Roman" size="12" style="1"/>
@@ -1072,21 +1087,24 @@
                 <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
               </AuxValues>
             </Component>
-            <Component class="javax.swing.JSpinner" name="spnMangoCake">
+            <Component class="javax.swing.JSpinner" name="spnMango">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Times New Roman" size="12" style="1"/>
                 </Property>
               </Properties>
             </Component>
-            <Component class="javax.swing.JCheckBox" name="chkMangoCake">
+            <Component class="javax.swing.JCheckBox" name="chkMango">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Times New Roman" size="12" style="1"/>
                 </Property>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="chkMangoActionPerformed"/>
+              </Events>
             </Component>
-            <Component class="javax.swing.JLabel" name="jLabel30">
+            <Component class="javax.swing.JLabel" name="lblPriceMango">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Times New Roman" size="13" style="1"/>
@@ -1149,7 +1167,7 @@
                               <Group type="103" groupAlignment="0" max="-2" attributes="0">
                                   <Component id="spnClassic" alignment="0" max="32767" attributes="0"/>
                                   <Component id="cmbSizeClassic" alignment="0" pref="91" max="32767" attributes="0"/>
-                                  <Component id="jLabel35" alignment="0" max="32767" attributes="0"/>
+                                  <Component id="lblPriceClassic" alignment="0" max="32767" attributes="0"/>
                               </Group>
                           </Group>
                       </Group>
@@ -1164,7 +1182,7 @@
                       <Component id="jTextField7" min="-2" pref="61" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="jLabel35" alignment="3" pref="26" max="32767" attributes="0"/>
+                          <Component id="lblPriceClassic" alignment="3" pref="26" max="32767" attributes="0"/>
                           <Component id="jLabel31" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
@@ -1251,8 +1269,11 @@
                   <Font name="Times New Roman" size="12" style="1"/>
                 </Property>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="chkClassicActionPerformed"/>
+              </Events>
             </Component>
-            <Component class="javax.swing.JLabel" name="jLabel35">
+            <Component class="javax.swing.JLabel" name="lblPriceClassic">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Times New Roman" size="13" style="1"/>
@@ -1314,8 +1335,8 @@
                               <EmptySpace max="32767" attributes="0"/>
                               <Group type="103" groupAlignment="0" max="-2" attributes="0">
                                   <Component id="spnPremium" alignment="0" max="32767" attributes="0"/>
-                                  <Component id="cmbPremium" alignment="0" pref="91" max="32767" attributes="0"/>
-                                  <Component id="jLabel40" alignment="0" max="32767" attributes="0"/>
+                                  <Component id="cmbSizePremium" alignment="0" pref="91" max="32767" attributes="0"/>
+                                  <Component id="lblPricePremium" alignment="0" max="32767" attributes="0"/>
                               </Group>
                           </Group>
                       </Group>
@@ -1330,13 +1351,13 @@
                       <Component id="jTextField8" min="-2" pref="61" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="jLabel40" alignment="3" pref="26" max="32767" attributes="0"/>
+                          <Component id="lblPricePremium" alignment="3" pref="26" max="32767" attributes="0"/>
                           <Component id="jLabel36" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="jLabel37" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="cmbPremium" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="cmbSizePremium" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
@@ -1386,7 +1407,7 @@
                 <Property name="text" type="java.lang.String" value="Purchase:"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JComboBox" name="cmbPremium">
+            <Component class="javax.swing.JComboBox" name="cmbSizePremium">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Times New Roman" size="12" style="1"/>
@@ -1417,8 +1438,11 @@
                   <Font name="Times New Roman" size="12" style="1"/>
                 </Property>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="chkPremiumActionPerformed"/>
+              </Events>
             </Component>
-            <Component class="javax.swing.JLabel" name="jLabel40">
+            <Component class="javax.swing.JLabel" name="lblPricePremium">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Times New Roman" size="13" style="1"/>
@@ -1468,7 +1492,7 @@
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="jLabel44" min="-2" max="-2" attributes="0"/>
                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                              <Component id="chkDarkFudge" min="-2" max="-2" attributes="0"/>
+                              <Component id="chkDark" min="-2" max="-2" attributes="0"/>
                               <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                           </Group>
                           <Group type="102" alignment="1" attributes="0">
@@ -1479,9 +1503,9 @@
                               </Group>
                               <EmptySpace max="32767" attributes="0"/>
                               <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                  <Component id="spnDarkFudge" alignment="0" max="32767" attributes="0"/>
-                                  <Component id="cmbSizeDarkFudge" alignment="0" pref="91" max="32767" attributes="0"/>
-                                  <Component id="jLabel45" alignment="0" max="32767" attributes="0"/>
+                                  <Component id="spnDark" alignment="0" max="32767" attributes="0"/>
+                                  <Component id="cmbSizeDark" alignment="0" pref="91" max="32767" attributes="0"/>
+                                  <Component id="lblPriceDark" alignment="0" max="32767" attributes="0"/>
                               </Group>
                           </Group>
                       </Group>
@@ -1496,22 +1520,22 @@
                       <Component id="jTextField9" min="-2" pref="61" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="jLabel45" alignment="3" pref="26" max="32767" attributes="0"/>
+                          <Component id="lblPriceDark" alignment="3" pref="26" max="32767" attributes="0"/>
                           <Component id="jLabel41" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="jLabel42" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="cmbSizeDarkFudge" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="cmbSizeDark" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="jLabel43" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="spnDarkFudge" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="spnDark" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" pref="23" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="chkDarkFudge" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="chkDark" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Component id="jLabel44" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" pref="14" max="-2" attributes="0"/>
@@ -1552,7 +1576,7 @@
                 <Property name="text" type="java.lang.String" value="Purchase:"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JComboBox" name="cmbSizeDarkFudge">
+            <Component class="javax.swing.JComboBox" name="cmbSizeDark">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Times New Roman" size="12" style="1"/>
@@ -1570,21 +1594,24 @@
                 <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
               </AuxValues>
             </Component>
-            <Component class="javax.swing.JSpinner" name="spnDarkFudge">
+            <Component class="javax.swing.JSpinner" name="spnDark">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Times New Roman" size="12" style="1"/>
                 </Property>
               </Properties>
             </Component>
-            <Component class="javax.swing.JCheckBox" name="chkDarkFudge">
+            <Component class="javax.swing.JCheckBox" name="chkDark">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Times New Roman" size="12" style="1"/>
                 </Property>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="chkDarkActionPerformed"/>
+              </Events>
             </Component>
-            <Component class="javax.swing.JLabel" name="jLabel45">
+            <Component class="javax.swing.JLabel" name="lblPriceDark">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Times New Roman" size="13" style="1"/>
@@ -1634,7 +1661,7 @@
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="jLabel64" min="-2" max="-2" attributes="0"/>
                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                              <Component id="chkFoodforTheGods" min="-2" max="-2" attributes="0"/>
+                              <Component id="chkGods" min="-2" max="-2" attributes="0"/>
                               <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                           </Group>
                           <Group type="102" alignment="1" attributes="0">
@@ -1645,9 +1672,9 @@
                               </Group>
                               <EmptySpace max="32767" attributes="0"/>
                               <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                  <Component id="spnFoodforTheGods" alignment="0" max="32767" attributes="0"/>
-                                  <Component id="cmbSizeFoodforTheGods" alignment="0" pref="91" max="32767" attributes="0"/>
-                                  <Component id="jLabel65" alignment="0" max="32767" attributes="0"/>
+                                  <Component id="spnGods" alignment="0" max="32767" attributes="0"/>
+                                  <Component id="cmbSizeGods" alignment="0" pref="91" max="32767" attributes="0"/>
+                                  <Component id="lblPriceGods" alignment="0" max="32767" attributes="0"/>
                               </Group>
                           </Group>
                       </Group>
@@ -1662,22 +1689,22 @@
                       <Component id="jTextField13" min="-2" pref="61" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="jLabel65" alignment="3" pref="26" max="32767" attributes="0"/>
+                          <Component id="lblPriceGods" alignment="3" pref="26" max="32767" attributes="0"/>
                           <Component id="jLabel61" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="jLabel62" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="cmbSizeFoodforTheGods" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="cmbSizeGods" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="jLabel63" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="spnFoodforTheGods" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="spnGods" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" pref="23" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="chkFoodforTheGods" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="chkGods" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Component id="jLabel64" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" pref="14" max="-2" attributes="0"/>
@@ -1718,7 +1745,7 @@
                 <Property name="text" type="java.lang.String" value="Purchase:"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JComboBox" name="cmbSizeFoodforTheGods">
+            <Component class="javax.swing.JComboBox" name="cmbSizeGods">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Times New Roman" size="12" style="1"/>
@@ -1736,21 +1763,24 @@
                 <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
               </AuxValues>
             </Component>
-            <Component class="javax.swing.JSpinner" name="spnFoodforTheGods">
+            <Component class="javax.swing.JSpinner" name="spnGods">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Times New Roman" size="12" style="1"/>
                 </Property>
               </Properties>
             </Component>
-            <Component class="javax.swing.JCheckBox" name="chkFoodforTheGods">
+            <Component class="javax.swing.JCheckBox" name="chkGods">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Times New Roman" size="12" style="1"/>
                 </Property>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="chkGodsActionPerformed"/>
+              </Events>
             </Component>
-            <Component class="javax.swing.JLabel" name="jLabel65">
+            <Component class="javax.swing.JLabel" name="lblPriceGods">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Times New Roman" size="13" style="1"/>

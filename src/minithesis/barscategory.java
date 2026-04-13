@@ -51,10 +51,26 @@ public class barscategory extends javax.swing.JInternalFrame {
         // Load dynamic sizes for all products
         loadProductSizes("Brownies", cmbSizeBrownies, lblPriceBrownies);
         loadProductSizes("Butterscotch", cmbSizeButterscotch, lblPriceButterscotch);
-        
+        loadProductSizes("Cassava Bars", cmbSizeCassava, lblPriceCassava);
+        loadProductSizes("Cheese Bars", cmbSizeCheese, lblPriceCheese);
+        loadProductSizes("Revel Bars", cmbSizeRevel, lblPriceRevel);
+        loadProductSizes("Mango Cake Bars", cmbSizeMango, lblPriceMango);
+        loadProductSizes("Classic Assorted Bars", cmbSizeClassic, lblPriceClassic);
+        loadProductSizes("Premium Assorted Bars", cmbSizePremium, lblPricePremium);
+        loadProductSizes("Dark Fudge Brownies", cmbSizeDark, lblPriceDark);
+        loadProductSizes("Food For The Gods", cmbSizeGods, lblPriceGods);
+
         // Add listeners to update price when size changes
         addSizeChangeListener(cmbSizeBrownies, lblPriceBrownies, "Brownies");
         addSizeChangeListener(cmbSizeButterscotch, lblPriceButterscotch, "Butterscotch");
+        addSizeChangeListener(cmbSizeCassava, lblPriceCassava, "Cassava Bars");
+        addSizeChangeListener(cmbSizeCheese, lblPriceCheese, "Cheese Bars");
+        addSizeChangeListener(cmbSizeRevel, lblPriceRevel, "Revel Bars");
+        addSizeChangeListener(cmbSizeMango, lblPriceMango, "Mango Cake Bars");
+        addSizeChangeListener(cmbSizeClassic, lblPriceClassic, "Classic Assorted Bars");
+        addSizeChangeListener(cmbSizePremium, lblPricePremium, "Premium Assorted Bars");
+        addSizeChangeListener(cmbSizeDark, lblPriceDark, "Dark Fudge Brownies");
+        addSizeChangeListener(cmbSizeGods, lblPriceGods, "Food For The Gods");
         
     }
 
@@ -95,39 +111,39 @@ public class barscategory extends javax.swing.JInternalFrame {
         jLabel13 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
         cmbSizeCassava = new javax.swing.JComboBox<>();
-        spnCassavaa = new javax.swing.JSpinner();
+        spnCassava = new javax.swing.JSpinner();
         chkCassava = new javax.swing.JCheckBox();
-        jLabel15 = new javax.swing.JLabel();
+        lblPriceCassava = new javax.swing.JLabel();
         jTextField3 = new javax.swing.JTextField();
         jPanel5 = new javax.swing.JPanel();
         jLabel16 = new javax.swing.JLabel();
         jLabel17 = new javax.swing.JLabel();
         jLabel18 = new javax.swing.JLabel();
         jLabel19 = new javax.swing.JLabel();
-        cmbSizeCheeseBars = new javax.swing.JComboBox<>();
-        spnCheeseBars = new javax.swing.JSpinner();
-        chkCheeseBars = new javax.swing.JCheckBox();
-        jLabel20 = new javax.swing.JLabel();
+        cmbSizeCheese = new javax.swing.JComboBox<>();
+        spnCheese = new javax.swing.JSpinner();
+        chkCheese = new javax.swing.JCheckBox();
+        lblPriceCheese = new javax.swing.JLabel();
         jTextField4 = new javax.swing.JTextField();
         jPanel6 = new javax.swing.JPanel();
         jLabel21 = new javax.swing.JLabel();
         jLabel22 = new javax.swing.JLabel();
         jLabel23 = new javax.swing.JLabel();
         jLabel24 = new javax.swing.JLabel();
-        cmbSizeRevelBars = new javax.swing.JComboBox<>();
-        spnRevelBars = new javax.swing.JSpinner();
-        chkRevelBars = new javax.swing.JCheckBox();
-        jLabel25 = new javax.swing.JLabel();
+        cmbSizeRevel = new javax.swing.JComboBox<>();
+        spnRevel = new javax.swing.JSpinner();
+        chkRevel = new javax.swing.JCheckBox();
+        lblPriceRevel = new javax.swing.JLabel();
         jTextField5 = new javax.swing.JTextField();
         jPanel8 = new javax.swing.JPanel();
         jLabel26 = new javax.swing.JLabel();
         jLabel27 = new javax.swing.JLabel();
         jLabel28 = new javax.swing.JLabel();
         jLabel29 = new javax.swing.JLabel();
-        cmbMangoCake = new javax.swing.JComboBox<>();
-        spnMangoCake = new javax.swing.JSpinner();
-        chkMangoCake = new javax.swing.JCheckBox();
-        jLabel30 = new javax.swing.JLabel();
+        cmbSizeMango = new javax.swing.JComboBox<>();
+        spnMango = new javax.swing.JSpinner();
+        chkMango = new javax.swing.JCheckBox();
+        lblPriceMango = new javax.swing.JLabel();
         jTextField6 = new javax.swing.JTextField();
         jPanel9 = new javax.swing.JPanel();
         jLabel31 = new javax.swing.JLabel();
@@ -137,37 +153,37 @@ public class barscategory extends javax.swing.JInternalFrame {
         cmbSizeClassic = new javax.swing.JComboBox<>();
         spnClassic = new javax.swing.JSpinner();
         chkClassic = new javax.swing.JCheckBox();
-        jLabel35 = new javax.swing.JLabel();
+        lblPriceClassic = new javax.swing.JLabel();
         jTextField7 = new javax.swing.JTextField();
         jPanel10 = new javax.swing.JPanel();
         jLabel36 = new javax.swing.JLabel();
         jLabel37 = new javax.swing.JLabel();
         jLabel38 = new javax.swing.JLabel();
         jLabel39 = new javax.swing.JLabel();
-        cmbPremium = new javax.swing.JComboBox<>();
+        cmbSizePremium = new javax.swing.JComboBox<>();
         spnPremium = new javax.swing.JSpinner();
         chkPremium = new javax.swing.JCheckBox();
-        jLabel40 = new javax.swing.JLabel();
+        lblPricePremium = new javax.swing.JLabel();
         jTextField8 = new javax.swing.JTextField();
         jPanel11 = new javax.swing.JPanel();
         jLabel41 = new javax.swing.JLabel();
         jLabel42 = new javax.swing.JLabel();
         jLabel43 = new javax.swing.JLabel();
         jLabel44 = new javax.swing.JLabel();
-        cmbSizeDarkFudge = new javax.swing.JComboBox<>();
-        spnDarkFudge = new javax.swing.JSpinner();
-        chkDarkFudge = new javax.swing.JCheckBox();
-        jLabel45 = new javax.swing.JLabel();
+        cmbSizeDark = new javax.swing.JComboBox<>();
+        spnDark = new javax.swing.JSpinner();
+        chkDark = new javax.swing.JCheckBox();
+        lblPriceDark = new javax.swing.JLabel();
         jTextField9 = new javax.swing.JTextField();
         jPanel15 = new javax.swing.JPanel();
         jLabel61 = new javax.swing.JLabel();
         jLabel62 = new javax.swing.JLabel();
         jLabel63 = new javax.swing.JLabel();
         jLabel64 = new javax.swing.JLabel();
-        cmbSizeFoodforTheGods = new javax.swing.JComboBox<>();
-        spnFoodforTheGods = new javax.swing.JSpinner();
-        chkFoodforTheGods = new javax.swing.JCheckBox();
-        jLabel65 = new javax.swing.JLabel();
+        cmbSizeGods = new javax.swing.JComboBox<>();
+        spnGods = new javax.swing.JSpinner();
+        chkGods = new javax.swing.JCheckBox();
+        lblPriceGods = new javax.swing.JLabel();
         jTextField13 = new javax.swing.JTextField();
 
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
@@ -284,6 +300,7 @@ public class barscategory extends javax.swing.JInternalFrame {
         spnButterscotch.setFont(new java.awt.Font("Times New Roman", 1, 12)); // NOI18N
 
         chkButterscotch.setFont(new java.awt.Font("Times New Roman", 1, 12)); // NOI18N
+        chkButterscotch.addActionListener(this::chkButterscotchActionPerformed);
 
         lblPriceButterscotch.setFont(new java.awt.Font("Times New Roman", 1, 13)); // NOI18N
         lblPriceButterscotch.setText("100");
@@ -360,12 +377,13 @@ public class barscategory extends javax.swing.JInternalFrame {
         cmbSizeCassava.setFont(new java.awt.Font("Times New Roman", 1, 12)); // NOI18N
         cmbSizeCassava.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-        spnCassavaa.setFont(new java.awt.Font("Times New Roman", 1, 12)); // NOI18N
+        spnCassava.setFont(new java.awt.Font("Times New Roman", 1, 12)); // NOI18N
 
         chkCassava.setFont(new java.awt.Font("Times New Roman", 1, 12)); // NOI18N
+        chkCassava.addActionListener(this::chkCassavaActionPerformed);
 
-        jLabel15.setFont(new java.awt.Font("Times New Roman", 1, 13)); // NOI18N
-        jLabel15.setText("100");
+        lblPriceCassava.setFont(new java.awt.Font("Times New Roman", 1, 13)); // NOI18N
+        lblPriceCassava.setText("100");
 
         jTextField3.setEditable(false);
         jTextField3.setBackground(new java.awt.Color(255, 204, 204));
@@ -393,9 +411,9 @@ public class barscategory extends javax.swing.JInternalFrame {
                             .addComponent(jLabel11))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(spnCassavaa)
+                            .addComponent(spnCassava)
                             .addComponent(cmbSizeCassava, 0, 91, Short.MAX_VALUE)
-                            .addComponent(jLabel15, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                            .addComponent(lblPriceCassava, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap())
             .addComponent(jTextField3)
         );
@@ -405,7 +423,7 @@ public class barscategory extends javax.swing.JInternalFrame {
                 .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel15, javax.swing.GroupLayout.DEFAULT_SIZE, 26, Short.MAX_VALUE)
+                    .addComponent(lblPriceCassava, javax.swing.GroupLayout.DEFAULT_SIZE, 26, Short.MAX_VALUE)
                     .addComponent(jLabel11))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -414,7 +432,7 @@ public class barscategory extends javax.swing.JInternalFrame {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel13)
-                    .addComponent(spnCassavaa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(spnCassava, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(23, 23, 23)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(chkCassava)
@@ -436,15 +454,16 @@ public class barscategory extends javax.swing.JInternalFrame {
         jLabel19.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         jLabel19.setText("Purchase:");
 
-        cmbSizeCheeseBars.setFont(new java.awt.Font("Times New Roman", 1, 12)); // NOI18N
-        cmbSizeCheeseBars.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbSizeCheese.setFont(new java.awt.Font("Times New Roman", 1, 12)); // NOI18N
+        cmbSizeCheese.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-        spnCheeseBars.setFont(new java.awt.Font("Times New Roman", 1, 12)); // NOI18N
+        spnCheese.setFont(new java.awt.Font("Times New Roman", 1, 12)); // NOI18N
 
-        chkCheeseBars.setFont(new java.awt.Font("Times New Roman", 1, 12)); // NOI18N
+        chkCheese.setFont(new java.awt.Font("Times New Roman", 1, 12)); // NOI18N
+        chkCheese.addActionListener(this::chkCheeseActionPerformed);
 
-        jLabel20.setFont(new java.awt.Font("Times New Roman", 1, 13)); // NOI18N
-        jLabel20.setText("100");
+        lblPriceCheese.setFont(new java.awt.Font("Times New Roman", 1, 13)); // NOI18N
+        lblPriceCheese.setText("100");
 
         jTextField4.setEditable(false);
         jTextField4.setBackground(new java.awt.Color(255, 204, 204));
@@ -463,7 +482,7 @@ public class barscategory extends javax.swing.JInternalFrame {
                     .addGroup(jPanel5Layout.createSequentialGroup()
                         .addComponent(jLabel19)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(chkCheeseBars)
+                        .addComponent(chkCheese)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -472,9 +491,9 @@ public class barscategory extends javax.swing.JInternalFrame {
                             .addComponent(jLabel16))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(spnCheeseBars)
-                            .addComponent(cmbSizeCheeseBars, 0, 91, Short.MAX_VALUE)
-                            .addComponent(jLabel20, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                            .addComponent(spnCheese)
+                            .addComponent(cmbSizeCheese, 0, 91, Short.MAX_VALUE)
+                            .addComponent(lblPriceCheese, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap())
             .addComponent(jTextField4)
         );
@@ -484,19 +503,19 @@ public class barscategory extends javax.swing.JInternalFrame {
                 .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel20, javax.swing.GroupLayout.DEFAULT_SIZE, 26, Short.MAX_VALUE)
+                    .addComponent(lblPriceCheese, javax.swing.GroupLayout.DEFAULT_SIZE, 26, Short.MAX_VALUE)
                     .addComponent(jLabel16))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel17)
-                    .addComponent(cmbSizeCheeseBars, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cmbSizeCheese, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel18)
-                    .addComponent(spnCheeseBars, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(spnCheese, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(23, 23, 23)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(chkCheeseBars)
+                    .addComponent(chkCheese)
                     .addComponent(jLabel19))
                 .addGap(14, 14, 14))
         );
@@ -515,15 +534,17 @@ public class barscategory extends javax.swing.JInternalFrame {
         jLabel24.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         jLabel24.setText("Purchase:");
 
-        cmbSizeRevelBars.setFont(new java.awt.Font("Times New Roman", 1, 12)); // NOI18N
-        cmbSizeRevelBars.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbSizeRevel.setFont(new java.awt.Font("Times New Roman", 1, 12)); // NOI18N
+        cmbSizeRevel.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbSizeRevel.addActionListener(this::cmbSizeRevelActionPerformed);
 
-        spnRevelBars.setFont(new java.awt.Font("Times New Roman", 1, 12)); // NOI18N
+        spnRevel.setFont(new java.awt.Font("Times New Roman", 1, 12)); // NOI18N
 
-        chkRevelBars.setFont(new java.awt.Font("Times New Roman", 1, 12)); // NOI18N
+        chkRevel.setFont(new java.awt.Font("Times New Roman", 1, 12)); // NOI18N
+        chkRevel.addActionListener(this::chkRevelActionPerformed);
 
-        jLabel25.setFont(new java.awt.Font("Times New Roman", 1, 13)); // NOI18N
-        jLabel25.setText("100");
+        lblPriceRevel.setFont(new java.awt.Font("Times New Roman", 1, 13)); // NOI18N
+        lblPriceRevel.setText("100");
 
         jTextField5.setEditable(false);
         jTextField5.setBackground(new java.awt.Color(255, 204, 204));
@@ -542,7 +563,7 @@ public class barscategory extends javax.swing.JInternalFrame {
                     .addGroup(jPanel6Layout.createSequentialGroup()
                         .addComponent(jLabel24)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(chkRevelBars)
+                        .addComponent(chkRevel)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -551,9 +572,9 @@ public class barscategory extends javax.swing.JInternalFrame {
                             .addComponent(jLabel21))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(spnRevelBars)
-                            .addComponent(cmbSizeRevelBars, 0, 91, Short.MAX_VALUE)
-                            .addComponent(jLabel25, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                            .addComponent(spnRevel)
+                            .addComponent(cmbSizeRevel, 0, 91, Short.MAX_VALUE)
+                            .addComponent(lblPriceRevel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap())
             .addComponent(jTextField5)
         );
@@ -563,19 +584,19 @@ public class barscategory extends javax.swing.JInternalFrame {
                 .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel25, javax.swing.GroupLayout.DEFAULT_SIZE, 26, Short.MAX_VALUE)
+                    .addComponent(lblPriceRevel, javax.swing.GroupLayout.DEFAULT_SIZE, 26, Short.MAX_VALUE)
                     .addComponent(jLabel21))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel22)
-                    .addComponent(cmbSizeRevelBars, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cmbSizeRevel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel23)
-                    .addComponent(spnRevelBars, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(spnRevel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(23, 23, 23)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(chkRevelBars)
+                    .addComponent(chkRevel)
                     .addComponent(jLabel24))
                 .addGap(14, 14, 14))
         );
@@ -594,15 +615,16 @@ public class barscategory extends javax.swing.JInternalFrame {
         jLabel29.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         jLabel29.setText("Purchase:");
 
-        cmbMangoCake.setFont(new java.awt.Font("Times New Roman", 1, 12)); // NOI18N
-        cmbMangoCake.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbSizeMango.setFont(new java.awt.Font("Times New Roman", 1, 12)); // NOI18N
+        cmbSizeMango.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-        spnMangoCake.setFont(new java.awt.Font("Times New Roman", 1, 12)); // NOI18N
+        spnMango.setFont(new java.awt.Font("Times New Roman", 1, 12)); // NOI18N
 
-        chkMangoCake.setFont(new java.awt.Font("Times New Roman", 1, 12)); // NOI18N
+        chkMango.setFont(new java.awt.Font("Times New Roman", 1, 12)); // NOI18N
+        chkMango.addActionListener(this::chkMangoActionPerformed);
 
-        jLabel30.setFont(new java.awt.Font("Times New Roman", 1, 13)); // NOI18N
-        jLabel30.setText("100");
+        lblPriceMango.setFont(new java.awt.Font("Times New Roman", 1, 13)); // NOI18N
+        lblPriceMango.setText("100");
 
         jTextField6.setEditable(false);
         jTextField6.setBackground(new java.awt.Color(255, 204, 204));
@@ -621,7 +643,7 @@ public class barscategory extends javax.swing.JInternalFrame {
                     .addGroup(jPanel8Layout.createSequentialGroup()
                         .addComponent(jLabel29)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(chkMangoCake)
+                        .addComponent(chkMango)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
                         .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -630,9 +652,9 @@ public class barscategory extends javax.swing.JInternalFrame {
                             .addComponent(jLabel26))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(spnMangoCake)
-                            .addComponent(cmbMangoCake, 0, 91, Short.MAX_VALUE)
-                            .addComponent(jLabel30, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                            .addComponent(spnMango)
+                            .addComponent(cmbSizeMango, 0, 91, Short.MAX_VALUE)
+                            .addComponent(lblPriceMango, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap())
             .addComponent(jTextField6)
         );
@@ -642,19 +664,19 @@ public class barscategory extends javax.swing.JInternalFrame {
                 .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel30, javax.swing.GroupLayout.DEFAULT_SIZE, 26, Short.MAX_VALUE)
+                    .addComponent(lblPriceMango, javax.swing.GroupLayout.DEFAULT_SIZE, 26, Short.MAX_VALUE)
                     .addComponent(jLabel26))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel27)
-                    .addComponent(cmbMangoCake, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cmbSizeMango, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel28)
-                    .addComponent(spnMangoCake, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(spnMango, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(23, 23, 23)
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(chkMangoCake)
+                    .addComponent(chkMango)
                     .addComponent(jLabel29))
                 .addGap(14, 14, 14))
         );
@@ -679,9 +701,10 @@ public class barscategory extends javax.swing.JInternalFrame {
         spnClassic.setFont(new java.awt.Font("Times New Roman", 1, 12)); // NOI18N
 
         chkClassic.setFont(new java.awt.Font("Times New Roman", 1, 12)); // NOI18N
+        chkClassic.addActionListener(this::chkClassicActionPerformed);
 
-        jLabel35.setFont(new java.awt.Font("Times New Roman", 1, 13)); // NOI18N
-        jLabel35.setText("100");
+        lblPriceClassic.setFont(new java.awt.Font("Times New Roman", 1, 13)); // NOI18N
+        lblPriceClassic.setText("100");
 
         jTextField7.setEditable(false);
         jTextField7.setBackground(new java.awt.Color(255, 204, 204));
@@ -711,7 +734,7 @@ public class barscategory extends javax.swing.JInternalFrame {
                         .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(spnClassic)
                             .addComponent(cmbSizeClassic, 0, 91, Short.MAX_VALUE)
-                            .addComponent(jLabel35, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                            .addComponent(lblPriceClassic, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap())
             .addComponent(jTextField7, javax.swing.GroupLayout.DEFAULT_SIZE, 169, Short.MAX_VALUE)
         );
@@ -721,7 +744,7 @@ public class barscategory extends javax.swing.JInternalFrame {
                 .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel35, javax.swing.GroupLayout.DEFAULT_SIZE, 26, Short.MAX_VALUE)
+                    .addComponent(lblPriceClassic, javax.swing.GroupLayout.DEFAULT_SIZE, 26, Short.MAX_VALUE)
                     .addComponent(jLabel31))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -752,15 +775,16 @@ public class barscategory extends javax.swing.JInternalFrame {
         jLabel39.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         jLabel39.setText("Purchase:");
 
-        cmbPremium.setFont(new java.awt.Font("Times New Roman", 1, 12)); // NOI18N
-        cmbPremium.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbSizePremium.setFont(new java.awt.Font("Times New Roman", 1, 12)); // NOI18N
+        cmbSizePremium.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         spnPremium.setFont(new java.awt.Font("Times New Roman", 1, 12)); // NOI18N
 
         chkPremium.setFont(new java.awt.Font("Times New Roman", 1, 12)); // NOI18N
+        chkPremium.addActionListener(this::chkPremiumActionPerformed);
 
-        jLabel40.setFont(new java.awt.Font("Times New Roman", 1, 13)); // NOI18N
-        jLabel40.setText("100");
+        lblPricePremium.setFont(new java.awt.Font("Times New Roman", 1, 13)); // NOI18N
+        lblPricePremium.setText("100");
 
         jTextField8.setEditable(false);
         jTextField8.setBackground(new java.awt.Color(255, 204, 204));
@@ -789,8 +813,8 @@ public class barscategory extends javax.swing.JInternalFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(spnPremium)
-                            .addComponent(cmbPremium, 0, 91, Short.MAX_VALUE)
-                            .addComponent(jLabel40, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                            .addComponent(cmbSizePremium, 0, 91, Short.MAX_VALUE)
+                            .addComponent(lblPricePremium, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap())
             .addComponent(jTextField8, javax.swing.GroupLayout.DEFAULT_SIZE, 169, Short.MAX_VALUE)
         );
@@ -800,12 +824,12 @@ public class barscategory extends javax.swing.JInternalFrame {
                 .addComponent(jTextField8, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel40, javax.swing.GroupLayout.DEFAULT_SIZE, 26, Short.MAX_VALUE)
+                    .addComponent(lblPricePremium, javax.swing.GroupLayout.DEFAULT_SIZE, 26, Short.MAX_VALUE)
                     .addComponent(jLabel36))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel37)
-                    .addComponent(cmbPremium, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cmbSizePremium, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel38)
@@ -831,15 +855,16 @@ public class barscategory extends javax.swing.JInternalFrame {
         jLabel44.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         jLabel44.setText("Purchase:");
 
-        cmbSizeDarkFudge.setFont(new java.awt.Font("Times New Roman", 1, 12)); // NOI18N
-        cmbSizeDarkFudge.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbSizeDark.setFont(new java.awt.Font("Times New Roman", 1, 12)); // NOI18N
+        cmbSizeDark.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-        spnDarkFudge.setFont(new java.awt.Font("Times New Roman", 1, 12)); // NOI18N
+        spnDark.setFont(new java.awt.Font("Times New Roman", 1, 12)); // NOI18N
 
-        chkDarkFudge.setFont(new java.awt.Font("Times New Roman", 1, 12)); // NOI18N
+        chkDark.setFont(new java.awt.Font("Times New Roman", 1, 12)); // NOI18N
+        chkDark.addActionListener(this::chkDarkActionPerformed);
 
-        jLabel45.setFont(new java.awt.Font("Times New Roman", 1, 13)); // NOI18N
-        jLabel45.setText("100");
+        lblPriceDark.setFont(new java.awt.Font("Times New Roman", 1, 13)); // NOI18N
+        lblPriceDark.setText("100");
 
         jTextField9.setEditable(false);
         jTextField9.setBackground(new java.awt.Color(255, 204, 204));
@@ -858,7 +883,7 @@ public class barscategory extends javax.swing.JInternalFrame {
                     .addGroup(jPanel11Layout.createSequentialGroup()
                         .addComponent(jLabel44)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(chkDarkFudge)
+                        .addComponent(chkDark)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel11Layout.createSequentialGroup()
                         .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -867,9 +892,9 @@ public class barscategory extends javax.swing.JInternalFrame {
                             .addComponent(jLabel41))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(spnDarkFudge)
-                            .addComponent(cmbSizeDarkFudge, 0, 91, Short.MAX_VALUE)
-                            .addComponent(jLabel45, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                            .addComponent(spnDark)
+                            .addComponent(cmbSizeDark, 0, 91, Short.MAX_VALUE)
+                            .addComponent(lblPriceDark, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap())
             .addComponent(jTextField9)
         );
@@ -879,19 +904,19 @@ public class barscategory extends javax.swing.JInternalFrame {
                 .addComponent(jTextField9, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel45, javax.swing.GroupLayout.DEFAULT_SIZE, 26, Short.MAX_VALUE)
+                    .addComponent(lblPriceDark, javax.swing.GroupLayout.DEFAULT_SIZE, 26, Short.MAX_VALUE)
                     .addComponent(jLabel41))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel42)
-                    .addComponent(cmbSizeDarkFudge, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cmbSizeDark, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel43)
-                    .addComponent(spnDarkFudge, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(spnDark, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(23, 23, 23)
                 .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(chkDarkFudge)
+                    .addComponent(chkDark)
                     .addComponent(jLabel44))
                 .addGap(14, 14, 14))
         );
@@ -910,15 +935,16 @@ public class barscategory extends javax.swing.JInternalFrame {
         jLabel64.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         jLabel64.setText("Purchase:");
 
-        cmbSizeFoodforTheGods.setFont(new java.awt.Font("Times New Roman", 1, 12)); // NOI18N
-        cmbSizeFoodforTheGods.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbSizeGods.setFont(new java.awt.Font("Times New Roman", 1, 12)); // NOI18N
+        cmbSizeGods.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-        spnFoodforTheGods.setFont(new java.awt.Font("Times New Roman", 1, 12)); // NOI18N
+        spnGods.setFont(new java.awt.Font("Times New Roman", 1, 12)); // NOI18N
 
-        chkFoodforTheGods.setFont(new java.awt.Font("Times New Roman", 1, 12)); // NOI18N
+        chkGods.setFont(new java.awt.Font("Times New Roman", 1, 12)); // NOI18N
+        chkGods.addActionListener(this::chkGodsActionPerformed);
 
-        jLabel65.setFont(new java.awt.Font("Times New Roman", 1, 13)); // NOI18N
-        jLabel65.setText("100");
+        lblPriceGods.setFont(new java.awt.Font("Times New Roman", 1, 13)); // NOI18N
+        lblPriceGods.setText("100");
 
         jTextField13.setEditable(false);
         jTextField13.setBackground(new java.awt.Color(255, 204, 204));
@@ -937,7 +963,7 @@ public class barscategory extends javax.swing.JInternalFrame {
                     .addGroup(jPanel15Layout.createSequentialGroup()
                         .addComponent(jLabel64)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(chkFoodforTheGods)
+                        .addComponent(chkGods)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel15Layout.createSequentialGroup()
                         .addGroup(jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -946,9 +972,9 @@ public class barscategory extends javax.swing.JInternalFrame {
                             .addComponent(jLabel61))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(spnFoodforTheGods)
-                            .addComponent(cmbSizeFoodforTheGods, 0, 91, Short.MAX_VALUE)
-                            .addComponent(jLabel65, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                            .addComponent(spnGods)
+                            .addComponent(cmbSizeGods, 0, 91, Short.MAX_VALUE)
+                            .addComponent(lblPriceGods, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap())
             .addComponent(jTextField13)
         );
@@ -958,19 +984,19 @@ public class barscategory extends javax.swing.JInternalFrame {
                 .addComponent(jTextField13, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel65, javax.swing.GroupLayout.DEFAULT_SIZE, 26, Short.MAX_VALUE)
+                    .addComponent(lblPriceGods, javax.swing.GroupLayout.DEFAULT_SIZE, 26, Short.MAX_VALUE)
                     .addComponent(jLabel61))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel62)
-                    .addComponent(cmbSizeFoodforTheGods, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cmbSizeGods, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel63)
-                    .addComponent(spnFoodforTheGods, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(spnGods, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(23, 23, 23)
                 .addGroup(jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(chkFoodforTheGods)
+                    .addComponent(chkGods)
                     .addComponent(jLabel64))
                 .addGap(14, 14, 14))
         );
@@ -1044,8 +1070,9 @@ public class barscategory extends javax.swing.JInternalFrame {
         String query = "SELECT pv.variant_id, p.product_id, s.size_name, pv.price, pv.stock_quantity " +
                       "FROM product_variant pv " +
                       "JOIN product p ON pv.product_id = p.product_id " +
-                      "JOIN size s ON pv.size_id = s.size_id " +
-                      "WHERE p.product_name = ? AND pv.stock_quantity > 0";
+                      "LEFT JOIN size s ON pv.size_id = s.size_id " +
+                      "WHERE p.product_name = ? AND pv.stock_quantity > 0 " +
+                      "ORDER BY s.size_name";
         
         PreparedStatement pst = con.prepareStatement(query);
         pst.setString(1, productName);
@@ -1061,31 +1088,32 @@ public class barscategory extends javax.swing.JInternalFrame {
                 rs.getDouble("price"),
                 rs.getInt("stock_quantity")
             );
-            
-            // Add ONLY SizeOption objects
             sizeCombo.addItem(option); 
         }
         
         if (sizeCombo.getItemCount() > 0) {
             sizeCombo.setSelectedIndex(0);
             SizeOption firstItem = (SizeOption) sizeCombo.getSelectedItem();
-            priceLabel.setText(String.valueOf(firstItem.price));
+            priceLabel.setText(String.format("%.2f", firstItem.price));
             sizeCombo.setEnabled(true);
         } else {
-            // DO NOT ADD A STRING HERE!
-            // Just disable the combo box and set price to 0
-            priceLabel.setText("0");
+            priceLabel.setText("0.00");
             sizeCombo.setEnabled(false);
+            sizeCombo.addItem("Out of Stock");
         }
         
+        rs.close();
+        pst.close();
+        con.close();
+        
     } catch (Exception e) {
-        JOptionPane.showMessageDialog(null, "Error: " + e.getMessage());
+        JOptionPane.showMessageDialog(null, "Error loading sizes for " + productName + ": " + e.getMessage());
         e.printStackTrace();
     }
     }
     
     private void addSizeChangeListener(javax.swing.JComboBox sizeCombo, javax.swing.JLabel priceLabel, String productName) {
-        sizeCombo.addItemListener(new java.awt.event.ItemListener() {
+    sizeCombo.addItemListener(new java.awt.event.ItemListener() {
         @Override
         public void itemStateChanged(java.awt.event.ItemEvent evt) {
             if (evt.getStateChange() == java.awt.event.ItemEvent.SELECTED) {
@@ -1093,13 +1121,12 @@ public class barscategory extends javax.swing.JInternalFrame {
                 
                 if (selectedObj instanceof SizeOption) {
                     SizeOption selected = (SizeOption) selectedObj;
-                    // Update the price label with the selected size's price
                     priceLabel.setText(String.format("%.2f", selected.price));
                 }
             }
         }
     });
-    }
+}
     
     private void updatePriceLabel(javax.swing.JComboBox<String> combo, javax.swing.JLabel priceLabel) {
         if (combo.getSelectedItem() == null || priceLabel == null) return;
@@ -1238,6 +1265,406 @@ public class barscategory extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField2ActionPerformed
 
+    private void cmbSizeRevelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbSizeRevelActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cmbSizeRevelActionPerformed
+
+    private void chkButterscotchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkButterscotchActionPerformed
+        // TODO add your handling code here:
+        if (chkButterscotch.isSelected()) {
+            int qty = (Integer) spnButterscotch.getValue();
+            if (qty <= 0) {
+                JOptionPane.showMessageDialog(this, "Please set quantity greater than 0!");
+                chkButterscotch.setSelected(false);
+                return;
+            }
+            
+            SizeOption selected = getSelectedSizeOption(cmbSizeButterscotch, "Brownies");
+            if (selected == null) {
+                JOptionPane.showMessageDialog(this, "Please select a valid size!");
+                chkButterscotch.setSelected(false);
+                return;
+            }
+            
+            
+            if (qty > selected.stock) {
+                JOptionPane.showMessageDialog(this, 
+                    "Only " + selected.stock + " items available!", 
+                    "Insufficient Stock", 
+                    JOptionPane.WARNING_MESSAGE);
+                chkButterscotch.setSelected(false);
+                return;
+            }
+            
+             if (parentMenu != null){
+                parentMenu.addToCart(
+                    selected.variantId,
+                    selected.productId, 
+                    getProductIdByName("Butterscotch"),
+                    "Butterscotch",
+                    selected.sizeName,
+                    selected.price,
+                    qty
+                );
+            }
+            
+            JOptionPane.showMessageDialog(this, "Added: Butterscotch (" + selected.sizeName + ") x" + qty);
+            chkButterscotch.setSelected(false);
+        }
+    }//GEN-LAST:event_chkButterscotchActionPerformed
+
+    private void chkCassavaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkCassavaActionPerformed
+        // TODO add your handling code here:
+        if (chkCassava.isSelected()) {
+            int qty = (Integer) spnCassava.getValue();
+            if (qty <= 0) {
+                JOptionPane.showMessageDialog(this, "Please set quantity greater than 0!");
+                chkCassava.setSelected(false);
+                return;
+            }
+            
+            SizeOption selected = getSelectedSizeOption(cmbSizeCassava, "Cassava Bars");
+            if (selected == null) {
+                JOptionPane.showMessageDialog(this, "Please select a valid size!");
+                chkCassava.setSelected(false);
+                return;
+            }
+            
+            
+            if (qty > selected.stock) {
+                JOptionPane.showMessageDialog(this, 
+                    "Only " + selected.stock + " items available!", 
+                    "Insufficient Stock", 
+                    JOptionPane.WARNING_MESSAGE);
+                chkCassava.setSelected(false);
+                return;
+            }
+            
+             if (parentMenu != null){
+                parentMenu.addToCart(
+                    selected.variantId,
+                    selected.productId, 
+                    getProductIdByName("Cassava Bars"),
+                    "Cassava Bars",
+                    selected.sizeName,
+                    selected.price,
+                    qty
+                );
+            }
+            
+            JOptionPane.showMessageDialog(this, "Added: Cassava Bars (" + selected.sizeName + ") x" + qty);
+            chkCassava.setSelected(false);
+        }
+    }//GEN-LAST:event_chkCassavaActionPerformed
+
+    private void chkCheeseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkCheeseActionPerformed
+        // TODO add your handling code here:
+        if (chkCheese.isSelected()) {
+            int qty = (Integer) spnCheese.getValue();
+            if (qty <= 0) {
+                JOptionPane.showMessageDialog(this, "Please set quantity greater than 0!");
+                chkCheese.setSelected(false);
+                return;
+            }
+            
+            SizeOption selected = getSelectedSizeOption(cmbSizeCheese, "Cheese Bars");
+            if (selected == null) {
+                JOptionPane.showMessageDialog(this, "Please select a valid size!");
+                chkCheese.setSelected(false);
+                return;
+            }
+            
+            
+            if (qty > selected.stock) {
+                JOptionPane.showMessageDialog(this, 
+                    "Only " + selected.stock + " items available!", 
+                    "Insufficient Stock", 
+                    JOptionPane.WARNING_MESSAGE);
+                chkCheese.setSelected(false);
+                return;
+            }
+            
+             if (parentMenu != null){
+                parentMenu.addToCart(
+                    selected.variantId,
+                    selected.productId, 
+                    getProductIdByName("Cheese Bars"),
+                    "Cheese Bars",
+                    selected.sizeName,
+                    selected.price,
+                    qty
+                );
+            }
+            
+            JOptionPane.showMessageDialog(this, "Added: Cheese Bars (" + selected.sizeName + ") x" + qty);
+            chkCheese.setSelected(false);
+        }
+    }//GEN-LAST:event_chkCheeseActionPerformed
+
+    private void chkRevelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkRevelActionPerformed
+        // TODO add your handling code here:
+        if (chkRevel.isSelected()) {
+            int qty = (Integer) spnRevel.getValue();
+            if (qty <= 0) {
+                JOptionPane.showMessageDialog(this, "Please set quantity greater than 0!");
+                chkRevel.setSelected(false);
+                return;
+            }
+            
+            SizeOption selected = getSelectedSizeOption(cmbSizeRevel, "Revel Bars");
+            if (selected == null) {
+                JOptionPane.showMessageDialog(this, "Please select a valid size!");
+                chkRevel.setSelected(false);
+                return;
+            }
+            
+            
+            if (qty > selected.stock) {
+                JOptionPane.showMessageDialog(this, 
+                    "Only " + selected.stock + " items available!", 
+                    "Insufficient Stock", 
+                    JOptionPane.WARNING_MESSAGE);
+                chkRevel.setSelected(false);
+                return;
+            }
+            
+             if (parentMenu != null){
+                parentMenu.addToCart(
+                    selected.variantId,
+                    selected.productId, 
+                    getProductIdByName("Revel Bars"),
+                    "Revel Bars",
+                    selected.sizeName,
+                    selected.price,
+                    qty
+                );
+            }
+            
+            JOptionPane.showMessageDialog(this, "Added: Revel Bars (" + selected.sizeName + ") x" + qty);
+            chkRevel.setSelected(false);
+        }
+    }//GEN-LAST:event_chkRevelActionPerformed
+
+    private void chkMangoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkMangoActionPerformed
+        // TODO add your handling code here:
+        if (chkMango.isSelected()) {
+            int qty = (Integer) spnMango.getValue();
+            if (qty <= 0) {
+                JOptionPane.showMessageDialog(this, "Please set quantity greater than 0!");
+                chkMango.setSelected(false);
+                return;
+            }
+            
+            SizeOption selected = getSelectedSizeOption(cmbSizeMango, "Mango Cake Bars");
+            if (selected == null) {
+                JOptionPane.showMessageDialog(this, "Please select a valid size!");
+                chkMango.setSelected(false);
+                return;
+            }
+            
+            
+            if (qty > selected.stock) {
+                JOptionPane.showMessageDialog(this, 
+                    "Only " + selected.stock + " items available!", 
+                    "Insufficient Stock", 
+                    JOptionPane.WARNING_MESSAGE);
+                chkMango.setSelected(false);
+                return;
+            }
+            
+             if (parentMenu != null){
+                parentMenu.addToCart(
+                    selected.variantId,
+                    selected.productId, 
+                    getProductIdByName("Mango Cake Bars"),
+                    "Mango Cake Bars",
+                    selected.sizeName,
+                    selected.price,
+                    qty
+                );
+            }
+            
+            JOptionPane.showMessageDialog(this, "Added: Mango Cake Bars (" + selected.sizeName + ") x" + qty);
+            chkMango.setSelected(false);
+        }
+    }//GEN-LAST:event_chkMangoActionPerformed
+
+    private void chkClassicActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkClassicActionPerformed
+        // TODO add your handling code here:
+        if (chkClassic.isSelected()) {
+            int qty = (Integer) spnClassic.getValue();
+            if (qty <= 0) {
+                JOptionPane.showMessageDialog(this, "Please set quantity greater than 0!");
+                chkClassic.setSelected(false);
+                return;
+            }
+            
+            SizeOption selected = getSelectedSizeOption(cmbSizeClassic, "Classic Assorted Bars");
+            if (selected == null) {
+                JOptionPane.showMessageDialog(this, "Please select a valid size!");
+                chkClassic.setSelected(false);
+                return;
+            }
+            
+            
+            if (qty > selected.stock) {
+                JOptionPane.showMessageDialog(this, 
+                    "Only " + selected.stock + " items available!", 
+                    "Insufficient Stock", 
+                    JOptionPane.WARNING_MESSAGE);
+                chkClassic.setSelected(false);
+                return;
+            }
+            
+             if (parentMenu != null){
+                parentMenu.addToCart(
+                    selected.variantId,
+                    selected.productId, 
+                    getProductIdByName("Classic Assorted Bars"),
+                    "Classic Assorted Bars",
+                    selected.sizeName,
+                    selected.price,
+                    qty
+                );
+            }
+            
+            JOptionPane.showMessageDialog(this, "Added: Classic Assorted Bars (" + selected.sizeName + ") x" + qty);
+            chkClassic.setSelected(false);
+        }
+    }//GEN-LAST:event_chkClassicActionPerformed
+
+    private void chkPremiumActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkPremiumActionPerformed
+        // TODO add your handling code here:
+        if (chkPremium.isSelected()) {
+            int qty = (Integer) spnPremium.getValue();
+            if (qty <= 0) {
+                JOptionPane.showMessageDialog(this, "Please set quantity greater than 0!");
+                chkPremium.setSelected(false);
+                return;
+            }
+            
+            SizeOption selected = getSelectedSizeOption(cmbSizePremium, "Premium Assorted Bars");
+            if (selected == null) {
+                JOptionPane.showMessageDialog(this, "Please select a valid size!");
+                chkPremium.setSelected(false);
+                return;
+            }
+            
+            
+            if (qty > selected.stock) {
+                JOptionPane.showMessageDialog(this, 
+                    "Only " + selected.stock + " items available!", 
+                    "Insufficient Stock", 
+                    JOptionPane.WARNING_MESSAGE);
+                chkPremium.setSelected(false);
+                return;
+            }
+            
+             if (parentMenu != null){
+                parentMenu.addToCart(
+                    selected.variantId,
+                    selected.productId, 
+                    getProductIdByName("Premium Assorted Bars"),
+                    "Premium Assorted Bars",
+                    selected.sizeName,
+                    selected.price,
+                    qty
+                );
+            }
+            
+            JOptionPane.showMessageDialog(this, "Added: Premium Assorted Bars (" + selected.sizeName + ") x" + qty);
+            chkPremium.setSelected(false);
+        }
+    }//GEN-LAST:event_chkPremiumActionPerformed
+
+    private void chkDarkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkDarkActionPerformed
+        // TODO add your handling code here:
+        if (chkDark.isSelected()) {
+            int qty = (Integer) spnDark.getValue();
+            if (qty <= 0) {
+                JOptionPane.showMessageDialog(this, "Please set quantity greater than 0!");
+                chkDark.setSelected(false);
+                return;
+            }
+            
+            SizeOption selected = getSelectedSizeOption(cmbSizeDark, "Dark Fudge Brownies");
+            if (selected == null) {
+                JOptionPane.showMessageDialog(this, "Please select a valid size!");
+                chkDark.setSelected(false);
+                return;
+            }
+            
+            
+            if (qty > selected.stock) {
+                JOptionPane.showMessageDialog(this, 
+                    "Only " + selected.stock + " items available!", 
+                    "Insufficient Stock", 
+                    JOptionPane.WARNING_MESSAGE);
+                chkDark.setSelected(false);
+                return;
+            }
+            
+             if (parentMenu != null){
+                parentMenu.addToCart(
+                    selected.variantId,
+                    selected.productId, 
+                    getProductIdByName("Dark Fudge Brownies"),
+                    "Dark Fudge Brownies",
+                    selected.sizeName,
+                    selected.price,
+                    qty
+                );
+            }
+            
+            JOptionPane.showMessageDialog(this, "Added: Dark Fudge Brownies (" + selected.sizeName + ") x" + qty);
+            chkDark.setSelected(false);
+        }
+    }//GEN-LAST:event_chkDarkActionPerformed
+
+    private void chkGodsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkGodsActionPerformed
+        // TODO add your handling code here:
+        if (chkGods.isSelected()) {
+            int qty = (Integer) spnGods.getValue();
+            if (qty <= 0) {
+                JOptionPane.showMessageDialog(this, "Please set quantity greater than 0!");
+                chkGods.setSelected(false);
+                return;
+            }
+            
+            SizeOption selected = getSelectedSizeOption(cmbSizeGods, "Food for The Gods ");
+            if (selected == null) {
+                JOptionPane.showMessageDialog(this, "Please select a valid size!");
+                chkGods.setSelected(false);
+                return;
+            }
+            
+            
+            if (qty > selected.stock) {
+                JOptionPane.showMessageDialog(this, 
+                    "Only " + selected.stock + " items available!", 
+                    "Insufficient Stock", 
+                    JOptionPane.WARNING_MESSAGE);
+                chkGods.setSelected(false);
+                return;
+            }
+            
+             if (parentMenu != null){
+                parentMenu.addToCart(
+                    selected.variantId,
+                    selected.productId, 
+                    getProductIdByName("Food for The Gods "),
+                    "Food for The Gods ",
+                    selected.sizeName,
+                    selected.price,
+                    qty
+                );
+            }
+            
+            JOptionPane.showMessageDialog(this, "Added: Food for The Gods (" + selected.sizeName + ") x" + qty);
+            chkGods.setSelected(false);
+        }
+    }//GEN-LAST:event_chkGodsActionPerformed
+
 private String getProductIdByName(String productName) {
         try {
             Connection con = sqlconnector.getConnection();
@@ -1260,68 +1687,60 @@ private String getProductIdByName(String productName) {
     private javax.swing.JCheckBox chkBrownies;
     private javax.swing.JCheckBox chkButterscotch;
     private javax.swing.JCheckBox chkCassava;
-    private javax.swing.JCheckBox chkCheeseBars;
+    private javax.swing.JCheckBox chkCheese;
     private javax.swing.JCheckBox chkClassic;
-    private javax.swing.JCheckBox chkDarkFudge;
-    private javax.swing.JCheckBox chkFoodforTheGods;
-    private javax.swing.JCheckBox chkMangoCake;
+    private javax.swing.JCheckBox chkDark;
+    private javax.swing.JCheckBox chkGods;
+    private javax.swing.JCheckBox chkMango;
     private javax.swing.JCheckBox chkPremium;
-    private javax.swing.JCheckBox chkRevelBars;
-    private javax.swing.JComboBox<String> cmbMangoCake;
-    private javax.swing.JComboBox<String> cmbPremium;
+    private javax.swing.JCheckBox chkRevel;
     private javax.swing.JComboBox<String> cmbSizeBrownies;
     private javax.swing.JComboBox<String> cmbSizeButterscotch;
     private javax.swing.JComboBox<String> cmbSizeCassava;
-    private javax.swing.JComboBox<String> cmbSizeCheeseBars;
+    private javax.swing.JComboBox<String> cmbSizeCheese;
     private javax.swing.JComboBox<String> cmbSizeClassic;
-    private javax.swing.JComboBox<String> cmbSizeDarkFudge;
-    private javax.swing.JComboBox<String> cmbSizeFoodforTheGods;
-    private javax.swing.JComboBox<String> cmbSizeRevelBars;
+    private javax.swing.JComboBox<String> cmbSizeDark;
+    private javax.swing.JComboBox<String> cmbSizeGods;
+    private javax.swing.JComboBox<String> cmbSizeMango;
+    private javax.swing.JComboBox<String> cmbSizePremium;
+    private javax.swing.JComboBox<String> cmbSizeRevel;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
-    private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel24;
-    private javax.swing.JLabel jLabel25;
     private javax.swing.JLabel jLabel26;
     private javax.swing.JLabel jLabel27;
     private javax.swing.JLabel jLabel28;
     private javax.swing.JLabel jLabel29;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel30;
     private javax.swing.JLabel jLabel31;
     private javax.swing.JLabel jLabel32;
     private javax.swing.JLabel jLabel33;
     private javax.swing.JLabel jLabel34;
-    private javax.swing.JLabel jLabel35;
     private javax.swing.JLabel jLabel36;
     private javax.swing.JLabel jLabel37;
     private javax.swing.JLabel jLabel38;
     private javax.swing.JLabel jLabel39;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel40;
     private javax.swing.JLabel jLabel41;
     private javax.swing.JLabel jLabel42;
     private javax.swing.JLabel jLabel43;
     private javax.swing.JLabel jLabel44;
-    private javax.swing.JLabel jLabel45;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel61;
     private javax.swing.JLabel jLabel62;
     private javax.swing.JLabel jLabel63;
     private javax.swing.JLabel jLabel64;
-    private javax.swing.JLabel jLabel65;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
@@ -1349,15 +1768,23 @@ private String getProductIdByName(String productName) {
     private javax.swing.JTextField jTextField9;
     private javax.swing.JLabel lblPriceBrownies;
     private javax.swing.JLabel lblPriceButterscotch;
+    private javax.swing.JLabel lblPriceCassava;
+    private javax.swing.JLabel lblPriceCheese;
+    private javax.swing.JLabel lblPriceClassic;
+    private javax.swing.JLabel lblPriceDark;
+    private javax.swing.JLabel lblPriceGods;
+    private javax.swing.JLabel lblPriceMango;
+    private javax.swing.JLabel lblPricePremium;
+    private javax.swing.JLabel lblPriceRevel;
     private javax.swing.JSpinner spnBrownies;
     private javax.swing.JSpinner spnButterscotch;
-    private javax.swing.JSpinner spnCassavaa;
-    private javax.swing.JSpinner spnCheeseBars;
+    private javax.swing.JSpinner spnCassava;
+    private javax.swing.JSpinner spnCheese;
     private javax.swing.JSpinner spnClassic;
-    private javax.swing.JSpinner spnDarkFudge;
-    private javax.swing.JSpinner spnFoodforTheGods;
-    private javax.swing.JSpinner spnMangoCake;
+    private javax.swing.JSpinner spnDark;
+    private javax.swing.JSpinner spnGods;
+    private javax.swing.JSpinner spnMango;
     private javax.swing.JSpinner spnPremium;
-    private javax.swing.JSpinner spnRevelBars;
+    private javax.swing.JSpinner spnRevel;
     // End of variables declaration//GEN-END:variables
 }
