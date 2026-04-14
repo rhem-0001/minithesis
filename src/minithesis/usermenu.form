@@ -792,6 +792,9 @@
           </Events>
         </Component>
         <Component class="javax.swing.JTextField" name="txtCash">
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtCashActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JTextField" name="txtChange">
         </Component>

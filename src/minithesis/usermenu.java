@@ -4,12 +4,15 @@ import java.awt.Color;
 import javax.swing.JOptionPane;
 import java.sql.*;
 import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.Map;
 import javax.swing.table.DefaultTableModel;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class usermenu extends javax.swing.JFrame {
     
+    private HashMap<Integer, Integer> cartStockDeductions = new HashMap<>();
     private static final Logger logger = Logger.getLogger(usermenu.class.getName());
 
     Color DefaultColor, ClickedColor;
@@ -17,6 +20,7 @@ public class usermenu extends javax.swing.JFrame {
     
     public usermenu() {
         initComponents();
+        
         barscategory barsFrame = new barscategory(this);
         desktoppane.add(barsFrame);
         barsFrame.setVisible(true);
@@ -70,36 +74,23 @@ public class usermenu extends javax.swing.JFrame {
     
     // Check if this exact variant is already in cart
     for (int i = 0; i < model.getRowCount(); i++) {
-        Object existingVariantObj = model.getValueAt(i, 0);
-        Object existingProductObj = model.getValueAt(i, 1);
-        Object existingSizeObj = model.getValueAt(i, 2);
-        
-        if (existingVariantObj != null && existingProductObj != null && existingSizeObj != null) {
-            int existingVariantId = Integer.parseInt(existingVariantObj.toString());
-            String existingProductName = existingProductObj.toString();
-            String existingSize = existingSizeObj.toString();
+        Object variantIdObj = model.getValueAt(i, 0);
+        if (variantIdObj != null && Integer.parseInt(variantIdObj.toString()) == variantId) {
+            // Update quantity
+            int currentQty = Integer.parseInt(model.getValueAt(i, 3).toString());
+            int newQty = currentQty + qty;
+            model.setValueAt(newQty, i, 3);
             
-            // Only combine if variantId AND product name AND size ALL match
-            if (existingVariantId == variantId && 
-                existingProductName.equals(productName) && 
-                existingSize.equals(sizeName)) {
-                
-                // Update quantity
-                int currentQty = Integer.parseInt(model.getValueAt(i, 3).toString());
-                int newQty = currentQty + qty;
-                model.setValueAt(newQty, i, 3);
-                
-                // Update subtotal (Price column)
-                double subtotal = price * newQty;
-                model.setValueAt(String.format("%.2f", subtotal), i, 4);
-                
-                itemExists = true;
-                break;
-            }
+            // Update subtotal
+            double subtotal = price * newQty;
+            model.setValueAt(String.format("%.2f", subtotal), i, 4);
+            
+            itemExists = true;
+            break;
         }
     }
     
-    // Add as NEW row if different product
+    // Add new row if not exists
     if (!itemExists) {
         double subtotal = price * qty;
         model.addRow(new Object[]{
@@ -107,12 +98,18 @@ public class usermenu extends javax.swing.JFrame {
             productName,
             sizeName,
             qty,
-            String.format("%.2f", subtotal)  // This shows as "Price" in your UI
+            String.format("%.2f", subtotal)
         });
     }
     
+    // ✅ Track stock deduction for potential rollback
+    cartStockDeductions.put(variantId, cartStockDeductions.getOrDefault(variantId, 0) + qty);
+    
     calculateGrandTotal();
     deductStock(variantId, qty);
+    
+    // ✅ Refresh tables immediately
+    refreshFoodMenuStock();
     }
     
     private void deductStock(int variantId, int quantity) {
@@ -191,9 +188,6 @@ public class usermenu extends javax.swing.JFrame {
         }
     }
     
-    private void txtCashActionPerformed(java.awt.event.ActionEvent evt) {
-    calculateChange();
-    }
 
     // Also add a focus listener or document listener if you want real-time update
     private void txtCashFocusLost(java.awt.event.FocusEvent evt) {
@@ -201,11 +195,41 @@ public class usermenu extends javax.swing.JFrame {
     }
  
     private void clearCart() {
-        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-        model.setRowCount(0);
-        txtTotal.setText("0.00");
-        txtCash.setText("");
-        txtChange.setText("0.00");
+        try {
+        Connection con = sqlconnector.getConnection();
+        
+        for (Map.Entry<Integer, Integer> entry : cartStockDeductions.entrySet()) {
+            int variantId = entry.getKey();
+            int qtyToRestore = entry.getValue();
+            
+            // Add back the stock
+            String restoreSQL = "UPDATE product_variant SET stock_quantity = stock_quantity + ? WHERE variant_id = ?";
+            PreparedStatement pst = con.prepareStatement(restoreSQL);
+            pst.setInt(1, qtyToRestore);
+            pst.setInt(2, variantId);
+            pst.executeUpdate();
+            pst.close();
+        }
+        
+        con.close();
+        
+        // Clear the tracking map
+        cartStockDeductions.clear();
+        
+        // Refresh tables to show restored stock
+        refreshFoodMenuStock();
+        
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Error restoring stock: " + e.getMessage());
+        e.printStackTrace();
+    }
+    
+    // Clear the table
+    DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+    model.setRowCount(0);
+    txtTotal.setText("0.00");
+    txtCash.setText("");
+    txtChange.setText("0.00");
     }
     
     class PurchaseItem {
@@ -740,6 +764,8 @@ public class usermenu extends javax.swing.JFrame {
 
         txtTotal.addActionListener(this::txtTotalActionPerformed);
 
+        txtCash.addActionListener(this::txtCashActionPerformed);
+
         javax.swing.GroupLayout jPanel21Layout = new javax.swing.GroupLayout(jPanel21);
         jPanel21.setLayout(jPanel21Layout);
         jPanel21Layout.setHorizontalGroup(
@@ -1138,19 +1164,64 @@ public class usermenu extends javax.swing.JFrame {
         return;
     }
     
-    double total = txtTotal.getText().isEmpty() ? 0.0 : Double.parseDouble(txtTotal.getText());
-    double cash = txtCash.getText().isEmpty() ? 0.0 : Double.parseDouble(txtCash.getText());
-    
-    if (cash < total) {
-        JOptionPane.showMessageDialog(this, "Insufficient cash!\nTotal: ₱" + String.format("%.2f", total), "Payment Error", JOptionPane.ERROR_MESSAGE);
+    // 2. Check if cash field is EMPTY
+    if (txtCash.getText().trim().isEmpty()) {
+        JOptionPane.showMessageDialog(this, 
+            "💵 Please input cash amount first!", 
+            "Missing Payment", 
+            JOptionPane.WARNING_MESSAGE);
+        txtCash.requestFocus();
         return;
     }
     
+    // 3. Parse values
+    double total = 0.0;
+    double cash = 0.0;
+    
+    try {
+        total = Double.parseDouble(txtTotal.getText());
+        cash = Double.parseDouble(txtCash.getText());
+    } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(this, 
+            "Invalid cash amount! Please enter a valid number.", 
+            "Invalid Input", 
+            JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+    
+    // 4. Check if cash is ZERO or NEGATIVE
+    if (cash <= 0) {
+        JOptionPane.showMessageDialog(this, 
+            "💵 Please enter a valid cash amount greater than 0!\n\n" +
+            "Total Amount Due: ₱" + String.format("%.2f", total), 
+            "Invalid Payment", 
+            JOptionPane.WARNING_MESSAGE);
+        txtCash.requestFocus();
+        txtCash.selectAll(); // Select all text for easy re-entry
+        return;
+    }
+    
+    // 5. Check if cash is LESS THAN total
+    if (cash < total) {
+        JOptionPane.showMessageDialog(this, 
+            "❌ Insufficient cash!\n\n" +
+            "Total Amount: ₱" + String.format("%.2f", total) + "\n" +
+            "Cash Given:   ₱" + String.format("%.2f", cash) + "\n" +
+            "Short by:     ₱" + String.format("%.2f", (total - cash)) + "\n\n" +
+            "Please enter at least ₱" + String.format("%.2f", total), 
+            "Insufficient Payment", 
+            JOptionPane.ERROR_MESSAGE);
+        txtCash.requestFocus();
+        txtCash.selectAll();
+        return;
+    }
+    
+    // ✅ All validations passed - proceed with transaction
     try {
         Connection con = sqlconnector.getConnection();
         con.setAutoCommit(false);
         
-        // 1. Insert Order (without order_details)
+        // 1. Insert Order
         String orderSQL = "INSERT INTO orders (order_date, order_status, total_amount) VALUES (CURDATE(), 'Completed', ?)";
         PreparedStatement pstOrder = con.prepareStatement(orderSQL, Statement.RETURN_GENERATED_KEYS);
         pstOrder.setDouble(1, total);
@@ -1181,10 +1252,15 @@ public class usermenu extends javax.swing.JFrame {
         
         double change = cash - total;
         JOptionPane.showMessageDialog(this, 
-            "✅ Transaction Successful!\nOrder ID: " + orderId + 
+            "✅ Transaction Successful!\n\n" +
+            "Order ID: " + orderId + 
             "\nTotal: ₱" + String.format("%.2f", total) +
-            "\nChange: ₱" + String.format("%.2f", change), "Success", JOptionPane.INFORMATION_MESSAGE);
-        
+            "\nCash: ₱" + String.format("%.2f", cash) +
+            "\nChange: ₱" + String.format("%.2f", change), 
+            "Success", JOptionPane.INFORMATION_MESSAGE);
+
+        // Clear cart
+        cartStockDeductions.clear();
         clearCart();
         refreshFoodMenuStock();
         
@@ -1201,16 +1277,26 @@ public class usermenu extends javax.swing.JFrame {
 
     private void resetpanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_resetpanelMouseClicked
         // TODO add your handling code here:
-        int confirm = JOptionPane.showConfirmDialog(this, 
-            "Are you sure you want to clear the cart?", 
-            "Confirm Reset", 
-            JOptionPane.YES_NO_OPTION);
-        
-        if (confirm == JOptionPane.YES_OPTION) {
-            clearCart();
-            JOptionPane.showMessageDialog(this, "Cart cleared successfully!");
-        }
+        if (jTable1.getRowCount() == 0) {
+        JOptionPane.showMessageDialog(this, "Cart is already empty!");
+        return;
+    }
+    
+    int confirm = JOptionPane.showConfirmDialog(this, 
+        "Clear cart and restore stock?\n\nAll items will be removed and stock will be restored.", 
+        "Confirm Reset", 
+        JOptionPane.YES_NO_OPTION);
+    
+    if (confirm == JOptionPane.YES_OPTION) {
+        clearCart();
+        JOptionPane.showMessageDialog(this, "Cart cleared and stock restored!");
+    }
     }//GEN-LAST:event_resetpanelMouseClicked
+
+    private void txtCashActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCashActionPerformed
+        // TODO add your handling code here:
+        calculateChange();
+    }//GEN-LAST:event_txtCashActionPerformed
 
   
     /**
