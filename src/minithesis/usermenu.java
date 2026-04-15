@@ -1222,7 +1222,7 @@ public class usermenu extends javax.swing.JFrame {
         con.setAutoCommit(false);
         
         // 1. Insert Order
-        String orderSQL = "INSERT INTO orders (order_date, order_status, total_amount) VALUES (CURDATE(), 'Completed', ?)";
+        String orderSQL = "INSERT INTO orders (order_id, order_date, order_status, total_amount) VALUES (NULL, NOW(), 'Completed', ?)";
         PreparedStatement pstOrder = con.prepareStatement(orderSQL, Statement.RETURN_GENERATED_KEYS);
         pstOrder.setDouble(1, total);
         pstOrder.executeUpdate();
@@ -1269,10 +1269,22 @@ public class usermenu extends javax.swing.JFrame {
         pstSales.close();
         con.close();
         
+        records recPanel = new records();
+    desktoppane.add(recPanel);
+    recPanel.setVisible(true);
+    try {
+        recPanel.setMaximum(true);
+    } catch (java.beans.PropertyVetoException e) {
+        e.printStackTrace();
+    }
+        
     } catch (Exception e) {
         JOptionPane.showMessageDialog(this, "❌ Error: " + e.getMessage(), "Transaction Failed", JOptionPane.ERROR_MESSAGE);
         e.printStackTrace();
     }
+    
+
+    
     }//GEN-LAST:event_recordpanelMouseClicked
 
     private void resetpanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_resetpanelMouseClicked

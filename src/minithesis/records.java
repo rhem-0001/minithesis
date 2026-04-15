@@ -4,6 +4,11 @@
  */
 package minithesis;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import javax.swing.JOptionPane;
 /**
  *
  * @author janxt
@@ -15,7 +20,7 @@ public class records extends javax.swing.JInternalFrame {
      */
     public records() {
         initComponents();
-         
+        loadSalesData(); 
     }
 
     /**
@@ -137,6 +142,55 @@ public class records extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void loadSalesData() {
+        try {
+        Connection con = sqlconnector.getConnection();
+        Statement st = con.createStatement();
+        
+        // Daily Sales
+        String dailyQuery = "SELECT COALESCE(SUM(total_amount), 0) as daily_total " +
+                           "FROM orders WHERE DATE(order_date) = CURDATE()";
+        ResultSet rs1 = st.executeQuery(dailyQuery);
+        double dailySales = 0.0;
+        if (rs1.next()) {
+            dailySales = rs1.getDouble("daily_total");
+        }
+        
+        // Weekly Sales
+        String weeklyQuery = "SELECT COALESCE(SUM(total_amount), 0) as weekly_total " +
+                            "FROM orders WHERE order_date >= DATE_SUB(CURDATE(), INTERVAL 7 DAY)";
+        ResultSet rs2 = st.executeQuery(weeklyQuery);
+        double weeklySales = 0.0;
+        if (rs2.next()) {
+            weeklySales = rs2.getDouble("weekly_total");
+        }
+        
+        // Total Sales
+        String totalQuery = "SELECT COALESCE(SUM(total_amount), 0) as total_sales FROM orders";
+        ResultSet rs3 = st.executeQuery(totalQuery);
+        double totalSales = 0.0;
+        if (rs3.next()) {
+            totalSales = rs3.getDouble("total_sales");
+        }
+        
+        // Update the text fields - IMPORTANT: Check your variable names!
+        // The variable names must match your text field names in Design view
+        txtdailysales.setText(String.format("₱%.2f", dailySales));
+        txtweeklysales.setText(String.format("₱%.2f", weeklySales));
+        txttotalsales.setText(String.format("₱%.2f", totalSales));
+        
+        rs1.close();
+        rs2.close();
+        rs3.close();
+        st.close();
+        con.close();
+        
+    } catch (SQLException e) {
+        JOptionPane.showMessageDialog(null, "Error loading sales data: " + e.getMessage());
+        e.printStackTrace();
+    }
+    }
+    
     private void txtdailysalesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtdailysalesActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtdailysalesActionPerformed
@@ -149,6 +203,7 @@ public class records extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txttotalsalesActionPerformed
 
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel jPanel1;
