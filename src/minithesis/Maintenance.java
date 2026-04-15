@@ -12,6 +12,8 @@ import java.sql.*;
 import java.awt.Color;
 import javax.swing.JOptionPane;
 import java.sql.Connection;
+import java.util.Date;
+import java.text.SimpleDateFormat;
 
 public class Maintenance extends javax.swing.JFrame {
     
@@ -27,6 +29,7 @@ public class Maintenance extends javax.swing.JFrame {
         overview ov = new overview();
         desktoppane.add(ov);
         ov.setVisible(true);
+        setTime();
 
         try {
             ov.setSelected(true);
@@ -36,11 +39,11 @@ public class Maintenance extends javax.swing.JFrame {
 
         
         DefaultColor= new Color(255,255,255);
-        ClickedColor= new Color(204,0,0);
-        
-        
+        ClickedColor= new Color(204,0,0);     
     }
-
+    
+    
+   
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -52,6 +55,8 @@ public class Maintenance extends javax.swing.JFrame {
 
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
+        jtxTime = new javax.swing.JLabel();
+        jtxtDate = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         desktoppane = new javax.swing.JDesktopPane();
         jPanel1 = new javax.swing.JPanel();
@@ -78,6 +83,11 @@ public class Maintenance extends javax.swing.JFrame {
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Remove_bg.png"))); // NOI18N
         jLabel1.setText("jLabel1");
 
+        jtxTime.setFont(new java.awt.Font("Times New Roman", 1, 16)); // NOI18N
+        jtxTime.setText("00:00:00");
+
+        jtxtDate.setFont(new java.awt.Font("Times New Roman", 1, 16)); // NOI18N
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -85,7 +95,11 @@ public class Maintenance extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 436, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(724, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 290, Short.MAX_VALUE)
+                .addComponent(jtxTime, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jtxtDate, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(54, 54, 54))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -93,6 +107,12 @@ public class Maintenance extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(139, 139, 139)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jtxTime, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jtxtDate, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1170, 180));
@@ -501,6 +521,27 @@ public class Maintenance extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> new Maintenance().setVisible(true));
     }
+    
+    public void setTime(){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while(true){
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException ex) {
+                        System.getLogger(Maintenance.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+                    }
+                    Date date = new Date();
+                    SimpleDateFormat tf = new SimpleDateFormat("h:mm:ss aa");
+                    SimpleDateFormat df = new SimpleDateFormat("EEEE, MM-dd-yyyy");
+                    String time = tf.format(date);
+                    jtxTime.setText(time.split(" ") [0]+" "+time.split(" ") [1]);
+                    jtxtDate.setText(df.format(date));
+                }
+            }
+        }).start();
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JDesktopPane desktoppane;
@@ -509,6 +550,8 @@ public class Maintenance extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JLabel jtxTime;
+    private javax.swing.JLabel jtxtDate;
     private javax.swing.JLabel lblcategory;
     private javax.swing.JLabel lblcategory1;
     private javax.swing.JLabel lblfoodmenu;
