@@ -9,6 +9,10 @@ import java.util.Vector;
 import javax.swing.JOptionPane;
 import minithesis.foodmenu;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 
 /**
  *
@@ -19,8 +23,9 @@ public class stocks extends javax.swing.JInternalFrame {
 DefaultTableModel model;
 private int stockID;
 private String check;
+private int originalQuantity; 
+public static stocks instance;
 
-    public static stocks instance;
     /**
      * Creates new form stocks
      */
@@ -145,6 +150,11 @@ private String check;
         );
 
         txtquantity.setEnabled(false);
+        txtquantity.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtquantityFocusLost(evt);
+            }
+        });
         txtquantity.addActionListener(this::txtquantityActionPerformed);
 
         jPanel7.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -383,7 +393,9 @@ private String check;
         txtproduct.setText(name + " (" + size + ")"); 
         
         txtquantity.setText(model.getValueAt(selectedRow, 3).toString()); // Quantity
-
+        
+        originalQuantity = Integer.parseInt(model.getValueAt(selectedRow, 3).toString());
+        
         btnupdate.setEnabled(true);
         btndelete.setEnabled(true);
 
@@ -467,41 +479,61 @@ private String check;
     private void btnDecreaseQtyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDecreaseQtyActionPerformed
         // TODO add your handling code here:
         if (stockID == 0) {
-        JOptionPane.showMessageDialog(null, "Please select a product first from the table!");
-        return;
-    }
-    
-    try {
-        String currentText = txtquantity.getText().trim();
-        int currentQty = currentText.isEmpty() ? 0 : Integer.parseInt(currentText);
-        
-        if (currentQty <= 0) {
-            JOptionPane.showMessageDialog(null, "Quantity cannot be negative!");
+            JOptionPane.showMessageDialog(null, "Please select a product first from the table!");
             return;
         }
         
-        int newQty = currentQty - 1;
-        txtquantity.setText(String.valueOf(newQty));
-        
-        // Update product_variant table (not product!)
-        Connection con = sqlconnector.getConnection();
-        String query = "UPDATE product_variant SET stock_quantity = ? WHERE variant_id = ?";
-        PreparedStatement pst = con.prepareStatement(query);
-        pst.setInt(1, newQty);
-        pst.setInt(2, stockID); // variant_id
-        pst.executeUpdate();
-        
-        populatetable();
-        
-        if (foodmenu.instance != null) {
-            foodmenu.instance.populatetable();
+        try {
+            String currentText = txtquantity.getText().trim();
+            int currentQty = currentText.isEmpty() ? 0 : Integer.parseInt(currentText);
+            
+            if (currentQty <= 0) {
+                JOptionPane.showMessageDialog(null, "Quantity cannot be negative!");
+                return;
+            }
+            
+            // === SHOW REASON POPUP BEFORE DEDUCTING ===
+            String reason = showReasonDialog();
+            
+            // If user clicked CANCEL, stop here (do not update)
+            if (reason == null) {
+                return; 
+            }
+            
+            // User confirmed - proceed with deduction
+            int newQty = currentQty - 1;
+            txtquantity.setText(String.valueOf(newQty));
+            
+            // Update database WITH THE REASON
+            Connection con = sqlconnector.getConnection();
+            String query = "UPDATE product_variant SET stock_quantity = ? WHERE variant_id = ?";
+            PreparedStatement pst = con.prepareStatement(query);
+            pst.setInt(1, newQty);
+            pst.setInt(2, stockID);
+            pst.executeUpdate();
+            
+            // TODO: If you have a 'reason_log' table, insert the reason here:
+            // String logQuery = "INSERT INTO stock_log (variant_id, change_amount, reason, changed_at) VALUES (?, ?, ?, NOW())";
+            // PreparedStatement logStmt = con.prepareStatement(logQuery);
+            // logStmt.setInt(1, stockID);
+            // logStmt.setInt(2, -1); // -1 because we removed one
+            // logStmt.setString(3, reason);
+            // logStmt.executeUpdate();
+            
+            populatetable();
+            
+            if (foodmenu.instance != null) {
+                foodmenu.instance.populatetable();
+            }
+            
+            // Update our tracker
+            originalQuantity = newQty;
+            
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "Please enter a valid number!");
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error: " + e.getMessage());
         }
-        
-    } catch (NumberFormatException e) {
-        JOptionPane.showMessageDialog(null, "Please enter a valid number!");
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(null, "Error: " + e.getMessage());
-    }
     }//GEN-LAST:event_btnDecreaseQtyActionPerformed
 
     private void btnIncreaseQtyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIncreaseQtyActionPerformed
@@ -538,6 +570,62 @@ private String check;
         JOptionPane.showMessageDialog(null, "Error: " + e.getMessage());
     }
     }//GEN-LAST:event_btnIncreaseQtyActionPerformed
+
+    private void txtquantityFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtquantityFocusLost
+        // TODO add your handling code here:
+        if (!btnsave.isEnabled() || stockID == 0) return;
+        
+        try {
+            int newQty = Integer.parseInt(txtquantity.getText().trim());
+            
+            // If the new quantity is LESS than what was originally in the DB
+            if (newQty < originalQuantity) {
+                
+                // Show the reason popup
+                String reason = showReasonDialog();
+                
+                if (reason == null) {
+                    // User cancelled - REVERT the text field to original value
+                    txtquantity.setText(String.valueOf(originalQuantity));
+                    return;
+                }
+                
+                // User confirmed - update the database with new quantity AND reason
+                
+                try {
+                    Connection con = sqlconnector.getConnection();
+                    String query = "UPDATE product_variant SET stock_quantity = ? WHERE variant_id = ?";
+                    PreparedStatement pst = con.prepareStatement(query);
+                    pst.setInt(1, newQty);
+                    pst.setInt(2, stockID);
+                    pst.executeUpdate();
+                } catch (SQLException ex) {
+                    System.getLogger(stocks.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+                }
+                
+                // TODO: Log the reason if you have a log table
+                // logStockChange(stockID, newQty - originalQuantity, reason);
+                
+                populatetable();
+                
+                if (foodmenu.instance != null) {
+                    foodmenu.instance.populatetable();
+                }
+                
+                // Update tracker
+                originalQuantity = newQty;
+                
+            } else {
+                // Quantity increased or stayed same - just update tracker
+                originalQuantity = newQty;
+            }
+            
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Please enter a valid number.");
+            // Revert to original on error
+            txtquantity.setText(String.valueOf(originalQuantity));
+        }
+    }//GEN-LAST:event_txtquantityFocusLost
 public void makeEnabled(){
     txtproduct.setEnabled(true);
     txtquantity.setEnabled(true);
@@ -603,6 +691,62 @@ public void populatetable(){
     }
         
 }
+
+private String showReasonDialog() {
+        // 1. Create the main panel for the popup
+        JPanel panel = new JPanel(new BorderLayout(5, 5));
+        panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+        // 2. Create the Combo Box with your options
+        String[] reasons = {"Pulling out some products", "Products are already expired", "OTHER"};
+        JComboBox<String> reasonCombo = new JComboBox<>(reasons);
+
+        // 3. Create the Text Field for custom reasons (Hidden by default)
+        JTextField txtOtherReason = new JTextField(20);
+        txtOtherReason.setVisible(false); 
+
+        // 4. IMPORTANT: Add Listener to show/hide the text field
+        reasonCombo.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                // Check if "OTHER" is currently selected
+                if ("OTHER".equals(reasonCombo.getSelectedItem())) {
+                    txtOtherReason.setVisible(true); // Show the text box
+                    txtOtherReason.requestFocus();   // Focus on it so user can type
+                } else {
+                    txtOtherReason.setVisible(false); // Hide it otherwise
+                }
+            }
+        });
+
+        // 5. Layout the components
+        JPanel centerPanel = new JPanel(new GridLayout(2, 1, 5, 5));
+        centerPanel.add(new JLabel("Reason for removing stock:"));
+        centerPanel.add(reasonCombo);
+        
+        panel.add(centerPanel, BorderLayout.NORTH);
+        panel.add(txtOtherReason, BorderLayout.SOUTH);
+
+        // 6. Show the Dialog window
+        int result = JOptionPane.showConfirmDialog(
+            null, 
+            panel, 
+            "Reason Required", 
+            JOptionPane.OK_CANCEL_OPTION, 
+            JOptionPane.QUESTION_MESSAGE
+        );
+
+        // 7. Return the result
+        if (result == JOptionPane.OK_OPTION) {
+            String selected = (String) reasonCombo.getSelectedItem();
+            if ("OTHER".equals(selected)) {
+                // If OTHER was picked, return whatever was typed
+                return txtOtherReason.getText(); 
+            }
+            return selected; // Otherwise return the combo box text
+        }
+        
+        return null; // User clicked Cancel
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnDecreaseQty;
     private javax.swing.JButton btnIncreaseQty;

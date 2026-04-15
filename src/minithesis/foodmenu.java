@@ -90,15 +90,23 @@ public static foodmenu instance;
         tblproduct.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         tblproduct.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null}
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "Product Code", "Product", "Category", "Size", "Price", "Quantity", "VariantID"
+                "Product Code", "Product", "Category", "Size", "Price", "Quantity", "Status", "VariantID"
             }
-        ));
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.String.class, java.lang.Object.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
         tblproduct.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tblproductMouseClicked(evt);
@@ -366,14 +374,15 @@ public void setDefault(){
 public void populatetable(){
     try{
         Connection con = sqlconnector.getConnection();
-        // JOIN with product_variant table
-        String query = "SELECT p.product_id, p.product_code, p.product_name, c.category_name, " +
-                       "s.size_name, pv.price, pv.stock_quantity, pv.variant_id " +
+        
+        // Add status calculation in the query
+        String query = "SELECT p.product_code, p.product_name, c.category_name, " +
+                       "s.size_name, pv.price, pv.stock_quantity, " +
+                       "CASE WHEN pv.stock_quantity > 0 THEN 'Available' ELSE 'Unavailable' END as status " +
                        "FROM product p " +
-                       "JOIN category c ON p.category_id = c.category_id " +
                        "JOIN product_variant pv ON p.product_id = pv.product_id " +
-                       "LEFT JOIN size s ON pv.size_id = s.size_id " +
-                       "ORDER BY p.product_name, s.size_name";
+                       "LEFT JOIN category c ON p.category_id = c.category_id " +
+                       "LEFT JOIN size s ON pv.size_id = s.size_id";
         
         Statement st = con.createStatement();
         ResultSet rs = st.executeQuery(query);
@@ -383,23 +392,25 @@ public void populatetable(){
         
         while(rs.next()){
             Vector coldata = new Vector();
-            coldata.add(rs.getInt("product_code"));        // Column 0
-            coldata.add(rs.getString("product_name"));     // Column 1
-            coldata.add(rs.getString("category_name"));    // Column 2
-            coldata.add(rs.getString("size_name"));        // Column 3
-            coldata.add(String.format("%.2f", rs.getDouble("price"))); // Column 4
-            coldata.add(rs.getInt("stock_quantity"));      // Column 5
-            coldata.add(rs.getInt("variant_id"));          // Column 6 (hidden, for edit/delete)
+            coldata.add(rs.getInt("product_code"));        // Column 0: Product Code
+            coldata.add(rs.getString("product_name"));     // Column 1: Product
+            coldata.add(rs.getString("category_name"));    // Column 2: Category
+            coldata.add(rs.getString("size_name"));        // Column 3: Size
+            coldata.add(rs.getDouble("price"));            // Column 4: Price
+            coldata.add(rs.getInt("stock_quantity"));      // Column 5: Quantity
+            coldata.add(rs.getString("status"));           // Column 6: Status
+            
             tblmodel.addRow(coldata);
         }
         
-        if (tblproduct.getColumnCount() > 6) {
-            tblproduct.getColumnModel().getColumn(6).setMinWidth(0);
-            tblproduct.getColumnModel().getColumn(6).setMaxWidth(0);
-            tblproduct.getColumnModel().getColumn(6).setWidth(0);
+        if (tblproduct.getColumnCount() > 7) {
+            tblproduct.getColumnModel().getColumn(7).setMinWidth(0);
+            tblproduct.getColumnModel().getColumn(7).setMaxWidth(0);
+            tblproduct.getColumnModel().getColumn(7).setWidth(0);
         }
         
     } catch(SQLException e){
+        e.printStackTrace();
         JOptionPane.showMessageDialog(null, e);
     }
 }
