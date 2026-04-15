@@ -12,6 +12,7 @@ import java.sql.*;
 import java.awt.Color;
 import javax.swing.JOptionPane;
 import java.sql.Connection;
+
 public class Maintenance extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Maintenance.class.getName());
@@ -22,11 +23,22 @@ public class Maintenance extends javax.swing.JFrame {
     Color DefaultColor, ClickedColor;
     public Maintenance() {
         initComponents();
+        
+        overview ov = new overview();
+        desktoppane.add(ov);
+        ov.setVisible(true);
+
+        try {
+            ov.setSelected(true);
+        } catch (java.beans.PropertyVetoException e) {
+            e.printStackTrace();
+        }
+
+        
         DefaultColor= new Color(255,255,255);
         ClickedColor= new Color(204,0,0);
         
-        panelfoodmenu.setBackground(DefaultColor);
-        panelcategory.setBackground(DefaultColor);
+        
     }
 
     /**
@@ -105,6 +117,14 @@ public class Maintenance extends javax.swing.JFrame {
         jPanel1.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
         paneloverview.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        paneloverview.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                paneloverviewMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                paneloverviewMouseEntered(evt);
+            }
+        });
 
         lbloverview.setFont(new java.awt.Font("Script MT Bold", 0, 24)); // NOI18N
         lbloverview.setForeground(new java.awt.Color(102, 0, 0));
@@ -357,6 +377,7 @@ public class Maintenance extends javax.swing.JFrame {
         panelcategory.setBackground(DefaultColor);
         panellogout.setBackground(DefaultColor);
         panelrecords.setBackground(DefaultColor);
+        paneloverview.setBackground(DefaultColor);
     }//GEN-LAST:event_panelfoodmenuMousePressed
 
     private void panelcategoryMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelcategoryMousePressed
@@ -366,6 +387,7 @@ public class Maintenance extends javax.swing.JFrame {
         panelcategory.setBackground(ClickedColor);
         panellogout.setBackground(DefaultColor);
         panelrecords.setBackground(DefaultColor);
+        paneloverview.setBackground(DefaultColor);
     }//GEN-LAST:event_panelcategoryMousePressed
 
     private void panelfoodmenuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelfoodmenuMouseClicked
@@ -389,6 +411,7 @@ public class Maintenance extends javax.swing.JFrame {
         panelcategory.setBackground(DefaultColor);
         panellogout.setBackground(ClickedColor);
         panelrecords.setBackground(DefaultColor);
+        paneloverview.setBackground(DefaultColor);
     }//GEN-LAST:event_panellogoutMousePressed
 
     private void panellogoutMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panellogoutMouseClicked
@@ -410,6 +433,7 @@ public class Maintenance extends javax.swing.JFrame {
         panelcategory.setBackground(DefaultColor);
         panellogout.setBackground(DefaultColor);
         panelrecords.setBackground(DefaultColor);
+        paneloverview.setBackground(DefaultColor);
     }//GEN-LAST:event_panelstocksMousePressed
 
     private void panelstocksMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelstocksMouseClicked
@@ -426,6 +450,7 @@ public class Maintenance extends javax.swing.JFrame {
         panelcategory.setBackground(DefaultColor);
         panellogout.setBackground(DefaultColor);
         panelrecords.setBackground(ClickedColor);
+        paneloverview.setBackground(DefaultColor);
     }//GEN-LAST:event_panelrecordsMousePressed
 
     private void panelrecordsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelrecordsMouseClicked
@@ -434,6 +459,23 @@ public class Maintenance extends javax.swing.JFrame {
         desktoppane.removeAll();
         desktoppane.add(r).setVisible(true);
     }//GEN-LAST:event_panelrecordsMouseClicked
+
+    private void paneloverviewMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_paneloverviewMouseClicked
+        // TODO add your handling code here:
+        overview o = new overview();
+        desktoppane.removeAll();
+        desktoppane.add(o).setVisible(true);
+    }//GEN-LAST:event_paneloverviewMouseClicked
+
+    private void paneloverviewMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_paneloverviewMouseEntered
+        // TODO add your handling code here:
+        panelstocks.setBackground(DefaultColor);
+        panelfoodmenu.setBackground(DefaultColor);
+        panelcategory.setBackground(DefaultColor);
+        panellogout.setBackground(DefaultColor);
+        panelrecords.setBackground(DefaultColor);
+        paneloverview.setBackground(ClickedColor);
+    }//GEN-LAST:event_paneloverviewMouseEntered
 
     /**
      * @param args the command line arguments
@@ -480,4 +522,5 @@ public class Maintenance extends javax.swing.JFrame {
     private javax.swing.JPanel panelrecords;
     private javax.swing.JPanel panelstocks;
     // End of variables declaration//GEN-END:variables
+
 }

@@ -15,8 +15,8 @@ public class overview extends javax.swing.JInternalFrame {
      */
     public overview() {
         initComponents();
-        
     }
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -27,25 +27,100 @@ public class overview extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        lblrecenttransaction = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tbloverview = new javax.swing.JTable();
+        jPanel1 = new javax.swing.JPanel();
+        lblbestseller = new javax.swing.JLabel();
+        txtbestseller = new javax.swing.JTextField();
+        lbltotalsales = new javax.swing.JLabel();
+        txtoverviewsales = new javax.swing.JTextField();
+        lbltotalorders = new javax.swing.JLabel();
+        txttotalorders = new javax.swing.JTextField();
         OVERVIEW = new javax.swing.JLabel();
-        jLabel1 = new javax.swing.JLabel();
 
+        setPreferredSize(new java.awt.Dimension(969, 634));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        lblrecenttransaction.setFont(new java.awt.Font("Gill Sans Ultra Bold", 1, 18)); // NOI18N
+        lblrecenttransaction.setForeground(new java.awt.Color(102, 0, 0));
+        lblrecenttransaction.setText("Recent Transaction: ");
+        getContentPane().add(lblrecenttransaction, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 340, -1, -1));
+
+        tbloverview.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Date", "Order ID", "Name", "Size", "Quantity", "Price", "Total"
+            }
+        ));
+        jScrollPane1.setViewportView(tbloverview);
+
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 370, 920, 210));
+
+        jPanel1.setBackground(new java.awt.Color(255, 102, 102));
+        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        lblbestseller.setFont(new java.awt.Font("Gill Sans Ultra Bold", 1, 14)); // NOI18N
+        lblbestseller.setForeground(new java.awt.Color(102, 0, 0));
+        lblbestseller.setText("Best Selling Product: ");
+        jPanel1.add(lblbestseller, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 100, -1, 20));
+
+        txtbestseller.setBackground(new java.awt.Color(102, 0, 0));
+        txtbestseller.setFont(new java.awt.Font("Segoe UI Emoji", 1, 24)); // NOI18N
+        txtbestseller.setForeground(new java.awt.Color(255, 255, 255));
+        txtbestseller.addActionListener(this::txtbestsellerActionPerformed);
+        jPanel1.add(txtbestseller, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 130, 420, 60));
+
+        lbltotalsales.setFont(new java.awt.Font("Gill Sans Ultra Bold", 1, 14)); // NOI18N
+        lbltotalsales.setForeground(new java.awt.Color(102, 0, 0));
+        lbltotalsales.setText("Total Sales: ");
+        jPanel1.add(lbltotalsales, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 100, -1, -1));
+
+        txtoverviewsales.setBackground(new java.awt.Color(102, 0, 0));
+        txtoverviewsales.setFont(new java.awt.Font("Segoe UI Emoji", 1, 24)); // NOI18N
+        txtoverviewsales.setForeground(new java.awt.Color(255, 255, 255));
+        txtoverviewsales.setText("0.00");
+        jPanel1.add(txtoverviewsales, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 130, 360, 60));
+
+        lbltotalorders.setFont(new java.awt.Font("Gill Sans Ultra Bold", 1, 14)); // NOI18N
+        lbltotalorders.setForeground(new java.awt.Color(102, 0, 0));
+        lbltotalorders.setText("Total Orders: ");
+        jPanel1.add(lbltotalorders, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 220, -1, -1));
+
+        txttotalorders.setBackground(new java.awt.Color(102, 0, 0));
+        txttotalorders.setFont(new java.awt.Font("Segoe UI Emoji", 1, 24)); // NOI18N
+        txttotalorders.setForeground(new java.awt.Color(255, 255, 255));
+        txttotalorders.setText("0");
+        jPanel1.add(txttotalorders, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 250, 360, 60));
 
         OVERVIEW.setFont(new java.awt.Font("Showcard Gothic", 1, 55)); // NOI18N
         OVERVIEW.setForeground(new java.awt.Color(102, 0, 0));
         OVERVIEW.setText("OVERVIEW");
-        getContentPane().add(OVERVIEW, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, 320, 80));
+        jPanel1.add(OVERVIEW, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, 320, 80));
 
-        jLabel1.setIcon(new javax.swing.ImageIcon("C:\\Users\\shem\\Downloads\\Untitled design.png")); // NOI18N
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 910, 600));
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 980, 600));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void txtbestsellerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtbestsellerActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtbestsellerActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel OVERVIEW;
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel lblbestseller;
+    private javax.swing.JLabel lblrecenttransaction;
+    private javax.swing.JLabel lbltotalorders;
+    private javax.swing.JLabel lbltotalsales;
+    private javax.swing.JTable tbloverview;
+    private javax.swing.JTextField txtbestseller;
+    private javax.swing.JTextField txtoverviewsales;
+    private javax.swing.JTextField txttotalorders;
     // End of variables declaration//GEN-END:variables
 }

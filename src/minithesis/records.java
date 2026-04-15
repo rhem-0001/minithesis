@@ -29,9 +29,17 @@ public class records extends javax.swing.JInternalFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        recordtable = new javax.swing.JTable();
         record = new javax.swing.JLabel();
-        jLabel1 = new javax.swing.JLabel();
+        lbldailysales = new javax.swing.JLabel();
+        txtdailysales = new javax.swing.JTextField();
+        lblweeklysales = new javax.swing.JLabel();
+        txtweeklysales = new javax.swing.JTextField();
+        lbltotalsales = new javax.swing.JLabel();
+        txttotalsales = new javax.swing.JTextField();
 
+        setPreferredSize(new java.awt.Dimension(969, 634));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel1.setBackground(new java.awt.Color(102, 0, 0));
@@ -42,28 +50,42 @@ public class records extends javax.swing.JInternalFrame {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 443, Short.MAX_VALUE)
+            .addGap(0, 509, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 559, Short.MAX_VALUE)
+            .addGap(0, 584, Short.MAX_VALUE)
         );
+
+        recordtable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Date", "Order ID", "Name", "Size", "Quantity", "Price", "Total"
+            }
+        ));
+        jScrollPane1.setViewportView(recordtable);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(17, 17, 17)
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 459, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(20, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(16, 16, 16)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(15, Short.MAX_VALUE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 554, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 10, 480, 590));
@@ -73,17 +95,72 @@ public class records extends javax.swing.JInternalFrame {
         record.setText("RECORDS");
         getContentPane().add(record, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 10, 250, 100));
 
-        jLabel1.setIcon(new javax.swing.ImageIcon("C:\\Users\\shem\\Downloads\\overview.png")); // NOI18N
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(-50, -10, 970, 620));
+        lbldailysales.setFont(new java.awt.Font("Showcard Gothic", 1, 24)); // NOI18N
+        lbldailysales.setForeground(new java.awt.Color(102, 0, 0));
+        lbldailysales.setText("Daily Sales");
+        getContentPane().add(lbldailysales, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 120, 170, 40));
+
+        txtdailysales.setBackground(new java.awt.Color(255, 102, 102));
+        txtdailysales.setFont(new java.awt.Font("Segoe UI Emoji", 1, 24)); // NOI18N
+        txtdailysales.setForeground(new java.awt.Color(255, 255, 255));
+        txtdailysales.setText("0.00");
+        txtdailysales.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        txtdailysales.addActionListener(this::txtdailysalesActionPerformed);
+        getContentPane().add(txtdailysales, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 170, 410, 60));
+
+        lblweeklysales.setFont(new java.awt.Font("Showcard Gothic", 1, 24)); // NOI18N
+        lblweeklysales.setForeground(new java.awt.Color(102, 0, 0));
+        lblweeklysales.setText("Weekly Sales");
+        getContentPane().add(lblweeklysales, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 270, 190, 40));
+
+        txtweeklysales.setBackground(new java.awt.Color(255, 102, 102));
+        txtweeklysales.setFont(new java.awt.Font("Segoe UI Emoji", 1, 24)); // NOI18N
+        txtweeklysales.setForeground(new java.awt.Color(255, 255, 255));
+        txtweeklysales.setText("0.00");
+        txtweeklysales.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        txtweeklysales.addActionListener(this::txtweeklysalesActionPerformed);
+        getContentPane().add(txtweeklysales, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 330, 410, 60));
+
+        lbltotalsales.setFont(new java.awt.Font("Showcard Gothic", 1, 24)); // NOI18N
+        lbltotalsales.setForeground(new java.awt.Color(102, 0, 0));
+        lbltotalsales.setText("Total sales");
+        getContentPane().add(lbltotalsales, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 430, 190, 40));
+
+        txttotalsales.setBackground(new java.awt.Color(255, 102, 102));
+        txttotalsales.setFont(new java.awt.Font("Segoe UI Emoji", 1, 24)); // NOI18N
+        txttotalsales.setForeground(new java.awt.Color(255, 255, 255));
+        txttotalsales.setText("0.00");
+        txttotalsales.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        txttotalsales.addActionListener(this::txttotalsalesActionPerformed);
+        getContentPane().add(txttotalsales, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 490, 410, 60));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void txtdailysalesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtdailysalesActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtdailysalesActionPerformed
+
+    private void txtweeklysalesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtweeklysalesActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtweeklysalesActionPerformed
+
+    private void txttotalsalesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txttotalsalesActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txttotalsalesActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel lbldailysales;
+    private javax.swing.JLabel lbltotalsales;
+    private javax.swing.JLabel lblweeklysales;
     private javax.swing.JLabel record;
+    private javax.swing.JTable recordtable;
+    private javax.swing.JTextField txtdailysales;
+    private javax.swing.JTextField txttotalsales;
+    private javax.swing.JTextField txtweeklysales;
     // End of variables declaration//GEN-END:variables
 }
