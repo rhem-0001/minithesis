@@ -9,6 +9,16 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import java.util.Vector;
+import java.util.Calendar;
+import java.awt.Component;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import javax.swing.JTable;
+import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableCellRenderer;
 /**
  *
  * @author janxt
@@ -21,6 +31,7 @@ public class records extends javax.swing.JInternalFrame {
     public records() {
         initComponents();
         loadSalesData(); 
+        loadOrderDetailsTable();
     }
 
     /**
@@ -43,6 +54,8 @@ public class records extends javax.swing.JInternalFrame {
         txtweeklysales = new javax.swing.JTextField();
         lbltotalsales = new javax.swing.JLabel();
         txttotalsales = new javax.swing.JTextField();
+        btnRefresh = new javax.swing.JButton();
+        btnReset = new javax.swing.JButton();
 
         setPreferredSize(new java.awt.Dimension(969, 634));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -111,12 +124,12 @@ public class records extends javax.swing.JInternalFrame {
         txtdailysales.setText("0.00");
         txtdailysales.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         txtdailysales.addActionListener(this::txtdailysalesActionPerformed);
-        getContentPane().add(txtdailysales, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 170, 410, 60));
+        getContentPane().add(txtdailysales, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 160, 410, 60));
 
         lblweeklysales.setFont(new java.awt.Font("Showcard Gothic", 1, 24)); // NOI18N
         lblweeklysales.setForeground(new java.awt.Color(102, 0, 0));
         lblweeklysales.setText("Weekly Sales");
-        getContentPane().add(lblweeklysales, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 270, 190, 40));
+        getContentPane().add(lblweeklysales, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 260, 190, 40));
 
         txtweeklysales.setBackground(new java.awt.Color(255, 102, 102));
         txtweeklysales.setFont(new java.awt.Font("Segoe UI Emoji", 1, 24)); // NOI18N
@@ -124,12 +137,12 @@ public class records extends javax.swing.JInternalFrame {
         txtweeklysales.setText("0.00");
         txtweeklysales.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         txtweeklysales.addActionListener(this::txtweeklysalesActionPerformed);
-        getContentPane().add(txtweeklysales, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 330, 410, 60));
+        getContentPane().add(txtweeklysales, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 300, 410, 60));
 
         lbltotalsales.setFont(new java.awt.Font("Showcard Gothic", 1, 24)); // NOI18N
         lbltotalsales.setForeground(new java.awt.Color(102, 0, 0));
         lbltotalsales.setText("Total sales");
-        getContentPane().add(lbltotalsales, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 430, 190, 40));
+        getContentPane().add(lbltotalsales, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 410, 190, 40));
 
         txttotalsales.setBackground(new java.awt.Color(255, 102, 102));
         txttotalsales.setFont(new java.awt.Font("Segoe UI Emoji", 1, 24)); // NOI18N
@@ -137,59 +150,176 @@ public class records extends javax.swing.JInternalFrame {
         txttotalsales.setText("0.00");
         txttotalsales.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         txttotalsales.addActionListener(this::txttotalsalesActionPerformed);
-        getContentPane().add(txttotalsales, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 490, 410, 60));
+        getContentPane().add(txttotalsales, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 450, 410, 60));
+
+        btnRefresh.setText("REFRESH");
+        btnRefresh.addActionListener(this::btnRefreshActionPerformed);
+        getContentPane().add(btnRefresh, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 550, -1, -1));
+
+        btnReset.setText("RESET");
+        btnReset.addActionListener(this::btnResetActionPerformed);
+        getContentPane().add(btnReset, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 520, -1, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void loadSalesData() {
         try {
+            Connection con = sqlconnector.getConnection();
+            Statement st = con.createStatement();
+            
+            // Daily Sales - Today's sales
+            String dailyQuery = "SELECT COALESCE(SUM(total_amount), 0) as daily_total " +
+                               "FROM orders WHERE DATE(order_date) = CURDATE()";
+            ResultSet rs1 = st.executeQuery(dailyQuery);
+            double dailySales = 0.0;
+            if (rs1.next()) {
+                dailySales = rs1.getDouble("daily_total");
+            }
+            
+            // Weekly Sales - Only show at end of week (Sunday)
+            double weeklySales = 0.0;
+            if (isEndOfWeek()) {
+                String weeklyQuery = "SELECT COALESCE(SUM(total_amount), 0) as weekly_total " +
+                                    "FROM orders WHERE YEARWEEK(order_date, 1) = YEARWEEK(CURDATE(), 1)";
+                ResultSet rs2 = st.executeQuery(weeklyQuery);
+                if (rs2.next()) {
+                    weeklySales = rs2.getDouble("weekly_total");
+                }
+                rs2.close();
+            }
+            // If not end of week, weeklySales stays 0.0
+            
+            // Total Sales - All time
+            String totalQuery = "SELECT COALESCE(SUM(total_amount), 0) as total_sales FROM orders";
+            ResultSet rs3 = st.executeQuery(totalQuery);
+            double totalSales = 0.0;
+            if (rs3.next()) {
+                totalSales = rs3.getDouble("total_sales");
+            }
+            
+            // Update the text fields
+            txtdailysales.setText(String.format("₱%.2f", dailySales));
+            txtweeklysales.setText(String.format("₱%.2f", weeklySales));
+            txttotalsales.setText(String.format("₱%.2f", totalSales));
+            
+            rs1.close();
+            rs3.close();
+            st.close();
+            con.close();
+            
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error loading sales data: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+    
+    private boolean isEndOfWeek() {
+        Calendar cal = Calendar.getInstance();
+        int dayOfWeek = cal.get(Calendar.DAY_OF_WEEK);
+        // Returns 1 for Sunday, 7 for Saturday
+        // You can change this to Calendar.SATURDAY if you prefer
+        return dayOfWeek == Calendar.SUNDAY;
+    }
+    
+    private void loadOrderDetailsTable() {
+        try {
         Connection con = sqlconnector.getConnection();
+        
+        // Query to get today's orders with product details from order_items
+        String query = "SELECT o.order_date, o.order_id, " +
+                      "oi.product_name, oi.size_name, " +
+                      "oi.quantity, oi.price, oi.total " +
+                      "FROM orders o " +
+                      "JOIN order_items oi ON o.order_id = oi.order_id " +
+                      "WHERE DATE(o.order_date) = CURDATE() " +
+                      "ORDER BY o.order_id DESC, oi.item_id ASC";
+        
         Statement st = con.createStatement();
+        ResultSet rs = st.executeQuery(query);
         
-        // Daily Sales
-        String dailyQuery = "SELECT COALESCE(SUM(total_amount), 0) as daily_total " +
-                           "FROM orders WHERE DATE(order_date) = CURDATE()";
-        ResultSet rs1 = st.executeQuery(dailyQuery);
-        double dailySales = 0.0;
-        if (rs1.next()) {
-            dailySales = rs1.getDouble("daily_total");
+        // Create table model with 7 columns
+        DefaultTableModel model = new DefaultTableModel(
+            new String[]{"Date", "Order ID", "Name", "Size", "Quantity", "Price", "Total"}, 0
+        ) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+        recordtable.setModel(model);
+        
+        double grandTotal = 0.0;
+        int rowCount = 0;
+        
+        while(rs.next()){
+            double price = rs.getDouble("price");
+            int quantity = rs.getInt("quantity");
+            double total = rs.getDouble("total");
+            
+            grandTotal += total;
+            
+            model.addRow(new Object[]{
+                rs.getString("order_date"),
+                rs.getInt("order_id"),
+                rs.getString("product_name"),  // Now shows actual product name!
+                rs.getString("size_name"),      // Shows actual size
+                quantity,
+                String.format("₱%.2f", price),
+                String.format("₱%.2f", total)
+            });
+            rowCount++;
         }
         
-        // Weekly Sales
-        String weeklyQuery = "SELECT COALESCE(SUM(total_amount), 0) as weekly_total " +
-                            "FROM orders WHERE order_date >= DATE_SUB(CURDATE(), INTERVAL 7 DAY)";
-        ResultSet rs2 = st.executeQuery(weeklyQuery);
-        double weeklySales = 0.0;
-        if (rs2.next()) {
-            weeklySales = rs2.getDouble("weekly_total");
+        // Add separator and grand total row
+        if (rowCount > 0) {
+            model.addRow(new Object[]{
+                "", "", "", "", "", "TOTAL:", String.format("₱%.2f", grandTotal)
+            });
         }
         
-        // Total Sales
-        String totalQuery = "SELECT COALESCE(SUM(total_amount), 0) as total_sales FROM orders";
-        ResultSet rs3 = st.executeQuery(totalQuery);
-        double totalSales = 0.0;
-        if (rs3.next()) {
-            totalSales = rs3.getDouble("total_sales");
-        }
+        // Apply styling
+        recordtable.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
+            @Override
+            public Component getTableCellRendererComponent(JTable table, Object value, 
+                    boolean isSelected, boolean hasFocus, int row, int column) {
+                
+                Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+                
+                // Center align first 4 columns
+                if (column < 4) {
+                    setHorizontalAlignment(SwingConstants.CENTER);
+                } else {
+                    setHorizontalAlignment(SwingConstants.RIGHT);
+                }
+                
+                // Make last row bold (TOTAL row)
+                if (row == table.getRowCount() - 1) {
+                    setFont(getFont().deriveFont(Font.BOLD));
+                    setBackground(new Color(255, 200, 200));
+                } else {
+                    setFont(getFont().deriveFont(Font.PLAIN));
+                    setBackground(Color.WHITE);
+                }
+                
+                return c;
+            }
+        });
         
-        // Update the text fields - IMPORTANT: Check your variable names!
-        // The variable names must match your text field names in Design view
-        txtdailysales.setText(String.format("₱%.2f", dailySales));
-        txtweeklysales.setText(String.format("₱%.2f", weeklySales));
-        txttotalsales.setText(String.format("₱%.2f", totalSales));
+        recordtable.setRowHeight(25);
+        recordtable.setShowGrid(false);
+        recordtable.setIntercellSpacing(new Dimension(0, 0));
         
-        rs1.close();
-        rs2.close();
-        rs3.close();
+        rs.close();
         st.close();
         con.close();
         
     } catch (SQLException e) {
-        JOptionPane.showMessageDialog(null, "Error loading sales data: " + e.getMessage());
+        JOptionPane.showMessageDialog(null, "Error loading table: " + e.getMessage());
         e.printStackTrace();
     }
     }
+    
     
     private void txtdailysalesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtdailysalesActionPerformed
         // TODO add your handling code here:
@@ -203,9 +333,66 @@ public class records extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txttotalsalesActionPerformed
 
+    private void btnRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshActionPerformed
+        // TODO add your handling code here:
+        loadSalesData();
+        loadOrderDetailsTable();
+        JOptionPane.showMessageDialog(this, "✓ Sales data refreshed!", "Refresh", JOptionPane.INFORMATION_MESSAGE);
+    }//GEN-LAST:event_btnRefreshActionPerformed
+
+    private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetActionPerformed
+        // TODO add your handling code here:
+        int confirm = JOptionPane.showConfirmDialog(this, 
+        "⚠️ WARNING: This will delete ALL sales records!\n\n" +
+        "Are you sure you want to continue?", 
+        "Confirm Reset", 
+        JOptionPane.YES_NO_OPTION,
+        JOptionPane.WARNING_MESSAGE);
+    
+    if (confirm == JOptionPane.YES_OPTION) {
+        try {
+            Connection con = sqlconnector.getConnection();
+            Statement st = con.createStatement();
+            
+            // 🔧 OPTION 1: Disable foreign key checks temporarily
+            st.executeUpdate("SET FOREIGN_KEY_CHECKS = 0");
+            
+            // Now truncate in any order
+            st.executeUpdate("TRUNCATE TABLE order_items");
+            st.executeUpdate("TRUNCATE TABLE payment");
+            st.executeUpdate("TRUNCATE TABLE orders");
+            st.executeUpdate("TRUNCATE TABLE daily_sales");
+            
+            // Re-enable foreign key checks
+            st.executeUpdate("SET FOREIGN_KEY_CHECKS = 1");
+            
+            JOptionPane.showMessageDialog(this, 
+                "✅ Sales data has been reset successfully!", 
+                "Reset Complete", 
+                JOptionPane.INFORMATION_MESSAGE);
+            
+            // Refresh the display
+            loadSalesData();
+            loadOrderDetailsTable();
+            
+            st.close();
+            con.close();
+            
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, 
+                "❌ Error resetting sales: " + e.getMessage(), 
+                "Error", 
+                JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        }
+    }
+    }//GEN-LAST:event_btnResetActionPerformed
+
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnRefresh;
+    private javax.swing.JButton btnReset;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;

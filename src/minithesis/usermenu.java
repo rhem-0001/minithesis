@@ -9,6 +9,9 @@ import java.util.Map;
 import javax.swing.table.DefaultTableModel;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.Timer;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class usermenu extends javax.swing.JFrame {
     
@@ -20,6 +23,7 @@ public class usermenu extends javax.swing.JFrame {
     
     public usermenu() {
         initComponents();
+        startDateTime();
         
         barscategory barsFrame = new barscategory(this);
         desktoppane.add(barsFrame);
@@ -42,15 +46,16 @@ public class usermenu extends javax.swing.JFrame {
     
      // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     private void calculateGrandTotal() {
-        double total = 0.0;
+    double grandTotal = 0.0;
     DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+    
     for (int i = 0; i < model.getRowCount(); i++) {
-        Object val = model.getValueAt(i, 4); // Column 4 = Line Total
-        if (val != null) total += Double.parseDouble(val.toString());
+        // Read Subtotal from Column 5
+        grandTotal += Double.parseDouble(model.getValueAt(i, 5).toString());
     }
-    txtTotal.setText(String.format("%.2f", total));
-    calculateChange();
-    }
+    
+    txtTotal.setText(String.format("%.2f", grandTotal));
+}
     
     
     private void calculateChange() {
@@ -67,50 +72,61 @@ public class usermenu extends javax.swing.JFrame {
     
     
     public void addToCart(int variantId, String productId, String productIdByName, String productName, String sizeName, double price, int qty) {
-        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-        
-        // Check if item already exists
-         boolean itemExists = false;
+    DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
     
-    // Check if this exact variant is already in cart
+    System.out.println("=== ADD TO CART ===");
+    System.out.println("VariantID: " + variantId);
+    System.out.println("Product: " + productName);
+    System.out.println("Size: " + sizeName);
+    System.out.println("Price: " + price);
+    System.out.println("Qty: " + qty);
+    
+    
+    // Check if this exact variant is already in cart (using Variant ID in Column 0)
+    boolean itemExists = false;
+    
     for (int i = 0; i < model.getRowCount(); i++) {
         Object variantIdObj = model.getValueAt(i, 0);
         if (variantIdObj != null && Integer.parseInt(variantIdObj.toString()) == variantId) {
-            // Update quantity
+            // Item exists - update quantity
             int currentQty = Integer.parseInt(model.getValueAt(i, 3).toString());
             int newQty = currentQty + qty;
-            model.setValueAt(newQty, i, 3);
+            model.setValueAt(newQty, i, 3);  // Update Quantity (Column 3)
             
-            // Update subtotal
-            double subtotal = price * newQty;
-            model.setValueAt(String.format("%.2f", subtotal), i, 4);
+            // Get the PRICE from Column 4 (NOT subtotal!)
+            double itemPrice = Double.parseDouble(model.getValueAt(i, 4).toString());
+            
+            // Recalculate subtotal: Qty * Price
+            double newSubtotal = newQty * itemPrice;
+            model.setValueAt(String.format("%.2f", newSubtotal), i, 5);  // Update Subtotal (Column 5)
             
             itemExists = true;
             break;
         }
     }
     
-    // Add new row if not exists
+    // Add new row if item doesn't exist
     if (!itemExists) {
         double subtotal = price * qty;
         model.addRow(new Object[]{
-            variantId,
-            productName,
-            sizeName,
-            qty,
-            String.format("%.2f", subtotal)
+            variantId,                    // Column 0: Variant ID
+            productName,                  // Column 1: Product Name
+            sizeName,                     // Column 2: Size
+            qty,                          // Column 3: Quantity
+            String.format("%.2f", price), // Column 4: Price (NEW!)
+            String.format("%.2f", subtotal) // Column 5: Subtotal
         });
     }
     
-    // ✅ Track stock deduction for potential rollback
+    // Track stock deduction
     cartStockDeductions.put(variantId, cartStockDeductions.getOrDefault(variantId, 0) + qty);
     
     calculateGrandTotal();
     deductStock(variantId, qty);
     
-    // ✅ Refresh tables immediately
+    // Refresh tables
     refreshFoodMenuStock();
-    }
+}
     
     private void deductStock(int variantId, int quantity) {
         try {
@@ -299,6 +315,7 @@ public class usermenu extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
+        lblDateTime = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         lblttl = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
@@ -676,10 +693,21 @@ public class usermenu extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Product ID", "Product Name", "Size", "Quantity", "Price"
+                "Product ID", "Product Name", "Size", "Quantity", "Price", "SubTotal"
             }
-        ));
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
         jScrollPane1.setViewportView(jTable1);
+
+        lblDateTime.setFont(new java.awt.Font("Times New Roman", 1, 16)); // NOI18N
+        lblDateTime.setText("00:00:00");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -689,11 +717,17 @@ public class usermenu extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 417, Short.MAX_VALUE)
                 .addContainerGap())
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(16, 16, 16)
+                .addComponent(lblDateTime)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(54, Short.MAX_VALUE)
+                .addContainerGap(20, Short.MAX_VALUE)
+                .addComponent(lblDateTime)
+                .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 399, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -1164,7 +1198,6 @@ public class usermenu extends javax.swing.JFrame {
         return;
     }
     
-    // 2. Check if cash field is EMPTY
     if (txtCash.getText().trim().isEmpty()) {
         JOptionPane.showMessageDialog(this, 
             "💵 Please input cash amount first!", 
@@ -1174,7 +1207,6 @@ public class usermenu extends javax.swing.JFrame {
         return;
     }
     
-    // 3. Parse values
     double total = 0.0;
     double cash = 0.0;
     
@@ -1189,7 +1221,6 @@ public class usermenu extends javax.swing.JFrame {
         return;
     }
     
-    // 4. Check if cash is ZERO or NEGATIVE
     if (cash <= 0) {
         JOptionPane.showMessageDialog(this, 
             "💵 Please enter a valid cash amount greater than 0!\n\n" +
@@ -1197,11 +1228,10 @@ public class usermenu extends javax.swing.JFrame {
             "Invalid Payment", 
             JOptionPane.WARNING_MESSAGE);
         txtCash.requestFocus();
-        txtCash.selectAll(); // Select all text for easy re-entry
+        txtCash.selectAll();
         return;
     }
     
-    // 5. Check if cash is LESS THAN total
     if (cash < total) {
         JOptionPane.showMessageDialog(this, 
             "❌ Insufficient cash!\n\n" +
@@ -1216,7 +1246,6 @@ public class usermenu extends javax.swing.JFrame {
         return;
     }
     
-    // ✅ All validations passed - proceed with transaction
     try {
         Connection con = sqlconnector.getConnection();
         con.setAutoCommit(false);
@@ -1234,14 +1263,39 @@ public class usermenu extends javax.swing.JFrame {
             orderId = rsKeys.getInt(1);
         }
         
-        // 2. Insert Payment
+        // 2. Save each item from cart to order_items table
+        for (int i = 0; i < jTable1.getRowCount(); i++) {
+            // Get data from jTable1 (your cart table)
+            // Adjust column indexes based on YOUR table structure
+            int variantId = Integer.parseInt(jTable1.getValueAt(i, 0).toString()); // Column 0
+            String productName = jTable1.getValueAt(i, 1).toString(); // Column 1
+            String sizeName = jTable1.getValueAt(i, 2).toString(); // Column 2
+            int quantity = Integer.parseInt(jTable1.getValueAt(i, 3).toString()); // Column 3
+            double price = Double.parseDouble(jTable1.getValueAt(i, 4).toString()); // Column 4 (Price)
+            double subtotal = Double.parseDouble(jTable1.getValueAt(i, 5).toString()); // Column 5 (if needed)
+    
+    // ... rest of your insert code
+            
+            // Insert into order_items
+            String itemSQL = "INSERT INTO order_items (order_id, product_name, size_name, quantity, price, total) VALUES (?, ?, ?, ?, ?, ?)";
+            PreparedStatement pstItem = con.prepareStatement(itemSQL);
+            pstItem.setInt(1, orderId);
+            pstItem.setString(2, productName);
+            pstItem.setString(3, sizeName);
+            pstItem.setInt(4, quantity);
+            pstItem.setDouble(5, price);
+            pstItem.setDouble(6, subtotal);
+            pstItem.executeUpdate();
+        }
+        
+        // 3. Insert Payment
         String paySQL = "INSERT INTO payment (payment_date, payment_method, payment_status, amount_paid, order_id) VALUES (CURDATE(), 'Cash', 'Paid', ?, ?)";
         PreparedStatement pstPay = con.prepareStatement(paySQL);
         pstPay.setDouble(1, cash);
         pstPay.setInt(2, orderId);
         pstPay.executeUpdate();
         
-        // 3. Update Daily Sales
+        // 4. Update Daily Sales
         String salesSQL = "INSERT INTO daily_sales (sales_date, total_orders, total_sales_amount) VALUES (CURDATE(), 1, ?) ON DUPLICATE KEY UPDATE total_orders = total_orders + 1, total_sales_amount = total_sales_amount + ?";
         PreparedStatement pstSales = con.prepareStatement(salesSQL);
         pstSales.setDouble(1, total);
@@ -1269,21 +1323,10 @@ public class usermenu extends javax.swing.JFrame {
         pstSales.close();
         con.close();
         
-        records recPanel = new records();
-    desktoppane.add(recPanel);
-    recPanel.setVisible(true);
-    try {
-        recPanel.setMaximum(true);
-    } catch (java.beans.PropertyVetoException e) {
-        e.printStackTrace();
-    }
-        
     } catch (Exception e) {
         JOptionPane.showMessageDialog(this, "❌ Error: " + e.getMessage(), "Transaction Failed", JOptionPane.ERROR_MESSAGE);
         e.printStackTrace();
     }
-    
-
     
     }//GEN-LAST:event_recordpanelMouseClicked
 
@@ -1305,6 +1348,19 @@ public class usermenu extends javax.swing.JFrame {
     }
     }//GEN-LAST:event_resetpanelMouseClicked
 
+    private void startDateTime() {
+    Timer timer = new Timer(1000, e -> {
+        SimpleDateFormat timeFormat = new SimpleDateFormat("h:mm:ss a");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("EEEE, MM-dd-yyyy");
+        
+        String time = timeFormat.format(new Date());
+        String date = dateFormat.format(new Date());
+        
+        lblDateTime.setText(time + "  |  " + date);
+    });
+    timer.start();
+}
+    
     private void txtCashActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCashActionPerformed
         // TODO add your handling code here:
         calculateChange();
@@ -1352,6 +1408,7 @@ public class usermenu extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
     private javax.swing.JTextField jTextField1;
+    private javax.swing.JLabel lblDateTime;
     private javax.swing.JLabel lblbars;
     private javax.swing.JLabel lblcakes;
     private javax.swing.JLabel lblcash;

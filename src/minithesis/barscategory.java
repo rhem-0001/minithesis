@@ -1279,7 +1279,7 @@ public class barscategory extends javax.swing.JInternalFrame {
                 return;
             }
             
-            SizeOption selected = getSelectedSizeOption(cmbSizeButterscotch, "Brownies");
+            SizeOption selected = getSelectedSizeOption(cmbSizeButterscotch, "Butterscotch");
             if (selected == null) {
                 JOptionPane.showMessageDialog(this, "Please select a valid size!");
                 chkButterscotch.setSelected(false);
