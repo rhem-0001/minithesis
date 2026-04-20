@@ -32,7 +32,7 @@ public class usermenu extends javax.swing.JFrame {
         DefaultColor = new Color(255,255,255);
         ClickedColor = new Color(204,0,0); 
         
-        System.out.print("hello");
+        System.out.print("help");
     }
     
      // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
