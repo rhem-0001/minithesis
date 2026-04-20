@@ -159,11 +159,10 @@
                               <Component id="txtCash" max="32767" attributes="0"/>
                           </Group>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                              <Component id="jPanel5" max="32767" attributes="0"/>
-                              <Component id="txtChange" max="32767" attributes="0"/>
-                          </Group>
-                          <EmptySpace min="-2" pref="108" max="-2" attributes="0"/>
+                          <Component id="jPanel5" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="22" max="-2" attributes="0"/>
+                          <Component id="txtChange" min="-2" pref="27" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="59" max="-2" attributes="0"/>
                       </Group>
                   </Group>
               </Group>
@@ -818,6 +817,9 @@
           </Events>
         </Component>
         <Component class="javax.swing.JTextField" name="txtChange">
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtChangeActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>
