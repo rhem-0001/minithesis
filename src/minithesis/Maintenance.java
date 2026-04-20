@@ -109,7 +109,7 @@ public class Maintenance extends javax.swing.JFrame {
                 .addContainerGap())
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(139, 139, 139)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jtxTime, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jtxtDate, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -419,9 +419,7 @@ public class Maintenance extends javax.swing.JFrame {
 
     private void panelcategoryMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelcategoryMouseClicked
         // TODO add your handling code here:
-        category cat = new category();
-        desktoppane.removeAll();
-        desktoppane.add(cat).setVisible(true);
+
     }//GEN-LAST:event_panelcategoryMouseClicked
 
     private void panellogoutMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panellogoutMousePressed
