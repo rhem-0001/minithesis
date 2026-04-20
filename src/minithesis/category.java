@@ -373,7 +373,7 @@ public static category instance;
 
     private void btnsaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnsaveActionPerformed
         // TODO add your handling code here:
-        try {
+         try {
         Connection con = sqlconnector.getConnection();
         PreparedStatement pst;
         
@@ -406,13 +406,32 @@ public static category instance;
                 JOptionPane.showMessageDialog(null, "Size updated successfully!");
             }
             
+            
+            
             setDefault();
             populateSizeTable();
             
-            // Refresh foodmenu sizes
+            // Refresh foodmenu
             if (foodmenu.instance != null) {
-                foodmenu.instance.loadSizes();
+                foodmenu.instance.populatetable();
+                foodmenu.instance.loadCategories();
             }
+            
+            // Refresh usermenu combobox
+            if (usermenu.instance != null) {
+                usermenu.instance.loadCategories();
+            }
+            
+            // ✅ Refresh usermenu for size changes
+            if(usermenu.instance != null) {
+                Object cat = usermenu.instance.cmbusercategory.getSelectedItem();
+                if(cat instanceof usermenu.CategoryComboItem) {
+                    usermenu.instance.loadProductsByCategory(
+                        ((usermenu.CategoryComboItem)cat).getId()
+                    );
+                }
+            }
+            
             return;
         }
         
@@ -450,6 +469,17 @@ public static category instance;
                 foodmenu.instance.populatetable();
                 foodmenu.instance.loadCategories();
             }
+            
+            // ✅ Refresh usermenu combobox for category changes
+            if(usermenu.instance != null) {
+                usermenu.instance.loadCategories();
+            }
+            
+            // ✅ Refresh stocks.java table if open
+            if(stocks.instance != null) {
+                stocks.instance.populatetable();
+            }
+            
             return;
         }
         
@@ -505,15 +535,21 @@ public static category instance;
             
             JOptionPane.showMessageDialog(null, "Category deleted successfully!");
             populatetable();
+            
+            // Refresh foodmenu
+            if (foodmenu.instance != null) {
+                foodmenu.instance.populatetable();
+                foodmenu.instance.loadCategories();
+            }
+
+            // >>> ADD THIS BLOCK HERE <<<
+            // Refresh usermenu combobox
+            if (usermenu.instance != null) {
+                usermenu.instance.loadCategories();
+            }
         }
         
         setDefault();
-        
-        // Refresh foodmenu
-        if (foodmenu.instance != null) {
-            foodmenu.instance.populatetable();
-            foodmenu.instance.loadCategories();
-        }
         
     } catch(SQLException e) {
         JOptionPane.showMessageDialog(null, "Error deleting: " + e.getMessage());

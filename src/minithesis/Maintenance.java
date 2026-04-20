@@ -419,6 +419,9 @@ public class Maintenance extends javax.swing.JFrame {
 
     private void panelcategoryMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelcategoryMouseClicked
         // TODO add your handling code here:
+        category cat = new category();
+        desktoppane.removeAll();
+        desktoppane.add(cat).setVisible(true);
 
     }//GEN-LAST:event_panelcategoryMouseClicked
 

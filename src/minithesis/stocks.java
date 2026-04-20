@@ -332,6 +332,8 @@ public static stocks instance;
 
     private void btnsaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnsaveActionPerformed
         // TODO add your handling code here:
+        
+        
         try {
         // 1. GET THE NUMBER FROM THE TEXT FIELD
         // This line gets what the user typed and turns it into an integer
@@ -362,6 +364,15 @@ public static stocks instance;
         
         // 3. REFRESH THE TABLE
         populatetable();
+        
+        if(usermenu.instance != null) {
+            Object cat = usermenu.instance.cmbusercategory.getSelectedItem();
+        if(cat instanceof usermenu.CategoryComboItem) {
+            usermenu.instance.loadProductsByCategory(
+            ((usermenu.CategoryComboItem)cat).getId()
+            );
+        }
+        }
         
     } catch (NumberFormatException e) {
         JOptionPane.showMessageDialog(null, "Please enter a valid number!");
@@ -522,6 +533,15 @@ public static stocks instance;
             
             populatetable();
             
+            if(usermenu.instance != null) {
+                Object cat = usermenu.instance.cmbusercategory.getSelectedItem();
+            if(cat instanceof usermenu.CategoryComboItem) {
+                usermenu.instance.loadProductsByCategory(
+            ((usermenu.CategoryComboItem)cat).getId()
+                );
+            }
+            }
+            
             if (foodmenu.instance != null) {
                 foodmenu.instance.populatetable();
             }
@@ -559,6 +579,15 @@ public static stocks instance;
         pst.executeUpdate();
         
         populatetable();
+        
+        if(usermenu.instance != null) {
+            Object cat = usermenu.instance.cmbusercategory.getSelectedItem();
+        if(cat instanceof usermenu.CategoryComboItem) {
+            usermenu.instance.loadProductsByCategory(
+            ((usermenu.CategoryComboItem)cat).getId()
+            );
+        }
+        }
         
         if (foodmenu.instance != null) {
             foodmenu.instance.populatetable();

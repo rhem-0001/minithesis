@@ -4,6 +4,9 @@
  */
 package minithesis;
 
+import java.sql.*;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 /**
  *
  * @author Roged Martin
@@ -15,8 +18,55 @@ public class usercategory extends javax.swing.JInternalFrame {
      */
     public usercategory() {
         initComponents();
+        loadProductsForCategory();
     }
-
+    
+    public void loadProductsForCategory() {
+        try {
+            if (usermenu.instance == null) return;
+            
+            Object selected = usermenu.instance.cmbusercategory.getSelectedItem();
+            if (selected == null || selected.toString().equals("-- Select Category --")) {
+                DefaultTableModel model = (DefaultTableModel) tblusercategory.getModel();
+                model.setRowCount(0);
+                return;
+            }
+            
+            int categoryId = ((usermenu.CategoryComboItem)selected).getId();
+            
+            Connection con = sqlconnector.getConnection();
+            String sql = "SELECT p.product_id, p.product_name, s.size_name, " +
+                         "pv.price, pv.stock_quantity " +
+                         "FROM product p " +
+                         "JOIN product_variant pv ON p.product_id = pv.product_id " +
+                         "LEFT JOIN size s ON pv.size_id = s.size_id " +
+                         "WHERE p.category_id = ? AND p.is_active = 1 " +
+                         "ORDER BY p.product_name, s.size_name ASC";
+            
+            PreparedStatement pst = con.prepareStatement(sql);
+            pst.setInt(1, categoryId);
+            ResultSet rs = pst.executeQuery();
+            
+            DefaultTableModel model = (DefaultTableModel) tblusercategory.getModel();
+            model.setRowCount(0);
+            
+            while(rs.next()) {
+                model.addRow(new Object[]{
+                    rs.getInt("product_id"),
+                    rs.getString("product_name"),
+                    rs.getString("size_name"),
+                    rs.getDouble("price"),
+                    rs.getInt("stock_quantity")
+                });
+            }
+            con.close();
+            
+        } catch(Exception e) {
+            JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -44,6 +94,11 @@ public class usercategory extends javax.swing.JInternalFrame {
                 "Product ID", "Product Name"
             }
         ));
+        tblusercategory.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblusercategoryMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tblusercategory);
         if (tblusercategory.getColumnModel().getColumnCount() > 0) {
             tblusercategory.getColumnModel().getColumn(1).setResizable(false);
@@ -82,6 +137,87 @@ public class usercategory extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void tblusercategoryMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblusercategoryMouseClicked
+        // TODO add your handling code here:
+        if(evt.getClickCount() < 2) return;
+        int row = tblusercategory.getSelectedRow();
+        if(row == -1) return;
+        
+        try {
+            DefaultTableModel model = (DefaultTableModel) tblusercategory.getModel();
+            
+            int productId = (int) model.getValueAt(row, 0);
+            String productName = model.getValueAt(row, 1).toString();
+            String sizeName = model.getValueAt(row, 2).toString();
+            double price = (double) model.getValueAt(row, 3);
+            int stock = (int) model.getValueAt(row, 4);
+            
+            if(stock <= 0) {
+                JOptionPane.showMessageDialog(this, 
+                    productName + " (" + sizeName + ") is OUT OF STOCK", 
+                    "Unavailable", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+            
+            String qtyStr = JOptionPane.showInputDialog(
+                this, 
+                "Enter Quantity (Max: " + stock + ")\nPrice: ₱" + String.format("%.2f", price),
+                "Quantity", JOptionPane.QUESTION_MESSAGE
+            );
+            
+            if(qtyStr == null || qtyStr.trim().isEmpty()) return;
+            
+            int quantity = Integer.parseInt(qtyStr.trim());
+            if(quantity <= 0 || quantity > stock) {
+                JOptionPane.showMessageDialog(this, "Invalid quantity!");
+                return;
+            }
+            
+            double lineTotal = price * quantity;
+            
+            // ✅ Add to usermenu's receipt table (jTable1)
+            if(usermenu.instance != null) {
+                DefaultTableModel receiptModel = (DefaultTableModel) usermenu.instance.tblProducts.getModel();
+                receiptModel.addRow(new Object[]{
+                    productName, sizeName, quantity, 
+                    String.format("₱%.2f", price), 
+                    String.format("₱%.2f", lineTotal)
+                });
+                
+                // Update total
+                double currentTotal = 0;
+                if(!usermenu.instance.txtTotal.getText().isEmpty()) {
+                    currentTotal = Double.parseDouble(
+                        usermenu.instance.txtTotal.getText().replace("₱","").replace(",",""));
+                }
+                usermenu.instance.txtTotal.setText(String.format("₱%.2f", currentTotal + lineTotal));
+                
+                // Deduct stock in database
+                Connection con = sqlconnector.getConnection();
+                String updateSql = "UPDATE product_variant SET stock_quantity = stock_quantity - ? WHERE product_id = ? AND size_id = (SELECT size_id FROM size WHERE size_name = ?)";
+                PreparedStatement pst = con.prepareStatement(updateSql);
+                pst.setInt(1, quantity);
+                pst.setInt(2, productId);
+                pst.setString(3, sizeName);
+                pst.executeUpdate();
+                con.close();
+                
+                // Refresh tables
+                loadProductsForCategory();
+                if(stocks.instance != null) stocks.instance.populatetable();
+            }
+            
+            JOptionPane.showMessageDialog(this, 
+                "Added: " + quantity + " x " + productName, 
+                "Success", JOptionPane.INFORMATION_MESSAGE);
+            
+        } catch(Exception e) {
+            JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_tblusercategoryMouseClicked
+
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel jPanel1;
