@@ -165,53 +165,51 @@ public class records extends javax.swing.JInternalFrame {
 
     private void loadSalesData() {
         try {
-            Connection con = sqlconnector.getConnection();
-            Statement st = con.createStatement();
-            
-            // Daily Sales - Today's sales
-            String dailyQuery = "SELECT COALESCE(SUM(total_amount), 0) as daily_total " +
-                               "FROM orders WHERE DATE(order_date) = CURDATE()";
-            ResultSet rs1 = st.executeQuery(dailyQuery);
-            double dailySales = 0.0;
-            if (rs1.next()) {
-                dailySales = rs1.getDouble("daily_total");
-            }
-            
-            // Weekly Sales - Only show at end of week (Sunday)
-            double weeklySales = 0.0;
-            if (isEndOfWeek()) {
-                String weeklyQuery = "SELECT COALESCE(SUM(total_amount), 0) as weekly_total " +
-                                    "FROM orders WHERE YEARWEEK(order_date, 1) = YEARWEEK(CURDATE(), 1)";
-                ResultSet rs2 = st.executeQuery(weeklyQuery);
-                if (rs2.next()) {
-                    weeklySales = rs2.getDouble("weekly_total");
-                }
-                rs2.close();
-            }
-            // If not end of week, weeklySales stays 0.0
-            
-            // Total Sales - All time
-            String totalQuery = "SELECT COALESCE(SUM(total_amount), 0) as total_sales FROM orders";
-            ResultSet rs3 = st.executeQuery(totalQuery);
-            double totalSales = 0.0;
-            if (rs3.next()) {
-                totalSales = rs3.getDouble("total_sales");
-            }
-            
-            // Update the text fields
-            txtdailysales.setText(String.format("₱%.2f", dailySales));
-            txtweeklysales.setText(String.format("₱%.2f", weeklySales));
-            txttotalsales.setText(String.format("₱%.2f", totalSales));
-            
-            rs1.close();
-            rs3.close();
-            st.close();
-            con.close();
-            
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Error loading sales data: " + e.getMessage());
-            e.printStackTrace();
+        Connection con = sqlconnector.getConnection();
+        Statement st = con.createStatement();
+        
+        // 1. Daily Sales - Today's sales
+        String dailyQuery = "SELECT COALESCE(SUM(total_amount), 0) as daily_total " +
+                           "FROM orders WHERE DATE(order_date) = CURDATE()";
+        ResultSet rs1 = st.executeQuery(dailyQuery);
+        double dailySales = 0.0;
+        if (rs1.next()) {
+            dailySales = rs1.getDouble("daily_total");
         }
+        
+        // 2. Weekly Sales - Current Week (Monday to Sunday)
+        // Removed the "isEndOfWeek" restriction so it always shows the running total
+        String weeklyQuery = "SELECT COALESCE(SUM(total_amount), 0) as weekly_total " +
+                            "FROM orders WHERE YEARWEEK(order_date, 1) = YEARWEEK(CURDATE(), 1)";
+        ResultSet rs2 = st.executeQuery(weeklyQuery);
+        double weeklySales = 0.0;
+        if (rs2.next()) {
+            weeklySales = rs2.getDouble("weekly_total");
+        }
+        rs2.close();
+        
+        // 3. Total Sales - All time
+        String totalQuery = "SELECT COALESCE(SUM(total_amount), 0) as total_sales FROM orders";
+        ResultSet rs3 = st.executeQuery(totalQuery);
+        double totalSales = 0.0;
+        if (rs3.next()) {
+            totalSales = rs3.getDouble("total_sales");
+        }
+        
+        // Update the text fields with formatting
+        txtdailysales.setText(String.format("₱%.2f", dailySales));
+        txtweeklysales.setText(String.format("₱%.2f", weeklySales));
+        txttotalsales.setText(String.format("₱%.2f", totalSales));
+        
+        rs1.close();
+        rs3.close();
+        st.close();
+        con.close();
+        
+    } catch (SQLException e) {
+        JOptionPane.showMessageDialog(null, "Error loading sales data: " + e.getMessage());
+        e.printStackTrace();
+    }
     }
     
     private boolean isEndOfWeek() {
