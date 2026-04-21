@@ -26,6 +26,35 @@ public class usercategory extends javax.swing.JInternalFrame {
         tblusercategory.setAutoCreateRowSorter(false);
     }
     
+    public void loadAllProducts() {
+        try {
+            Connection con = sqlconnector.getConnection();
+            
+            // Fetch ALL products (no category filter)
+            String sql = "SELECT DISTINCT p.product_id, p.product_name " +
+                         "FROM product p " +
+                         "JOIN product_variant pv ON p.product_id = pv.product_id " +
+                         "ORDER BY p.product_name ASC";
+            
+            PreparedStatement pst = con.prepareStatement(sql);
+            ResultSet rs = pst.executeQuery();
+            
+            DefaultTableModel model = (DefaultTableModel) tblusercategory.getModel();
+            model.setRowCount(0); // Clear table
+            
+            while(rs.next()) {
+                model.addRow(new Object[]{
+                    rs.getInt("product_id"),
+                    rs.getString("product_name")
+                });
+            }
+            con.close();
+            
+        } catch(Exception e) {
+            JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
+        }
+    }
+    
     public void loadProductsForCategory() {
         try {
         // Get the selected category from the main menu

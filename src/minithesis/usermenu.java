@@ -41,6 +41,8 @@ public class usermenu extends javax.swing.JFrame {
         e.printStackTrace();
     }
         
+        uc.loadAllProducts(); 
+        
         startDateTime();
         
         DefaultColor = new Color(255,255,255);
