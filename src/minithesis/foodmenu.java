@@ -16,6 +16,32 @@ import javax.swing.table.DefaultTableModel;
 import java.util.HashMap;
 import java.util.Map;
 
+class GroupedProductRenderer extends javax.swing.table.DefaultTableCellRenderer {
+    @Override
+    public java.awt.Component getTableCellRendererComponent(javax.swing.JTable table, 
+            Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+        
+        super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+        
+        // Only apply to the "Product" column (Column Index 1)
+        if (column == 1) {
+            String currentProduct = value != null ? value.toString() : "";
+            
+            // Check the previous row
+            if (row > 0) {
+                String previousProduct = table.getValueAt(row - 1, 1).toString();
+                
+                // If current product matches previous, make text empty
+                if (currentProduct.equals(previousProduct)) {
+                    setText("");
+                    setForeground(isSelected ? table.getSelectionForeground() : table.getForeground());
+                }
+            }
+        }
+        
+        return this;
+    }
+}
 
 public class foodmenu extends javax.swing.JInternalFrame {
 private int currentVariantId = 0;
@@ -341,8 +367,10 @@ public static foodmenu instance;
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 598, Short.MAX_VALUE)
             .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 569, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         pack();
@@ -375,14 +403,16 @@ public void populatetable(){
     try{
         Connection con = sqlconnector.getConnection();
         
-        // Add status calculation in the query
+        // 1. ADDED 'pv.variant_id' to the SELECT statement
         String query = "SELECT p.product_code, p.product_name, c.category_name, " +
                        "s.size_name, pv.price, pv.stock_quantity, " +
-                       "CASE WHEN pv.stock_quantity > 0 THEN 'Available' ELSE 'Unavailable' END as status " +
+                       "CASE WHEN pv.stock_quantity > 0 THEN 'Available' ELSE 'Unavailable' END as status, " +
+                       "pv.variant_id " + // <--- THIS WAS MISSING
                        "FROM product p " +
                        "JOIN product_variant pv ON p.product_id = pv.product_id " +
                        "LEFT JOIN category c ON p.category_id = c.category_id " +
-                       "LEFT JOIN size s ON pv.size_id = s.size_id";
+                       "LEFT JOIN size s ON pv.size_id = s.size_id " +
+                       "ORDER BY c.category_name ASC, p.product_name ASC, s.size_name ASC";
         
         Statement st = con.createStatement();
         ResultSet rs = st.executeQuery(query);
@@ -392,23 +422,28 @@ public void populatetable(){
         
         while(rs.next()){
             Vector coldata = new Vector();
-            coldata.add(rs.getInt("product_code"));        // Column 0: Product Code
-            coldata.add(rs.getString("product_name"));     // Column 1: Product
-            coldata.add(rs.getString("category_name"));    // Column 2: Category
-            coldata.add(rs.getString("size_name"));        // Column 3: Size
-            coldata.add(rs.getDouble("price"));            // Column 4: Price
-            coldata.add(rs.getInt("stock_quantity"));      // Column 5: Quantity
-            coldata.add(rs.getString("status"));           // Column 6: Status
+            coldata.add(rs.getInt("product_code"));        // Col 0
+            coldata.add(rs.getString("product_name"));     // Col 1
+            coldata.add(rs.getString("category_name"));    // Col 2
+            coldata.add(rs.getString("size_name"));        // Col 3
+            coldata.add(rs.getDouble("price"));            // Col 4
+            coldata.add(rs.getInt("stock_quantity"));      // Col 5
+            coldata.add(rs.getString("status"));           // Col 6
+            coldata.add(rs.getInt("variant_id"));          // Col 7 (Hidden Variant ID)
             
             tblmodel.addRow(coldata);
         }
         
+        // Hide the VariantID column (Index 7)
         if (tblproduct.getColumnCount() > 7) {
             tblproduct.getColumnModel().getColumn(7).setMinWidth(0);
             tblproduct.getColumnModel().getColumn(7).setMaxWidth(0);
             tblproduct.getColumnModel().getColumn(7).setWidth(0);
         }
         
+        // Re-apply renderer
+        tblproduct.getColumnModel().getColumn(1).setCellRenderer(new GroupedProductRenderer());
+
     } catch(SQLException e){
         e.printStackTrace();
         JOptionPane.showMessageDialog(null, e);
@@ -510,7 +545,6 @@ public int generateProductCode(int categoryId) {
         // TODO add your handling code here:
     try {
         Connection con = sqlconnector.getConnection();
-        PreparedStatement pst;
 
         if (categoryId <= 0) {
             JOptionPane.showMessageDialog(null, "Please select a category.");
@@ -523,10 +557,10 @@ public int generateProductCode(int categoryId) {
         }
 
         String productName = txtproductname.getText().trim();
-        int sizeId = getSizeIdByName(cmbsize.getSelectedItem().toString());
+        int newSizeId = getSizeIdByName(cmbsize.getSelectedItem().toString());
         BigDecimal price = new BigDecimal(txtprice.getText());
         
-        // STEP 1: Get or Create Product (ONE entry in product table)
+        // STEP 1: Get or Create Product
         Integer existingProductId = getProductIDByName(productName);
         int productId;
         
@@ -541,7 +575,6 @@ public int generateProductCode(int categoryId) {
             pstProduct.setInt(3, categoryId);
             pstProduct.executeUpdate();
             
-            // Get the new product_id
             ResultSet keys = pstProduct.getGeneratedKeys();
             if (keys.next()) {
                 productId = keys.getInt(1);
@@ -553,13 +586,37 @@ public int generateProductCode(int categoryId) {
             productId = existingProductId;
         }
         
-        // STEP 2: Handle variant (size + price)
+        // STEP 2: UPDATE CATEGORY (if changed) - Only for existing products
+        if (check.equals("update") && existingProductId != null) {
+            String checkCatSql = "SELECT category_id FROM product WHERE product_id = ?";
+            PreparedStatement checkCatPst = con.prepareStatement(checkCatSql);
+            checkCatPst.setInt(1, productId);
+            ResultSet checkCatRs = checkCatPst.executeQuery();
+            
+            int oldCategoryId = 0;
+            if (checkCatRs.next()) {
+                oldCategoryId = checkCatRs.getInt("category_id");
+            }
+            checkCatRs.close();
+            checkCatPst.close();
+            
+            if (oldCategoryId != categoryId) {
+                String updateCatSql = "UPDATE product SET category_id = ? WHERE product_id = ?";
+                PreparedStatement updateCatPst = con.prepareStatement(updateCatSql);
+                updateCatPst.setInt(1, categoryId);
+                updateCatPst.setInt(2, productId);
+                updateCatPst.executeUpdate();
+                updateCatPst.close();
+            }
+        }
+        
+        // STEP 3: Handle variant (size + price)
         if (check.equals("add")) {
             // Check if this size already exists for this product
             String checkVariant = "SELECT variant_id FROM product_variant WHERE product_id = ? AND size_id = ?";
             PreparedStatement pstCheck = con.prepareStatement(checkVariant);
             pstCheck.setInt(1, productId);
-            pstCheck.setInt(2, sizeId);
+            pstCheck.setInt(2, newSizeId);
             ResultSet rsCheck = pstCheck.executeQuery();
             
             if (rsCheck.next()) {
@@ -568,32 +625,38 @@ public int generateProductCode(int categoryId) {
                 String updateVariant = "UPDATE product_variant SET price = ?, stock_quantity = ? WHERE variant_id = ?";
                 PreparedStatement pstUpdate = con.prepareStatement(updateVariant);
                 pstUpdate.setBigDecimal(1, price);
-                pstUpdate.setInt(2, 0); // stock_quantity
+                pstUpdate.setInt(2, 0);
                 pstUpdate.setInt(3, variantId);
                 pstUpdate.executeUpdate();
-                JOptionPane.showMessageDialog(null, "Size variant updated!");
+                JOptionPane.showMessageDialog(null, "Existing size variant updated!");
             } else {
                 // INSERT new variant
                 String insertVariant = "INSERT INTO product_variant (product_id, size_id, price, stock_quantity) VALUES (?, ?, ?, ?)";
                 PreparedStatement pstVariant = con.prepareStatement(insertVariant);
                 pstVariant.setInt(1, productId);
-                pstVariant.setInt(2, sizeId);
+                pstVariant.setInt(2, newSizeId);
                 pstVariant.setBigDecimal(3, price);
-                pstVariant.setInt(4, 0); // stock_quantity
+                pstVariant.setInt(4, 0);
                 pstVariant.executeUpdate();
-                JOptionPane.showMessageDialog(null, "New size added to product!");
+                JOptionPane.showMessageDialog(null, "New size variant added to product!");
             }
             
         } else if (check.equals("update")) {
-            // UPDATE existing variant (using currentVariantId)
+            // UPDATE mode: ONLY update the selected variant (currentVariantId)
+            // DO NOT create new variants or check for duplicates
             if (currentVariantId > 0) {
-                String updateVariant = "UPDATE product_variant SET price = ?, stock_quantity = ? WHERE variant_id = ?";
+                // Simply UPDATE the existing variant with new values
+                String updateVariant = "UPDATE product_variant SET size_id = ?, price = ?, stock_quantity = ? WHERE variant_id = ?";
                 PreparedStatement pstUpdate = con.prepareStatement(updateVariant);
-                pstUpdate.setBigDecimal(1, price);
-                pstUpdate.setInt(2, 0);
-                pstUpdate.setInt(3, currentVariantId);
+                pstUpdate.setInt(1, newSizeId);
+                pstUpdate.setBigDecimal(2, price);
+                pstUpdate.setInt(3, 0); // stock_quantity
+                pstUpdate.setInt(4, currentVariantId);
                 pstUpdate.executeUpdate();
-                JOptionPane.showMessageDialog(null, "Variant updated!");
+                
+                JOptionPane.showMessageDialog(null, "Variant updated successfully!");
+            } else {
+                JOptionPane.showMessageDialog(null, "No variant selected to update!");
             }
         }
 
@@ -626,20 +689,51 @@ private int getSizeIdByName(String sizeName) {
             // TODO add your handling code here:
         try {
         int selectedRow = tblproduct.getSelectedRow();
-        if (selectedRow == -1) return;
+        if (selectedRow == -1) {
+            JOptionPane.showMessageDialog(null, "Please select a row first!");
+            return;
+        }
 
         DefaultTableModel model = (DefaultTableModel) tblproduct.getModel();
         
-        // Get values from table
-        String productCode = model.getValueAt(selectedRow, 0).toString();
-        String productName = model.getValueAt(selectedRow, 1).toString();
-        String category = model.getValueAt(selectedRow, 2).toString();
-        String size = model.getValueAt(selectedRow, 3).toString();
-        String price = model.getValueAt(selectedRow, 4).toString();
-        String quantity = model.getValueAt(selectedRow, 5).toString();
+        // Debug: Print what we're getting
+        System.out.println("=== Row " + selectedRow + " clicked ===");
+        for(int i = 0; i < model.getColumnCount(); i++) {
+            Object val = model.getValueAt(selectedRow, i);
+            System.out.println("Col " + i + ": " + val);
+        }
         
-        // Get hidden variant_id from column 6
-        int variantId = Integer.parseInt(model.getValueAt(selectedRow, 6).toString());
+        // Get values from table safely
+        String productName = "";
+        Object prodObj = model.getValueAt(selectedRow, 1);
+        if (prodObj != null && !prodObj.toString().isEmpty()) {
+            productName = prodObj.toString();
+        } else {
+            // If current row has empty product name, search upward to find it
+            for(int i = selectedRow - 1; i >= 0; i--) {
+                Object val = model.getValueAt(i, 1);
+                if (val != null && !val.toString().isEmpty()) {
+                    productName = val.toString();
+                    break;
+                }
+            }
+        }
+        
+        String category = model.getValueAt(selectedRow, 2) != null ? model.getValueAt(selectedRow, 2).toString() : "";
+        String size = model.getValueAt(selectedRow, 3) != null ? model.getValueAt(selectedRow, 3).toString() : "";
+        String price = model.getValueAt(selectedRow, 4) != null ? model.getValueAt(selectedRow, 4).toString() : "";
+        
+        // Get Variant ID from hidden column (Index 7)
+        Object variantObj = model.getValueAt(selectedRow, 7);
+        int variantId = 0;
+        if (variantObj != null) {
+            variantId = Integer.parseInt(variantObj.toString());
+            System.out.println("Variant ID found: " + variantId);
+        } else {
+            System.out.println("ERROR: Variant ID is NULL!");
+            JOptionPane.showMessageDialog(null, "Cannot find variant ID. Please try clicking a different row.");
+            return;
+        }
         
         // Fill form
         txtproductname.setText(productName);
@@ -649,13 +743,15 @@ private int getSizeIdByName(String sizeName) {
         
         // Store variantId for updates
         currentVariantId = variantId;
+        System.out.println("currentVariantId set to: " + currentVariantId);
         
         btnupdate.setEnabled(true);
         btnadd.setEnabled(false);
         btndelete.setEnabled(true);
 
     } catch (Exception e) {
-        JOptionPane.showMessageDialog(null, e);
+        JOptionPane.showMessageDialog(null, "Error: " + e.getMessage());
+        e.printStackTrace();
     }
     }//GEN-LAST:event_tblproductMouseClicked
 

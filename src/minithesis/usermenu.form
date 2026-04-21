@@ -318,10 +318,10 @@
                   <Properties>
                     <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
                       <Table columnCount="6" rowCount="0">
-                        <Column editable="true" title="Product ID" type="java.lang.Integer"/>
+                        <Column editable="true" title="Product ID" type="java.lang.String"/>
                         <Column editable="true" title="Product Name" type="java.lang.String"/>
                         <Column editable="true" title="Size" type="java.lang.String"/>
-                        <Column editable="true" title="Quantity" type="java.lang.Integer"/>
+                        <Column editable="true" title="Quantity" type="java.lang.String"/>
                         <Column editable="true" title="Price" type="java.lang.String"/>
                         <Column editable="true" title="SubTotal" type="java.lang.String"/>
                       </Table>
@@ -366,6 +366,7 @@
                   </Properties>
                   <Events>
                     <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="tblProductsMouseClicked"/>
+                    <EventHandler event="mouseEntered" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="tblProductsMouseEntered"/>
                   </Events>
                   <AuxValues>
                     <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
