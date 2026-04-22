@@ -70,9 +70,12 @@ public class Maintenance extends javax.swing.JFrame {
         panelstocks = new javax.swing.JPanel();
         lblstocks = new javax.swing.JLabel();
         panelrecords = new javax.swing.JPanel();
-        lblrecords = new javax.swing.JLabel();
+        lblrecords1 = new javax.swing.JLabel();
         panellogout = new javax.swing.JPanel();
         jLabel9 = new javax.swing.JLabel();
+        panelinventoryreports = new javax.swing.JPanel();
+        lblinventory = new javax.swing.JLabel();
+        lblreports = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -278,25 +281,25 @@ public class Maintenance extends javax.swing.JFrame {
             }
         });
 
-        lblrecords.setFont(new java.awt.Font("Script MT Bold", 0, 24)); // NOI18N
-        lblrecords.setForeground(new java.awt.Color(102, 0, 0));
-        lblrecords.setText("Records");
+        lblrecords1.setFont(new java.awt.Font("Script MT Bold", 0, 24)); // NOI18N
+        lblrecords1.setForeground(new java.awt.Color(102, 0, 0));
+        lblrecords1.setText("Records");
 
         javax.swing.GroupLayout panelrecordsLayout = new javax.swing.GroupLayout(panelrecords);
         panelrecords.setLayout(panelrecordsLayout);
         panelrecordsLayout.setHorizontalGroup(
             panelrecordsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelrecordsLayout.createSequentialGroup()
-                .addGap(26, 26, 26)
-                .addComponent(lblrecords)
+                .addGap(28, 28, 28)
+                .addComponent(lblrecords1)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         panelrecordsLayout.setVerticalGroup(
             panelrecordsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelrecordsLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(lblrecords)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(lblrecords1, javax.swing.GroupLayout.DEFAULT_SIZE, 39, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         panellogout.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -330,6 +333,46 @@ public class Maintenance extends javax.swing.JFrame {
                 .addContainerGap(14, Short.MAX_VALUE))
         );
 
+        panelinventoryreports.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                panelinventoryreportsMouseClicked(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                panelinventoryreportsMousePressed(evt);
+            }
+        });
+
+        lblinventory.setFont(new java.awt.Font("Script MT Bold", 0, 24)); // NOI18N
+        lblinventory.setForeground(new java.awt.Color(102, 0, 0));
+        lblinventory.setText("Inventory");
+
+        lblreports.setFont(new java.awt.Font("Script MT Bold", 0, 24)); // NOI18N
+        lblreports.setForeground(new java.awt.Color(102, 0, 0));
+        lblreports.setText("Reports");
+
+        javax.swing.GroupLayout panelinventoryreportsLayout = new javax.swing.GroupLayout(panelinventoryreports);
+        panelinventoryreports.setLayout(panelinventoryreportsLayout);
+        panelinventoryreportsLayout.setHorizontalGroup(
+            panelinventoryreportsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelinventoryreportsLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(panelinventoryreportsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panelinventoryreportsLayout.createSequentialGroup()
+                        .addGap(6, 6, 6)
+                        .addComponent(lblreports))
+                    .addComponent(lblinventory))
+                .addGap(22, 22, 22))
+        );
+        panelinventoryreportsLayout.setVerticalGroup(
+            panelinventoryreportsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelinventoryreportsLayout.createSequentialGroup()
+                .addContainerGap(8, Short.MAX_VALUE)
+                .addComponent(lblinventory)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblreports)
+                .addGap(12, 12, 12))
+        );
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -339,25 +382,28 @@ public class Maintenance extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(paneloverview, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(panelfoodmenu, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(panelcategory, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(panelstocks, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(panelrecords, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(panellogout, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(panellogout, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(panelcategory, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(panelinventoryreports, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(18, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(22, 22, 22)
+                .addContainerGap()
                 .addComponent(paneloverview, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(29, 29, 29)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(panelfoodmenu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(26, 26, 26)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(panelcategory, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(32, 32, 32)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(panelstocks, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(35, 35, 35)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(panelrecords, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(panelinventoryreports, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(panellogout, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -398,6 +444,7 @@ public class Maintenance extends javax.swing.JFrame {
         panellogout.setBackground(DefaultColor);
         panelrecords.setBackground(DefaultColor);
         paneloverview.setBackground(DefaultColor);
+        panelinventoryreports.setBackground(DefaultColor);
     }//GEN-LAST:event_panelfoodmenuMousePressed
 
     private void panelcategoryMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelcategoryMousePressed
@@ -408,6 +455,7 @@ public class Maintenance extends javax.swing.JFrame {
         panellogout.setBackground(DefaultColor);
         panelrecords.setBackground(DefaultColor);
         paneloverview.setBackground(DefaultColor);
+        panelinventoryreports.setBackground(DefaultColor);
     }//GEN-LAST:event_panelcategoryMousePressed
 
     private void panelfoodmenuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelfoodmenuMouseClicked
@@ -433,6 +481,7 @@ public class Maintenance extends javax.swing.JFrame {
         panellogout.setBackground(ClickedColor);
         panelrecords.setBackground(DefaultColor);
         paneloverview.setBackground(DefaultColor);
+        panelinventoryreports.setBackground(DefaultColor);
     }//GEN-LAST:event_panellogoutMousePressed
 
     private void panellogoutMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panellogoutMouseClicked
@@ -455,6 +504,7 @@ public class Maintenance extends javax.swing.JFrame {
         panellogout.setBackground(DefaultColor);
         panelrecords.setBackground(DefaultColor);
         paneloverview.setBackground(DefaultColor);
+        panelinventoryreports.setBackground(DefaultColor);
     }//GEN-LAST:event_panelstocksMousePressed
 
     private void panelstocksMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelstocksMouseClicked
@@ -472,6 +522,7 @@ public class Maintenance extends javax.swing.JFrame {
         panellogout.setBackground(DefaultColor);
         panelrecords.setBackground(ClickedColor);
         paneloverview.setBackground(DefaultColor);
+        panelinventoryreports.setBackground(DefaultColor);
     }//GEN-LAST:event_panelrecordsMousePressed
 
     private void panelrecordsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelrecordsMouseClicked
@@ -496,7 +547,26 @@ public class Maintenance extends javax.swing.JFrame {
         panellogout.setBackground(DefaultColor);
         panelrecords.setBackground(DefaultColor);
         paneloverview.setBackground(ClickedColor);
+        panelinventoryreports.setBackground(DefaultColor);
     }//GEN-LAST:event_paneloverviewMouseEntered
+
+    private void panelinventoryreportsMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelinventoryreportsMousePressed
+        // TODO add your handling code here:
+        panelstocks.setBackground(DefaultColor);
+        panelfoodmenu.setBackground(DefaultColor);
+        panelcategory.setBackground(DefaultColor);
+        panellogout.setBackground(DefaultColor);
+        panelrecords.setBackground(DefaultColor);
+        paneloverview.setBackground(DefaultColor);
+        panelinventoryreports.setBackground(ClickedColor);
+    }//GEN-LAST:event_panelinventoryreportsMousePressed
+
+    private void panelinventoryreportsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelinventoryreportsMouseClicked
+        // TODO add your handling code here:
+        inventoryreports ir = new inventoryreports();
+        desktoppane.removeAll();
+        desktoppane.add(ir).setVisible(true);
+    }//GEN-LAST:event_panelinventoryreportsMouseClicked
 
     /**
      * @param args the command line arguments
@@ -556,11 +626,14 @@ public class Maintenance extends javax.swing.JFrame {
     private javax.swing.JLabel lblcategory;
     private javax.swing.JLabel lblcategory1;
     private javax.swing.JLabel lblfoodmenu;
+    private javax.swing.JLabel lblinventory;
     private javax.swing.JLabel lbloverview;
-    private javax.swing.JLabel lblrecords;
+    private javax.swing.JLabel lblrecords1;
+    private javax.swing.JLabel lblreports;
     private javax.swing.JLabel lblstocks;
     private javax.swing.JPanel panelcategory;
     private javax.swing.JPanel panelfoodmenu;
+    private javax.swing.JPanel panelinventoryreports;
     private javax.swing.JPanel panellogout;
     private javax.swing.JPanel paneloverview;
     private javax.swing.JPanel panelrecords;

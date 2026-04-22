@@ -14,6 +14,8 @@ import java.awt.*;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
+
+
 /**
  *
  * @author janxt
@@ -33,6 +35,7 @@ public static stocks instance;
         instance = this;
         initComponents();
         populatetable();
+        populatePullOutTable();
         
         
     }
@@ -66,6 +69,8 @@ public static stocks instance;
         btndelete = new javax.swing.JButton();
         btnDecreaseQty = new javax.swing.JButton();
         btnIncreaseQty = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tblquantityreason = new javax.swing.JTable();
 
         setPreferredSize(new java.awt.Dimension(969, 634));
 
@@ -247,7 +252,7 @@ public static stocks instance;
                         .addComponent(btnupdate)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnsave)))
-                .addContainerGap(107, Short.MAX_VALUE))
+                .addContainerGap(119, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -275,25 +280,35 @@ public static stocks instance;
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btndelete)
                     .addComponent(btnclose))
-                .addGap(377, 377, 377))
+                .addGap(119, 119, 119))
         );
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+            .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addContainerGap()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                .addContainerGap(11, Short.MAX_VALUE)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
+
+        tblquantityreason.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
+            },
+            new String [] {
+                "Product", "Size", "Pull Outs", "Reason", "Date"
+            }
+        ));
+        jScrollPane2.setViewportView(tblquantityreason);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -301,19 +316,26 @@ public static stocks instance;
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 526, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane2)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 526, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(24, 24, 24)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 558, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 245, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -329,58 +351,6 @@ public static stocks instance;
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void btnsaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnsaveActionPerformed
-        // TODO add your handling code here:
-        
-        
-        try {
-        // 1. GET THE NUMBER FROM THE TEXT FIELD
-        // This line gets what the user typed and turns it into an integer
-        String textValue = txtquantity.getText();
-        
-        // Check if it's empty to avoid errors
-        if (textValue.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Please enter a quantity!");
-            return;
-        }
-
-        int newQuantity = Integer.parseInt(textValue);
-
-        // 2. UPDATE THE DATABASE
-        Connection con = sqlconnector.getConnection();
-        
-        // Use the 'stockID' (which is actually the variant_id) you saved when clicking the row
-        String query = "UPDATE product_variant SET stock_quantity = ? WHERE variant_id = ?";
-        PreparedStatement pst = con.prepareStatement(query);
-        
-        // Set the parameters
-        pst.setInt(1, newQuantity);  // <--- This uses the value from the text field
-        pst.setInt(2, stockID);      // <--- This uses the ID from the selected row
-        
-        pst.executeUpdate();
-        
-        JOptionPane.showMessageDialog(null, "Stock updated successfully!");
-        
-        // 3. REFRESH THE TABLE
-        populatetable();
-        
-        if(usermenu.instance != null) {
-            Object cat = usermenu.instance.cmbusercategory.getSelectedItem();
-        if(cat instanceof usermenu.CategoryComboItem) {
-            usermenu.instance.loadProductsByCategory(
-            ((usermenu.CategoryComboItem)cat).getId()
-            );
-        }
-        }
-        
-    } catch (NumberFormatException e) {
-        JOptionPane.showMessageDialog(null, "Please enter a valid number!");
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(null, "Error: " + e.getMessage());
-    }
-
-    }//GEN-LAST:event_btnsaveActionPerformed
 
     private void tblstockMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblstockMouseClicked
         // TODO add your handling code here:
@@ -416,68 +386,261 @@ public static stocks instance;
     }
     }//GEN-LAST:event_tblstockMouseClicked
 
-    private void btnupdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnupdateActionPerformed
-        // TODO add your handling code here:   
-        check = "update";
-        makeEnabled();
-    
-    // Enable quantity field for direct input
-        txtquantity.setEnabled(true);
-        txtquantity.setEditable(true);
-        
-    // Enable the + and - buttons
-        btnIncreaseQty.setEnabled(true);
-        btnDecreaseQty.setEnabled(true);
-    
-    // Disable update button, enable save button
-        btnupdate.setEnabled(false);
-        btnsave.setEnabled(true);
-    
-    // Keep delete button enabled
-        btndelete.setEnabled(true);
-    }//GEN-LAST:event_btnupdateActionPerformed
+    private void btnIncreaseQtyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIncreaseQtyActionPerformed
+        // TODO add your handling code here:
+        if (stockID == 0) {
+            JOptionPane.showMessageDialog(null, "Please select a product first from the table!");
+            return;
+        }
+
+        try {
+            String currentText = txtquantity.getText().trim();
+            int currentQty = currentText.isEmpty() ? 0 : Integer.parseInt(currentText);
+
+            int newQty = currentQty + 1;
+            txtquantity.setText(String.valueOf(newQty));
+
+            // Update product_variant table (not product!)
+            Connection con = sqlconnector.getConnection();
+            String query = "UPDATE product_variant SET stock_quantity = ? WHERE variant_id = ?";
+            PreparedStatement pst = con.prepareStatement(query);
+            pst.setInt(1, newQty);
+            pst.setInt(2, stockID); // variant_id
+            pst.executeUpdate();
+
+            populatetable();
+
+            if(usermenu.instance != null) {
+                Object cat = usermenu.instance.cmbusercategory.getSelectedItem();
+                if(cat instanceof usermenu.CategoryComboItem) {
+                    usermenu.instance.loadProductsByCategory(
+                        ((usermenu.CategoryComboItem)cat).getId()
+                    );
+                }
+            }
+
+            if (foodmenu.instance != null) {
+                foodmenu.instance.populatetable();
+            }
+
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "Please enter a valid number!");
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error: " + e.getMessage());
+        }
+    }//GEN-LAST:event_btnIncreaseQtyActionPerformed
+
+    private void btnDecreaseQtyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDecreaseQtyActionPerformed
+        // TODO add your handling code here:
+        if (stockID == 0) {
+            JOptionPane.showMessageDialog(null, "Please select a product first!");
+            return;
+        }
+
+        try {
+            String currentText = txtquantity.getText().trim();
+            if (currentText.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Quantity cannot be empty!");
+                return;
+            }
+
+            int currentQty = Integer.parseInt(currentText);
+            if (currentQty <= 0) {
+                JOptionPane.showMessageDialog(null, "Quantity cannot be negative!");
+                return;
+            }
+
+            // Show reason dialog
+            String reason = showReasonDialog();
+            if (reason == null) return; // User cancelled
+
+            int newQty = currentQty - 1;
+            int quantityPulled = 1;
+
+            // === WRAP ALL JDBC CODE IN TRY-CATCH ===
+            Connection con = null;
+            PreparedStatement pst = null;
+            PreparedStatement getProductStmt = null;
+            PreparedStatement logStmt = null;
+            ResultSet rs = null;
+
+            try {
+                con = sqlconnector.getConnection();
+                if (con == null) {
+                    JOptionPane.showMessageDialog(null, "Database connection failed!");
+                    return;
+                }
+
+                // 1. Update stock quantity
+                String updateQuery = "UPDATE product_variant SET stock_quantity = ? WHERE variant_id = ?";
+                pst = con.prepareStatement(updateQuery);
+                pst.setInt(1, newQty);
+                pst.setInt(2, stockID);
+                pst.executeUpdate();
+
+                // 2. Get product details for logging
+                String getProductQuery = "SELECT p.product_code, p.product_name " +
+                "FROM product p " +
+                "JOIN product_variant pv ON p.product_id = pv.product_id " +
+                "WHERE pv.variant_id = ?";
+                getProductStmt = con.prepareStatement(getProductQuery);
+                getProductStmt.setInt(1, stockID);
+                rs = getProductStmt.executeQuery();
+
+                int productCode = 0;
+                String productName = "";
+                if (rs.next()) {
+                    productCode = rs.getInt("product_code");
+                    productName = rs.getString("product_name");
+                }
+
+                // 3. Log to tblquantityreason
+                String logQuery = "INSERT INTO tblquantityreason (variant_id, product_code, product_name, quantity_pulled, reason) VALUES (?, ?, ?, ?, ?)";
+                logStmt = con.prepareStatement(logQuery);
+                logStmt.setInt(1, stockID);
+                logStmt.setInt(2, productCode);
+                logStmt.setString(3, productName);
+                logStmt.setInt(4, quantityPulled);
+                logStmt.setString(5, reason);
+                logStmt.executeUpdate();
+
+                JOptionPane.showMessageDialog(null, "Stock decreased and pull-out recorded!");
+
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(null, "Database error: " + e.getMessage());
+                e.printStackTrace();
+            } finally {
+                // Close all resources
+                try {
+                    if (rs != null) rs.close();
+                    if (pst != null) pst.close();
+                    if (getProductStmt != null) getProductStmt.close();
+                    if (logStmt != null) logStmt.close();
+                    if (con != null) con.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            // 4. Refresh tables
+            populatetable();
+            populatePullOutTable();
+
+            txtquantity.setText(String.valueOf(newQty));
+            originalQuantity = newQty;
+
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "Please enter a valid number!");
+        }
+    }//GEN-LAST:event_btnDecreaseQtyActionPerformed
+
+    private void btndeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btndeleteActionPerformed
+        // TODO add your handling code here:
+        if (stockID == 0) {
+            JOptionPane.showMessageDialog(null, "Please select a variant to delete.");
+            return;
+        }
+
+        int confirm = JOptionPane.showConfirmDialog(null,
+            "Delete this size variant?",
+            "Confirm Delete",
+            JOptionPane.YES_NO_OPTION);
+        if (confirm != JOptionPane.YES_OPTION) return;
+
+        try{
+            Connection con = sqlconnector.getConnection();
+
+            // Delete ONLY the variant from product_variant table
+            PreparedStatement pst = con.prepareStatement("DELETE FROM product_variant WHERE variant_id = ?");
+            pst.setInt(1, stockID); // stockID is variant_id
+            pst.executeUpdate();
+
+            JOptionPane.showMessageDialog(null, "Variant deleted successfully!");
+            setDefault();
+
+            if (foodmenu.instance != null) {
+                foodmenu.instance.populatetable();
+            }
+        } catch(SQLException e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
+    }//GEN-LAST:event_btndeleteActionPerformed
 
     private void btncloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncloseActionPerformed
         // TODO add your handling code here:
         this.dispose();
     }//GEN-LAST:event_btncloseActionPerformed
 
-    private void btndeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btndeleteActionPerformed
-        // TODO add your handling code here:
-        if (stockID == 0) {
-        JOptionPane.showMessageDialog(null, "Please select a variant to delete.");
-        return;
-    }
-    
-    int confirm = JOptionPane.showConfirmDialog(null, 
-        "Delete this size variant?", 
-        "Confirm Delete", 
-        JOptionPane.YES_NO_OPTION);
-    if (confirm != JOptionPane.YES_OPTION) return;
-    
-    try{
-        Connection con = sqlconnector.getConnection();
-        
-        // Delete ONLY the variant from product_variant table
-        PreparedStatement pst = con.prepareStatement("DELETE FROM product_variant WHERE variant_id = ?");
-        pst.setInt(1, stockID); // stockID is variant_id
-        pst.executeUpdate();
-
-        JOptionPane.showMessageDialog(null, "Variant deleted successfully!");
-        setDefault();
-        
-        if (foodmenu.instance != null) {
-            foodmenu.instance.populatetable();
-        }   
-    } catch(SQLException e) {
-        JOptionPane.showMessageDialog(null, e);
-    }
-    }//GEN-LAST:event_btndeleteActionPerformed
-
-    private void txtquantityActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtquantityActionPerformed
+    private void btnsaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnsaveActionPerformed
         // TODO add your handling code here:
 
-    }//GEN-LAST:event_txtquantityActionPerformed
+        try {
+            // 1. GET THE NUMBER FROM THE TEXT FIELD
+            // This line gets what the user typed and turns it into an integer
+            String textValue = txtquantity.getText();
+
+            // Check if it's empty to avoid errors
+            if (textValue.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Please enter a quantity!");
+                return;
+            }
+
+            int newQuantity = Integer.parseInt(textValue);
+
+            // 2. UPDATE THE DATABASE
+            Connection con = sqlconnector.getConnection();
+
+            // Use the 'stockID' (which is actually the variant_id) you saved when clicking the row
+            String query = "UPDATE product_variant SET stock_quantity = ? WHERE variant_id = ?";
+            PreparedStatement pst = con.prepareStatement(query);
+
+            // Set the parameters
+            pst.setInt(1, newQuantity);  // <--- This uses the value from the text field
+            pst.setInt(2, stockID);      // <--- This uses the ID from the selected row
+
+            pst.executeUpdate();
+
+            JOptionPane.showMessageDialog(null, "Stock updated successfully!");
+
+            // 3. REFRESH THE TABLE
+            populatetable();
+
+            if(usermenu.instance != null) {
+                Object cat = usermenu.instance.cmbusercategory.getSelectedItem();
+                if(cat instanceof usermenu.CategoryComboItem) {
+                    usermenu.instance.loadProductsByCategory(
+                        ((usermenu.CategoryComboItem)cat).getId()
+                    );
+                }
+            }
+
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "Please enter a valid number!");
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error: " + e.getMessage());
+        }
+    }//GEN-LAST:event_btnsaveActionPerformed
+
+    private void btnupdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnupdateActionPerformed
+        // TODO add your handling code here:
+        check = "update";
+        makeEnabled();
+
+        // Enable quantity field for direct input
+        txtquantity.setEnabled(true);
+        txtquantity.setEditable(true);
+
+        // Enable the + and - buttons
+        btnIncreaseQty.setEnabled(true);
+        btnDecreaseQty.setEnabled(true);
+
+        // Disable update button, enable save button
+        btnupdate.setEnabled(false);
+        btnsave.setEnabled(true);
+
+        // Keep delete button enabled
+        btndelete.setEnabled(true);
+    }//GEN-LAST:event_btnupdateActionPerformed
 
     private void txtSizeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSizeActionPerformed
         // TODO add your handling code here:
@@ -487,171 +650,107 @@ public static stocks instance;
         // TODO add your handling code here:
     }//GEN-LAST:event_txtproductActionPerformed
 
-    private void btnDecreaseQtyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDecreaseQtyActionPerformed
+    private void txtquantityActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtquantityActionPerformed
         // TODO add your handling code here:
-        if (stockID == 0) {
-            JOptionPane.showMessageDialog(null, "Please select a product first from the table!");
-            return;
-        }
-        
-        try {
-            String currentText = txtquantity.getText().trim();
-            int currentQty = currentText.isEmpty() ? 0 : Integer.parseInt(currentText);
-            
-            if (currentQty <= 0) {
-                JOptionPane.showMessageDialog(null, "Quantity cannot be negative!");
-                return;
-            }
-            
-            // === SHOW REASON POPUP BEFORE DEDUCTING ===
-            String reason = showReasonDialog();
-            
-            // If user clicked CANCEL, stop here (do not update)
-            if (reason == null) {
-                return; 
-            }
-            
-            // User confirmed - proceed with deduction
-            int newQty = currentQty - 1;
-            txtquantity.setText(String.valueOf(newQty));
-            
-            // Update database WITH THE REASON
-            Connection con = sqlconnector.getConnection();
-            String query = "UPDATE product_variant SET stock_quantity = ? WHERE variant_id = ?";
-            PreparedStatement pst = con.prepareStatement(query);
-            pst.setInt(1, newQty);
-            pst.setInt(2, stockID);
-            pst.executeUpdate();
-            
-            // TODO: If you have a 'reason_log' table, insert the reason here:
-            // String logQuery = "INSERT INTO stock_log (variant_id, change_amount, reason, changed_at) VALUES (?, ?, ?, NOW())";
-            // PreparedStatement logStmt = con.prepareStatement(logQuery);
-            // logStmt.setInt(1, stockID);
-            // logStmt.setInt(2, -1); // -1 because we removed one
-            // logStmt.setString(3, reason);
-            // logStmt.executeUpdate();
-            
-            populatetable();
-            
-            if(usermenu.instance != null) {
-                Object cat = usermenu.instance.cmbusercategory.getSelectedItem();
-            if(cat instanceof usermenu.CategoryComboItem) {
-                usermenu.instance.loadProductsByCategory(
-            ((usermenu.CategoryComboItem)cat).getId()
-                );
-            }
-            }
-            
-            if (foodmenu.instance != null) {
-                foodmenu.instance.populatetable();
-            }
-            
-            // Update our tracker
-            originalQuantity = newQty;
-            
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(null, "Please enter a valid number!");
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Error: " + e.getMessage());
-        }
-    }//GEN-LAST:event_btnDecreaseQtyActionPerformed
-
-    private void btnIncreaseQtyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIncreaseQtyActionPerformed
-        // TODO add your handling code here:
-        if (stockID == 0) {
-        JOptionPane.showMessageDialog(null, "Please select a product first from the table!");
-        return;
-    }
-    
-    try {
-        String currentText = txtquantity.getText().trim();
-        int currentQty = currentText.isEmpty() ? 0 : Integer.parseInt(currentText);
-        
-        int newQty = currentQty + 1;
-        txtquantity.setText(String.valueOf(newQty));
-        
-        // Update product_variant table (not product!)
-        Connection con = sqlconnector.getConnection();
-        String query = "UPDATE product_variant SET stock_quantity = ? WHERE variant_id = ?";
-        PreparedStatement pst = con.prepareStatement(query);
-        pst.setInt(1, newQty);
-        pst.setInt(2, stockID); // variant_id
-        pst.executeUpdate();
-        
-        populatetable();
-        
-        if(usermenu.instance != null) {
-            Object cat = usermenu.instance.cmbusercategory.getSelectedItem();
-        if(cat instanceof usermenu.CategoryComboItem) {
-            usermenu.instance.loadProductsByCategory(
-            ((usermenu.CategoryComboItem)cat).getId()
-            );
-        }
-        }
-        
-        if (foodmenu.instance != null) {
-            foodmenu.instance.populatetable();
-        }
-        
-    } catch (NumberFormatException e) {
-        JOptionPane.showMessageDialog(null, "Please enter a valid number!");
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(null, "Error: " + e.getMessage());
-    }
-    }//GEN-LAST:event_btnIncreaseQtyActionPerformed
+    }//GEN-LAST:event_txtquantityActionPerformed
 
     private void txtquantityFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtquantityFocusLost
         // TODO add your handling code here:
         if (!btnsave.isEnabled() || stockID == 0) return;
-        
+
         try {
             int newQty = Integer.parseInt(txtquantity.getText().trim());
-            
+
             // If the new quantity is LESS than what was originally in the DB
             if (newQty < originalQuantity) {
-                
+
                 // Show the reason popup
                 String reason = showReasonDialog();
-                
+
                 if (reason == null) {
                     // User cancelled - REVERT the text field to original value
                     txtquantity.setText(String.valueOf(originalQuantity));
                     return;
                 }
-                
-                // User confirmed - update the database with new quantity AND reason
-                
+
+                // Calculate how many were pulled out
+                int quantityPulled = originalQuantity - newQty;
+
+                // === WRAP JDBC CODE IN ITS OWN TRY-CATCH ===
                 try {
+                    // FIXED: Use connectDB() not getConnection()
                     Connection con = sqlconnector.getConnection();
+
+                    if (con == null) {
+                        JOptionPane.showMessageDialog(this, "Database connection failed!");
+                        return;
+                    }
+
+                    // 1. Update the stock quantity
                     String query = "UPDATE product_variant SET stock_quantity = ? WHERE variant_id = ?";
                     PreparedStatement pst = con.prepareStatement(query);
                     pst.setInt(1, newQty);
                     pst.setInt(2, stockID);
                     pst.executeUpdate();
-                } catch (SQLException ex) {
-                    System.getLogger(stocks.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+                    pst.close();
+
+                    // 2. GET PRODUCT DETAILS
+                    String getProductQuery = "SELECT p.product_code, p.product_name " +
+                    "FROM product p " +
+                    "JOIN product_variant pv ON p.product_id = pv.product_id " +
+                    "WHERE pv.variant_id = ?";
+                    PreparedStatement getProductStmt = con.prepareStatement(getProductQuery);
+                    getProductStmt.setInt(1, stockID);
+                    ResultSet rs = getProductStmt.executeQuery();
+
+                    int productCode = 0;
+                    String productName = "";
+
+                    if (rs.next()) {
+                        productCode = rs.getInt("product_code");
+                        productName = rs.getString("product_name");
+                    }
+                    rs.close();
+                    getProductStmt.close();
+
+                    // 3. INSERT INTO tblquantityreason
+                    String logQuery = "INSERT INTO tblquantityreason (variant_id, product_code, product_name, quantity_pulled, reason) VALUES (?, ?, ?, ?, ?)";
+                    PreparedStatement logStmt = con.prepareStatement(logQuery);
+                    logStmt.setInt(1, stockID);
+                    logStmt.setInt(2, productCode);
+                    logStmt.setString(3, productName);
+                    logStmt.setInt(4, quantityPulled);
+                    logStmt.setString(5, reason);
+                    logStmt.executeUpdate();
+                    logStmt.close();
+
+                    con.close();
+
+                } catch (SQLException e) {
+                    // FIXED: Catch SQLException here!
+                    JOptionPane.showMessageDialog(this, "Database error: " + e.getMessage());
+                    e.printStackTrace();
+                    return;
                 }
-                
-                // TODO: Log the reason if you have a log table
-                // logStockChange(stockID, newQty - originalQuantity, reason);
-                
+
+                // 4. REFRESH TABLES
                 populatetable();
-                
+                populatePullOutTable();
+
                 if (foodmenu.instance != null) {
                     foodmenu.instance.populatetable();
                 }
-                
+
                 // Update tracker
                 originalQuantity = newQty;
-                
+
             } else {
                 // Quantity increased or stayed same - just update tracker
                 originalQuantity = newQty;
             }
-            
+
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(this, "Please enter a valid number.");
-            // Revert to original on error
             txtquantity.setText(String.valueOf(originalQuantity));
         }
     }//GEN-LAST:event_txtquantityFocusLost
@@ -661,16 +760,15 @@ public void makeEnabled(){
     txtquantity.setEditable(true); 
 }    
 public void setDefault(){
-    txtSize.setText("");
+txtSize.setText("");
     txtproduct.setText("");
     txtquantity.setText("");
     
     txtSize.setEnabled(false);
     txtproduct.setEnabled(false);
     txtquantity.setEnabled(false);
-    txtquantity.setEditable(false);  // Disable editing when reset
+    txtquantity.setEditable(false);
     
-    // Disable the + and - buttons
     btnIncreaseQty.setEnabled(false);
     btnDecreaseQty.setEnabled(false);
     
@@ -679,6 +777,7 @@ public void setDefault(){
     btnsave.setEnabled(false);
     
     populatetable();
+    populatePullOutTable(); // Add this line
 }
 public void populatetable(){
       try{
@@ -776,6 +875,40 @@ private String showReasonDialog() {
         
         return null; // User clicked Cancel
     }
+public void populatePullOutTable() {
+    try {
+        Connection con = sqlconnector.getConnection();
+        String query = "SELECT product_code, product_name, quantity_pulled, reason, pullout_date " +
+                       "FROM tblquantityreason " +
+                       "ORDER BY pullout_date DESC";
+        
+        Statement st = con.createStatement();
+        ResultSet rs = st.executeQuery(query);
+        
+        DefaultTableModel tblmodel = (DefaultTableModel)tblquantityreason.getModel();
+        tblmodel.setRowCount(0);
+        
+        while(rs.next()){
+            Vector coldata = new Vector();
+            coldata.add(rs.getInt("product_code"));
+            coldata.add(rs.getString("product_name"));
+            coldata.add(rs.getInt("quantity_pulled"));
+            coldata.add(rs.getString("reason"));
+            coldata.add(rs.getTimestamp("pullout_date"));
+            
+            tblmodel.addRow(coldata);
+        }
+        
+        rs.close();
+        st.close();
+        con.close();
+        
+    } catch(SQLException e){
+        e.printStackTrace();
+        JOptionPane.showMessageDialog(null, "Error loading pull-out records: " + e.getMessage());
+    }
+}
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnDecreaseQty;
     private javax.swing.JButton btnIncreaseQty;
@@ -790,9 +923,11 @@ private String showReasonDialog() {
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel lblSize;
     private javax.swing.JLabel lblproduct;
     private javax.swing.JLabel lblquantity;
+    private javax.swing.JTable tblquantityreason;
     private javax.swing.JTable tblstock;
     private javax.swing.JTextField txtSize;
     private javax.swing.JTextField txtproduct;

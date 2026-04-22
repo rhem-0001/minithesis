@@ -44,9 +44,15 @@ public class records extends javax.swing.JInternalFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         recordtable = new javax.swing.JTable();
+        jCalendar1 = new com.toedter.calendar.JCalendar();
+        datefrom = new com.toedter.calendar.JDateChooser();
+        dateto = new com.toedter.calendar.JDateChooser();
+        lblfrom = new javax.swing.JLabel();
+        lblto = new javax.swing.JLabel();
+        btnfilter = new javax.swing.JButton();
+        btnreset = new javax.swing.JButton();
         record = new javax.swing.JLabel();
         lbldailysales = new javax.swing.JLabel();
         txtdailysales = new javax.swing.JTextField();
@@ -54,26 +60,11 @@ public class records extends javax.swing.JInternalFrame {
         txtweeklysales = new javax.swing.JTextField();
         lbltotalsales = new javax.swing.JLabel();
         txttotalsales = new javax.swing.JTextField();
-        btnRefresh = new javax.swing.JButton();
-        btnReset = new javax.swing.JButton();
 
         setPreferredSize(new java.awt.Dimension(969, 634));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel1.setBackground(new java.awt.Color(102, 0, 0));
-
-        jPanel2.setBackground(new java.awt.Color(153, 0, 51));
-
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 509, Short.MAX_VALUE)
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 584, Short.MAX_VALUE)
-        );
 
         recordtable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -85,38 +76,79 @@ public class records extends javax.swing.JInternalFrame {
         ));
         jScrollPane1.setViewportView(recordtable);
 
+        lblfrom.setForeground(new java.awt.Color(242, 242, 242));
+        lblfrom.setText("FROM:");
+
+        lblto.setForeground(new java.awt.Color(242, 242, 242));
+        lblto.setText("TO:");
+
+        btnfilter.setText("Filter");
+
+        btnreset.setText("Reset");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 459, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 644, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(28, 28, 28)
+                        .addComponent(jCalendar1, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblto, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblfrom, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(27, 27, 27)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addComponent(btnreset)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btnfilter))
+                            .addComponent(datefrom, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(dateto, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(20, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(16, 16, 16)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 554, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(118, 118, 118)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(lblfrom, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(datefrom, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(26, 26, 26)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblto, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(dateto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnfilter)
+                            .addComponent(btnreset))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 43, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jCalendar1, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(28, 28, 28)))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 373, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(15, 15, 15))
         );
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 10, 480, 590));
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, -60, 670, 660));
 
         record.setFont(new java.awt.Font("Showcard Gothic", 3, 50)); // NOI18N
         record.setForeground(new java.awt.Color(102, 0, 0));
         record.setText("RECORDS");
-        getContentPane().add(record, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 10, 250, 100));
+        getContentPane().add(record, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 10, 250, 100));
 
         lbldailysales.setFont(new java.awt.Font("Showcard Gothic", 1, 24)); // NOI18N
         lbldailysales.setForeground(new java.awt.Color(102, 0, 0));
         lbldailysales.setText("Daily Sales");
-        getContentPane().add(lbldailysales, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 120, 170, 40));
+        getContentPane().add(lbldailysales, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 120, 170, 40));
 
         txtdailysales.setBackground(new java.awt.Color(255, 102, 102));
         txtdailysales.setFont(new java.awt.Font("Segoe UI Emoji", 1, 24)); // NOI18N
@@ -124,12 +156,12 @@ public class records extends javax.swing.JInternalFrame {
         txtdailysales.setText("0.00");
         txtdailysales.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         txtdailysales.addActionListener(this::txtdailysalesActionPerformed);
-        getContentPane().add(txtdailysales, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 160, 410, 60));
+        getContentPane().add(txtdailysales, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 160, 250, 60));
 
         lblweeklysales.setFont(new java.awt.Font("Showcard Gothic", 1, 24)); // NOI18N
         lblweeklysales.setForeground(new java.awt.Color(102, 0, 0));
         lblweeklysales.setText("Weekly Sales");
-        getContentPane().add(lblweeklysales, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 260, 190, 40));
+        getContentPane().add(lblweeklysales, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 250, 190, 40));
 
         txtweeklysales.setBackground(new java.awt.Color(255, 102, 102));
         txtweeklysales.setFont(new java.awt.Font("Segoe UI Emoji", 1, 24)); // NOI18N
@@ -137,12 +169,12 @@ public class records extends javax.swing.JInternalFrame {
         txtweeklysales.setText("0.00");
         txtweeklysales.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         txtweeklysales.addActionListener(this::txtweeklysalesActionPerformed);
-        getContentPane().add(txtweeklysales, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 300, 410, 60));
+        getContentPane().add(txtweeklysales, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 290, 250, 60));
 
         lbltotalsales.setFont(new java.awt.Font("Showcard Gothic", 1, 24)); // NOI18N
         lbltotalsales.setForeground(new java.awt.Color(102, 0, 0));
         lbltotalsales.setText("Total sales");
-        getContentPane().add(lbltotalsales, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 410, 190, 40));
+        getContentPane().add(lbltotalsales, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 390, 190, 40));
 
         txttotalsales.setBackground(new java.awt.Color(255, 102, 102));
         txttotalsales.setFont(new java.awt.Font("Segoe UI Emoji", 1, 24)); // NOI18N
@@ -150,15 +182,7 @@ public class records extends javax.swing.JInternalFrame {
         txttotalsales.setText("0.00");
         txttotalsales.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         txttotalsales.addActionListener(this::txttotalsalesActionPerformed);
-        getContentPane().add(txttotalsales, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 450, 410, 60));
-
-        btnRefresh.setText("REFRESH");
-        btnRefresh.addActionListener(this::btnRefreshActionPerformed);
-        getContentPane().add(btnRefresh, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 550, -1, -1));
-
-        btnReset.setText("RESET");
-        btnReset.addActionListener(this::btnResetActionPerformed);
-        getContentPane().add(btnReset, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 520, -1, -1));
+        getContentPane().add(txttotalsales, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 430, 250, 60));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -331,70 +355,19 @@ public class records extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txttotalsalesActionPerformed
 
-    private void btnRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshActionPerformed
-        // TODO add your handling code here:
-        loadSalesData();
-        loadOrderDetailsTable();
-        JOptionPane.showMessageDialog(this, "✓ Sales data refreshed!", "Refresh", JOptionPane.INFORMATION_MESSAGE);
-    }//GEN-LAST:event_btnRefreshActionPerformed
-
-    private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetActionPerformed
-        // TODO add your handling code here:
-        int confirm = JOptionPane.showConfirmDialog(this, 
-        "⚠️ WARNING: This will delete ALL sales records!\n\n" +
-        "Are you sure you want to continue?", 
-        "Confirm Reset", 
-        JOptionPane.YES_NO_OPTION,
-        JOptionPane.WARNING_MESSAGE);
-    
-    if (confirm == JOptionPane.YES_OPTION) {
-        try {
-            Connection con = sqlconnector.getConnection();
-            Statement st = con.createStatement();
-            
-            // 🔧 OPTION 1: Disable foreign key checks temporarily
-            st.executeUpdate("SET FOREIGN_KEY_CHECKS = 0");
-            
-            // Now truncate in any order
-            st.executeUpdate("TRUNCATE TABLE order_items");
-            st.executeUpdate("TRUNCATE TABLE payment");
-            st.executeUpdate("TRUNCATE TABLE orders");
-            st.executeUpdate("TRUNCATE TABLE daily_sales");
-            
-            // Re-enable foreign key checks
-            st.executeUpdate("SET FOREIGN_KEY_CHECKS = 1");
-            
-            JOptionPane.showMessageDialog(this, 
-                "✅ Sales data has been reset successfully!", 
-                "Reset Complete", 
-                JOptionPane.INFORMATION_MESSAGE);
-            
-            // Refresh the display
-            loadSalesData();
-            loadOrderDetailsTable();
-            
-            st.close();
-            con.close();
-            
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(this, 
-                "❌ Error resetting sales: " + e.getMessage(), 
-                "Error", 
-                JOptionPane.ERROR_MESSAGE);
-            e.printStackTrace();
-        }
-    }
-    }//GEN-LAST:event_btnResetActionPerformed
-
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnRefresh;
-    private javax.swing.JButton btnReset;
+    private javax.swing.JButton btnfilter;
+    private javax.swing.JButton btnreset;
+    private com.toedter.calendar.JDateChooser datefrom;
+    private com.toedter.calendar.JDateChooser dateto;
+    private com.toedter.calendar.JCalendar jCalendar1;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lbldailysales;
+    private javax.swing.JLabel lblfrom;
+    private javax.swing.JLabel lblto;
     private javax.swing.JLabel lbltotalsales;
     private javax.swing.JLabel lblweeklysales;
     private javax.swing.JLabel record;

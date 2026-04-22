@@ -168,6 +168,8 @@ public class usermenu extends javax.swing.JFrame {
         txtCash = new javax.swing.JTextField();
         txtChange = new javax.swing.JTextField();
         cmbusercategory = new javax.swing.JComboBox<>();
+        reportspanel = new javax.swing.JPanel();
+        lblreports = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -405,6 +407,31 @@ public class usermenu extends javax.swing.JFrame {
 
         cmbusercategory.addActionListener(this::cmbusercategoryActionPerformed);
 
+        reportspanel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                reportspanelMouseClicked(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                reportspanelMousePressed(evt);
+            }
+        });
+
+        lblreports.setText("Reports");
+
+        javax.swing.GroupLayout reportspanelLayout = new javax.swing.GroupLayout(reportspanel);
+        reportspanel.setLayout(reportspanelLayout);
+        reportspanelLayout.setHorizontalGroup(
+            reportspanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(reportspanelLayout.createSequentialGroup()
+                .addGap(29, 29, 29)
+                .addComponent(lblreports)
+                .addContainerGap(30, Short.MAX_VALUE))
+        );
+        reportspanelLayout.setVerticalGroup(
+            reportspanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(lblreports, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+
         javax.swing.GroupLayout jPanel21Layout = new javax.swing.GroupLayout(jPanel21);
         jPanel21.setLayout(jPanel21Layout);
         jPanel21Layout.setHorizontalGroup(
@@ -422,7 +449,9 @@ public class usermenu extends javax.swing.JFrame {
                                 .addGap(18, 18, 18)
                                 .addComponent(resetpanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
-                                .addComponent(recordpanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(recordpanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(reportspanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(desktoppane)
                             .addComponent(cmbusercategory, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -455,11 +484,12 @@ public class usermenu extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(desktoppane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanel21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(jPanel21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(jPanel21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                 .addComponent(Logoutpanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(resetpanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addComponent(recordpanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(recordpanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(reportspanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel21Layout.createSequentialGroup()
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -482,11 +512,17 @@ public class usermenu extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel21, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel21, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel21, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel21, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pack();
@@ -505,6 +541,7 @@ public class usermenu extends javax.swing.JFrame {
         Logoutpanel.setBackground(ClickedColor);
         resetpanel.setBackground(DefaultColor);
         recordpanel.setBackground(DefaultColor);
+        reportspanel.setBackground(DefaultColor);
         
     }//GEN-LAST:event_LogoutpanelMousePressed
 
@@ -526,6 +563,7 @@ public class usermenu extends javax.swing.JFrame {
         Logoutpanel.setBackground(DefaultColor);
         resetpanel.setBackground(ClickedColor);
         recordpanel.setBackground(DefaultColor);
+        reportspanel.setBackground(DefaultColor);
     }//GEN-LAST:event_resetpanelMousePressed
 
     private void recordpanelMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_recordpanelMousePressed
@@ -534,6 +572,7 @@ public class usermenu extends javax.swing.JFrame {
         Logoutpanel.setBackground(DefaultColor);
         resetpanel.setBackground(DefaultColor);
         recordpanel.setBackground(ClickedColor);
+        reportspanel.setBackground(DefaultColor);
     }//GEN-LAST:event_recordpanelMousePressed
 
     private void txtTotalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTotalActionPerformed
@@ -869,6 +908,22 @@ public class usermenu extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_tblProductsMouseEntered
 
+    private void reportspanelMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_reportspanelMousePressed
+        // TODO add your handling code here:
+        Logoutpanel.setBackground(DefaultColor);
+        resetpanel.setBackground(DefaultColor);
+        recordpanel.setBackground(DefaultColor);
+        reportspanel.setBackground(ClickedColor);
+        
+    }//GEN-LAST:event_reportspanelMousePressed
+
+    private void reportspanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_reportspanelMouseClicked
+        // TODO add your handling code here:
+        userreport ur = new userreport();
+        desktoppane.removeAll();
+        desktoppane.add(ur).setVisible(true);
+    }//GEN-LAST:event_reportspanelMouseClicked
+
   
     /**
      * @param args the command line arguments
@@ -911,10 +966,12 @@ public class usermenu extends javax.swing.JFrame {
     private javax.swing.JLabel lblcash;
     private javax.swing.JLabel lblchange;
     private javax.swing.JLabel lbllogout;
+    private javax.swing.JLabel lblreports;
     private javax.swing.JLabel lblreset;
     private javax.swing.JLabel lbltotal;
     private javax.swing.JLabel lblttl;
     private javax.swing.JPanel recordpanel;
+    private javax.swing.JPanel reportspanel;
     private javax.swing.JPanel resetpanel;
     public javax.swing.JTable tblProducts;
     private javax.swing.JTextField txtCash;
