@@ -30,17 +30,18 @@ public class usercategory extends javax.swing.JInternalFrame {
         try {
             Connection con = sqlconnector.getConnection();
             
-            // Fetch ALL products (no category filter)
+            // Fetch ALL products that are IN STOCK (stock_quantity > 0)
             String sql = "SELECT DISTINCT p.product_id, p.product_name " +
                          "FROM product p " +
                          "JOIN product_variant pv ON p.product_id = pv.product_id " +
+                         "WHERE pv.stock_quantity > 0 " +  // Only show products with stock
                          "ORDER BY p.product_name ASC";
             
             PreparedStatement pst = con.prepareStatement(sql);
             ResultSet rs = pst.executeQuery();
             
             DefaultTableModel model = (DefaultTableModel) tblusercategory.getModel();
-            model.setRowCount(0); // Clear table
+            model.setRowCount(0);
             
             while(rs.next()) {
                 model.addRow(new Object[]{
@@ -57,58 +58,64 @@ public class usercategory extends javax.swing.JInternalFrame {
     
     public void loadProductsForCategory() {
         try {
-        // Get the selected category from the main menu
-        if (usermenu.instance == null) {
-            System.out.println("usermenu instance is null!");
-            return;
+            if (usermenu.instance == null) {
+                System.out.println("usermenu instance is null!");
+                return;
+            }
+            
+            Object selected = usermenu.instance.cmbusercategory.getSelectedItem();
+            if (selected == null || !(selected instanceof usermenu.CategoryComboItem)) {
+                System.out.println("No valid category selected");
+                return;
+            }
+            
+            int categoryId = ((usermenu.CategoryComboItem)selected).getId();
+            System.out.println("Loading products for category ID: " + categoryId);
+            
+            if (categoryId == 0) {
+                System.out.println("Category ID is 0 (placeholder)");
+                return;
+            }
+            
+            Connection con = sqlconnector.getConnection();
+            
+            // Only show products that have stock > 0
+            String sql = "SELECT DISTINCT p.product_id, p.product_name " +
+                         "FROM product p " +
+                         "JOIN product_variant pv ON p.product_id = pv.product_id " +
+                         "WHERE p.category_id = ? AND pv.stock_quantity > 0 " +  // Filter out of stock
+                         "ORDER BY p.product_name ASC";
+            
+            PreparedStatement pst = con.prepareStatement(sql);
+            pst.setInt(1, categoryId);
+            ResultSet rs = pst.executeQuery();
+            
+            DefaultTableModel model = (DefaultTableModel) tblusercategory.getModel();
+            model.setRowCount(0);
+            
+            int count = 0;
+            while(rs.next()) {
+                model.addRow(new Object[]{
+                    rs.getInt("product_id"),
+                    rs.getString("product_name")
+                });
+                count++;
+            }
+            
+            System.out.println("Loaded " + count + " products");
+            
+            if (count == 0) {
+                JOptionPane.showMessageDialog(this, "No products available in this category.");
+            }
+            
+            rs.close();
+            pst.close();
+            con.close();
+            
+        } catch(Exception e) {
+            JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
+            e.printStackTrace();
         }
-        
-        Object selected = usermenu.instance.cmbusercategory.getSelectedItem();
-        if (selected == null || !(selected instanceof usermenu.CategoryComboItem)) {
-            System.out.println("No valid category selected");
-            return;
-        }
-        
-        int categoryId = ((usermenu.CategoryComboItem)selected).getId();
-        System.out.println("Loading products for category ID: " + categoryId);
-        
-        if (categoryId == 0) {
-            System.out.println("Category ID is 0 (placeholder)");
-            return;
-        }
-        
-        Connection con = sqlconnector.getConnection();
-        String sql = "SELECT DISTINCT p.product_id, p.product_name " +
-                     "FROM product p " +
-                     "JOIN product_variant pv ON p.product_id = pv.product_id " +
-                     "WHERE p.category_id = ? " +
-                     "ORDER BY p.product_name ASC";
-        
-        PreparedStatement pst = con.prepareStatement(sql);
-        pst.setInt(1, categoryId);
-        ResultSet rs = pst.executeQuery();
-        
-        DefaultTableModel model = (DefaultTableModel) tblusercategory.getModel();
-        model.setRowCount(0); // Clear old data
-        
-        int count = 0;
-        while(rs.next()) {
-            model.addRow(new Object[]{
-                rs.getInt("product_id"),
-                rs.getString("product_name")
-            });
-            count++;
-        }
-        
-        System.out.println("Loaded " + count + " products");
-        rs.close();
-        pst.close();
-        con.close();
-        
-    } catch(Exception e) {
-        JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
-        e.printStackTrace();
-    }
     }
     
     /**
@@ -190,11 +197,9 @@ public class usercategory extends javax.swing.JInternalFrame {
         try {
             DefaultTableModel model = (DefaultTableModel) tblusercategory.getModel();
             
-            // Get Product ID and Name from the table
             int productId = (int) model.getValueAt(row, 0);
             String productName = model.getValueAt(row, 1).toString();
             
-            // 2. Fetch Sizes from Database
             Connection con = sqlconnector.getConnection();
             String sql = "SELECT pv.variant_id, s.size_name, pv.price, pv.stock_quantity " +
                          "FROM product_variant pv " +
@@ -225,13 +230,11 @@ public class usercategory extends javax.swing.JInternalFrame {
                 return;
             }
             
-            // Default to the first size found
             String selectedSize = sizes.get(0);
             double price = priceMap.get(selectedSize);
             int stock = stockMap.get(selectedSize);
             int variantId = variantMap.get(selectedSize);
             
-            // 3. SHOW "SELECT SIZE" DIALOG (If there is more than 1 size)
             if(sizes.size() > 1) {
                 selectedSize = (String) JOptionPane.showInputDialog(
                     this, 
@@ -240,25 +243,22 @@ public class usercategory extends javax.swing.JInternalFrame {
                     JOptionPane.QUESTION_MESSAGE, 
                     null, 
                     sizes.toArray(), 
-                    sizes.get(0) // Default selection
+                    sizes.get(0)
                 );
                 
-                // If user clicked Cancel on the Size dialog, stop everything
                 if(selectedSize == null) return;
                 
-                // Update price and stock based on selected size
                 price = priceMap.get(selectedSize);
                 stock = stockMap.get(selectedSize);
                 variantId = variantMap.get(selectedSize);
             }
             
-            // 4. Check Stock
+            // This check is now less likely to trigger since we filter in the query
             if(stock <= 0) {
                 JOptionPane.showMessageDialog(this, "Out of Stock for " + selectedSize + "!");
                 return;
             }
             
-            // 5. ASK FOR QUANTITY (Now happens AFTER size selection)
             String qtyStr = JOptionPane.showInputDialog(
                 this, 
                 "Product: " + productName + "\nSize: " + selectedSize + "\nPrice: " + String.format("%.2f", price) + "\n\nEnter Quantity (Max: " + stock + ")",
@@ -274,7 +274,6 @@ public class usercategory extends javax.swing.JInternalFrame {
                 return;
             }
             
-            // 6. Confirmation
             double lineTotal = price * quantity;
             int confirm = JOptionPane.showConfirmDialog(this, 
                 "Add to Cart?\n" + productName + " (" + selectedSize + ")\n" +
@@ -283,7 +282,6 @@ public class usercategory extends javax.swing.JInternalFrame {
             
             if(confirm != JOptionPane.YES_OPTION) return;
             
-            // 7. Add to Cart (Right Table)
             if(usermenu.instance != null) {
                 DefaultTableModel receiptModel = (DefaultTableModel) usermenu.instance.tblProducts.getModel();
                 
@@ -296,14 +294,12 @@ public class usercategory extends javax.swing.JInternalFrame {
                     String.format("%.2f", lineTotal)
                 });
                 
-                // Update Total
                 double currentTotal = 0;
                 if(!usermenu.instance.txtTotal.getText().isEmpty()) {
                     currentTotal = Double.parseDouble(usermenu.instance.txtTotal.getText().replace("₱","").replace(",",""));
                 }
                 usermenu.instance.txtTotal.setText(String.format("%.2f", currentTotal + lineTotal));
                 
-                // Deduct Stock
                 String updateSql = "UPDATE product_variant SET stock_quantity = stock_quantity - ? WHERE variant_id = ?";
                 PreparedStatement updatePst = con.prepareStatement(updateSql);
                 updatePst.setInt(1, quantity);
@@ -312,7 +308,6 @@ public class usercategory extends javax.swing.JInternalFrame {
                 updatePst.close();
                 con.close();
                 
-                // Refresh Tables
                 loadProductsForCategory();
                 if(stocks.instance != null) stocks.instance.populatetable();
                 

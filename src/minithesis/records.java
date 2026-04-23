@@ -8,6 +8,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.PreparedStatement;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import java.util.Vector;
@@ -19,6 +20,8 @@ import java.awt.Font;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 /**
  *
  * @author janxt
@@ -83,8 +86,10 @@ public class records extends javax.swing.JInternalFrame {
         lblto.setText("TO:");
 
         btnfilter.setText("Filter");
+        btnfilter.addActionListener(this::btnfilterActionPerformed);
 
         btnreset.setText("Reset");
+        btnreset.addActionListener(this::btnresetActionPerformed);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -189,118 +194,236 @@ public class records extends javax.swing.JInternalFrame {
 
     private void loadSalesData() {
         try {
-        Connection con = sqlconnector.getConnection();
-        Statement st = con.createStatement();
-        
-        // 1. Daily Sales - Today's sales
-        String dailyQuery = "SELECT COALESCE(SUM(total_amount), 0) as daily_total " +
-                           "FROM orders WHERE DATE(order_date) = CURDATE()";
-        ResultSet rs1 = st.executeQuery(dailyQuery);
-        double dailySales = 0.0;
-        if (rs1.next()) {
-            dailySales = rs1.getDouble("daily_total");
+            Connection con = sqlconnector.getConnection();
+            Statement st = con.createStatement();
+            
+            // Daily Sales - Today's sales
+            String dailyQuery = "SELECT COALESCE(SUM(total_amount), 0) as daily_total " +
+                               "FROM orders WHERE DATE(order_date) = CURDATE()";
+            ResultSet rs1 = st.executeQuery(dailyQuery);
+            double dailySales = 0.0;
+            if (rs1.next()) {
+                dailySales = rs1.getDouble("daily_total");
+            }
+            
+            // Weekly Sales - Current Week
+            String weeklyQuery = "SELECT COALESCE(SUM(total_amount), 0) as weekly_total " +
+                                "FROM orders WHERE YEARWEEK(order_date, 1) = YEARWEEK(CURDATE(), 1)";
+            ResultSet rs2 = st.executeQuery(weeklyQuery);
+            double weeklySales = 0.0;
+            if (rs2.next()) {
+                weeklySales = rs2.getDouble("weekly_total");
+            }
+            rs2.close();
+            
+            // Total Sales - All time
+            String totalQuery = "SELECT COALESCE(SUM(total_amount), 0) as total_sales FROM orders";
+            ResultSet rs3 = st.executeQuery(totalQuery);
+            double totalSales = 0.0;
+            if (rs3.next()) {
+                totalSales = rs3.getDouble("total_sales");
+            }
+            
+            txtdailysales.setText(String.format("₱%.2f", dailySales));
+            txtweeklysales.setText(String.format("₱%.2f", weeklySales));
+            txttotalsales.setText(String.format("₱%.2f", totalSales));
+            
+            rs1.close();
+            rs3.close();
+            st.close();
+            con.close();
+            
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error loading sales data: " + e.getMessage());
+            e.printStackTrace();
         }
-        
-        // 2. Weekly Sales - Current Week (Monday to Sunday)
-        // Removed the "isEndOfWeek" restriction so it always shows the running total
-        String weeklyQuery = "SELECT COALESCE(SUM(total_amount), 0) as weekly_total " +
-                            "FROM orders WHERE YEARWEEK(order_date, 1) = YEARWEEK(CURDATE(), 1)";
-        ResultSet rs2 = st.executeQuery(weeklyQuery);
-        double weeklySales = 0.0;
-        if (rs2.next()) {
-            weeklySales = rs2.getDouble("weekly_total");
-        }
-        rs2.close();
-        
-        // 3. Total Sales - All time
-        String totalQuery = "SELECT COALESCE(SUM(total_amount), 0) as total_sales FROM orders";
-        ResultSet rs3 = st.executeQuery(totalQuery);
-        double totalSales = 0.0;
-        if (rs3.next()) {
-            totalSales = rs3.getDouble("total_sales");
-        }
-        
-        // Update the text fields with formatting
-        txtdailysales.setText(String.format("₱%.2f", dailySales));
-        txtweeklysales.setText(String.format("₱%.2f", weeklySales));
-        txttotalsales.setText(String.format("₱%.2f", totalSales));
-        
-        rs1.close();
-        rs3.close();
-        st.close();
-        con.close();
-        
-    } catch (SQLException e) {
-        JOptionPane.showMessageDialog(null, "Error loading sales data: " + e.getMessage());
-        e.printStackTrace();
     }
+    
+    private void loadSalesDataByDateRange(String fromDate, String toDate) {
+        try {
+            Connection con = sqlconnector.getConnection();
+            
+            // Daily Sales - Sales within date range
+            String dailyQuery = "SELECT COALESCE(SUM(total_amount), 0) as daily_total " +
+                               "FROM orders WHERE DATE(order_date) BETWEEN ? AND ?";
+            PreparedStatement pst1 = con.prepareStatement(dailyQuery);
+            pst1.setString(1, fromDate);
+            pst1.setString(2, toDate);
+            ResultSet rs1 = pst1.executeQuery();
+            double dailySales = 0.0;
+            if (rs1.next()) {
+                dailySales = rs1.getDouble("daily_total");
+            }
+            rs1.close();
+            pst1.close();
+            
+            // For date range, we'll show the range total as "daily"
+            // Weekly and Total will be the same as the range total
+            String totalQuery = "SELECT COALESCE(SUM(total_amount), 0) as total_sales " +
+                               "FROM orders WHERE DATE(order_date) BETWEEN ? AND ?";
+            PreparedStatement pst2 = con.prepareStatement(totalQuery);
+            pst2.setString(1, fromDate);
+            pst2.setString(2, toDate);
+            ResultSet rs2 = pst2.executeQuery();
+            double totalSales = 0.0;
+            if (rs2.next()) {
+                totalSales = rs2.getDouble("total_sales");
+            }
+            rs2.close();
+            pst2.close();
+            
+            con.close();
+            
+            // Update displays
+            txtdailysales.setText(String.format("₱%.2f", dailySales));
+            txtweeklysales.setText(String.format("₱%.2f", totalSales));
+            txttotalsales.setText(String.format("₱%.2f", totalSales));
+            
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error loading sales data: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+    
+    private void loadOrderDetailsTableByDateRange(String fromDate, String toDate) {
+        try {
+            Connection con = sqlconnector.getConnection();
+            
+            String query = "SELECT o.order_date, o.order_id, " +
+                          "oi.product_name, oi.size_name, " +
+                          "oi.quantity, oi.price, oi.total " +
+                          "FROM orders o " +
+                          "JOIN order_items oi ON o.order_id = oi.order_id " +
+                          "WHERE DATE(o.order_date) BETWEEN ? AND ? " +
+                          "ORDER BY o.order_date DESC, o.order_id DESC, oi.item_id ASC";
+            
+            PreparedStatement pst = con.prepareStatement(query);
+            pst.setString(1, fromDate);
+            pst.setString(2, toDate);
+            ResultSet rs = pst.executeQuery();
+            
+            DefaultTableModel model = new DefaultTableModel(
+                new String[]{"Date", "Order ID", "Name", "Size", "Quantity", "Price", "Total"}, 0
+            ) {
+                @Override
+                public boolean isCellEditable(int row, int column) {
+                    return false;
+                }
+            };
+            recordtable.setModel(model);
+            
+            double grandTotal = 0.0;
+            int rowCount = 0;
+            
+            while(rs.next()){
+                double price = rs.getDouble("price");
+                int quantity = rs.getInt("quantity");
+                double total = rs.getDouble("total");
+                
+                grandTotal += total;
+                
+                model.addRow(new Object[]{
+                    rs.getString("order_date"),
+                    rs.getInt("order_id"),
+                    rs.getString("product_name"),
+                    rs.getString("size_name"),
+                    quantity,
+                    String.format("₱%.2f", price),
+                    String.format("₱%.2f", total)
+                });
+                rowCount++;
+            }
+            
+            if (rowCount > 0) {
+                model.addRow(new Object[]{
+                    "", "", "", "", "", "TOTAL:", String.format("₱%.2f", grandTotal)
+                });
+            }
+            
+            applyTableStyling();
+            
+            rs.close();
+            pst.close();
+            con.close();
+            
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error loading table: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
     
     private boolean isEndOfWeek() {
         Calendar cal = Calendar.getInstance();
         int dayOfWeek = cal.get(Calendar.DAY_OF_WEEK);
-        // Returns 1 for Sunday, 7 for Saturday
-        // You can change this to Calendar.SATURDAY if you prefer
         return dayOfWeek == Calendar.SUNDAY;
     }
     
     private void loadOrderDetailsTable() {
         try {
-        Connection con = sqlconnector.getConnection();
-        
-        // Query to get today's orders with product details from order_items
-        String query = "SELECT o.order_date, o.order_id, " +
-                      "oi.product_name, oi.size_name, " +
-                      "oi.quantity, oi.price, oi.total " +
-                      "FROM orders o " +
-                      "JOIN order_items oi ON o.order_id = oi.order_id " +
-                      "WHERE DATE(o.order_date) = CURDATE() " +
-                      "ORDER BY o.order_id DESC, oi.item_id ASC";
-        
-        Statement st = con.createStatement();
-        ResultSet rs = st.executeQuery(query);
-        
-        // Create table model with 7 columns
-        DefaultTableModel model = new DefaultTableModel(
-            new String[]{"Date", "Order ID", "Name", "Size", "Quantity", "Price", "Total"}, 0
-        ) {
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                return false;
+            Connection con = sqlconnector.getConnection();
+            
+            String query = "SELECT o.order_date, o.order_id, " +
+                          "oi.product_name, oi.size_name, " +
+                          "oi.quantity, oi.price, oi.total " +
+                          "FROM orders o " +
+                          "JOIN order_items oi ON o.order_id = oi.order_id " +
+                          "WHERE DATE(o.order_date) = CURDATE() " +
+                          "ORDER BY o.order_id DESC, oi.item_id ASC";
+            
+            Statement st = con.createStatement();
+            ResultSet rs = st.executeQuery(query);
+            
+            DefaultTableModel model = new DefaultTableModel(
+                new String[]{"Date", "Order ID", "Name", "Size", "Quantity", "Price", "Total"}, 0
+            ) {
+                @Override
+                public boolean isCellEditable(int row, int column) {
+                    return false;
+                }
+            };
+            recordtable.setModel(model);
+            
+            double grandTotal = 0.0;
+            int rowCount = 0;
+            
+            while(rs.next()){
+                double price = rs.getDouble("price");
+                int quantity = rs.getInt("quantity");
+                double total = rs.getDouble("total");
+                
+                grandTotal += total;
+                
+                model.addRow(new Object[]{
+                    rs.getString("order_date"),
+                    rs.getInt("order_id"),
+                    rs.getString("product_name"),
+                    rs.getString("size_name"),
+                    quantity,
+                    String.format("₱%.2f", price),
+                    String.format("₱%.2f", total)
+                });
+                rowCount++;
             }
-        };
-        recordtable.setModel(model);
-        
-        double grandTotal = 0.0;
-        int rowCount = 0;
-        
-        while(rs.next()){
-            double price = rs.getDouble("price");
-            int quantity = rs.getInt("quantity");
-            double total = rs.getDouble("total");
             
-            grandTotal += total;
+            if (rowCount > 0) {
+                model.addRow(new Object[]{
+                    "", "", "", "", "", "TOTAL:", String.format("₱%.2f", grandTotal)
+                });
+            }
             
-            model.addRow(new Object[]{
-                rs.getString("order_date"),
-                rs.getInt("order_id"),
-                rs.getString("product_name"),  // Now shows actual product name!
-                rs.getString("size_name"),      // Shows actual size
-                quantity,
-                String.format("₱%.2f", price),
-                String.format("₱%.2f", total)
-            });
-            rowCount++;
+            applyTableStyling();
+            
+            rs.close();
+            st.close();
+            con.close();
+            
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error loading table: " + e.getMessage());
+            e.printStackTrace();
         }
-        
-        // Add separator and grand total row
-        if (rowCount > 0) {
-            model.addRow(new Object[]{
-                "", "", "", "", "", "TOTAL:", String.format("₱%.2f", grandTotal)
-            });
-        }
-        
-        // Apply styling
+    }
+    
+    private void applyTableStyling() {
         recordtable.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
             @Override
             public Component getTableCellRendererComponent(JTable table, Object value, 
@@ -308,14 +431,12 @@ public class records extends javax.swing.JInternalFrame {
                 
                 Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
                 
-                // Center align first 4 columns
                 if (column < 4) {
                     setHorizontalAlignment(SwingConstants.CENTER);
                 } else {
                     setHorizontalAlignment(SwingConstants.RIGHT);
                 }
                 
-                // Make last row bold (TOTAL row)
                 if (row == table.getRowCount() - 1) {
                     setFont(getFont().deriveFont(Font.BOLD));
                     setBackground(new Color(255, 200, 200));
@@ -331,16 +452,8 @@ public class records extends javax.swing.JInternalFrame {
         recordtable.setRowHeight(25);
         recordtable.setShowGrid(false);
         recordtable.setIntercellSpacing(new Dimension(0, 0));
-        
-        rs.close();
-        st.close();
-        con.close();
-        
-    } catch (SQLException e) {
-        JOptionPane.showMessageDialog(null, "Error loading table: " + e.getMessage());
-        e.printStackTrace();
     }
-    }
+    
     
     
     private void txtdailysalesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtdailysalesActionPerformed
@@ -354,6 +467,44 @@ public class records extends javax.swing.JInternalFrame {
     private void txttotalsalesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txttotalsalesActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txttotalsalesActionPerformed
+
+    private void btnfilterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnfilterActionPerformed
+        // TODO add your handling code here:
+        try {
+            if (datefrom.getDate() == null || dateto.getDate() == null) {
+                JOptionPane.showMessageDialog(null, "Please select both FROM and TO dates!");
+                return;
+            }
+            
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            String fromDate = sdf.format(datefrom.getDate());
+            String toDate = sdf.format(dateto.getDate());
+            
+            // Check if from date is after to date
+            if (datefrom.getDate().after(dateto.getDate())) {
+                JOptionPane.showMessageDialog(null, "FROM date cannot be after TO date!");
+                return;
+            }
+            
+            loadSalesDataByDateRange(fromDate, toDate);
+            loadOrderDetailsTableByDateRange(fromDate, toDate);
+            
+            JOptionPane.showMessageDialog(null, "Showing records from " + fromDate + " to " + toDate);
+            
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_btnfilterActionPerformed
+
+    private void btnresetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnresetActionPerformed
+        // TODO add your handling code here:
+        datefrom.setDate(null);
+        dateto.setDate(null);
+        loadSalesData();
+        loadOrderDetailsTable();
+        JOptionPane.showMessageDialog(null, "Filter reset - showing today's records");
+    }//GEN-LAST:event_btnresetActionPerformed
 
     
 

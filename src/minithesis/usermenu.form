@@ -120,10 +120,8 @@
                           <Component id="desktoppane" min="-2" max="-2" attributes="0"/>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                              <Group type="103" alignment="1" groupAlignment="0" max="-2" attributes="0">
-                                  <Component id="Logoutpanel" max="32767" attributes="0"/>
-                                  <Component id="resetpanel" max="32767" attributes="0"/>
-                              </Group>
+                              <Component id="Logoutpanel" max="32767" attributes="0"/>
+                              <Component id="resetpanel" max="32767" attributes="0"/>
                               <Component id="recordpanel" alignment="1" max="32767" attributes="0"/>
                               <Component id="reportspanel" max="32767" attributes="0"/>
                           </Group>

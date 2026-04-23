@@ -124,7 +124,10 @@ public class usermenu extends javax.swing.JFrame {
         e.printStackTrace();
     }
 }
-    
+
+   public javax.swing.JDesktopPane getDesktopPane() {
+    return desktoppane;
+   }
     
     
     
@@ -592,7 +595,6 @@ public class usermenu extends javax.swing.JFrame {
         return;
     }
     
-    // Check if cash is entered
     if (txtCash.getText().isEmpty()) {
         JOptionPane.showMessageDialog(this, 
             "Please enter cash amount!", 
@@ -614,36 +616,42 @@ public class usermenu extends javax.swing.JFrame {
             return;
         }
         
-        // Build receipt text
+        // Build receipt text - RIGHT ALIGNED
         StringBuilder receipt = new StringBuilder();
-        receipt.append("========== YOYI'S CAKES & PASTRIES ==========\n");
+        receipt.append("        YOYI'S CAKES & PASTRIES\n");
+        receipt.append("              CASH RECEIPT\n");
+        receipt.append("**************************************\n");
         receipt.append("Date: ").append(new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new java.util.Date())).append("\n");
         receipt.append("Order ID: #").append(generateOrderId()).append("\n");
-        receipt.append("-----------------------------------------------\n");
-        receipt.append(String.format("%-20s %-8s %-6s %-10s\n", "ITEM", "SIZE", "QTY", "SUBTOTAL"));
-        receipt.append("-----------------------------------------------\n");
-        
+        receipt.append("**************************************\n\n");
+
+// Header - Description left, Price right
+        receipt.append(String.format("%-30s %10s\n", "Description", "Price"));
+        receipt.append("--------------------------------------\n");
+
         DefaultTableModel cartModel = (DefaultTableModel) tblProducts.getModel();
         for (int i = 0; i < cartModel.getRowCount(); i++) {
-            String name = cartModel.getValueAt(i, 1).toString();
-            String size = cartModel.getValueAt(i, 2).toString();
-            String qty = cartModel.getValueAt(i, 3).toString();
-            String subTotal = cartModel.getValueAt(i, 5).toString();
-            
-            // Truncate long names
-            if (name.length() > 18) name = name.substring(0, 15) + "...";
-            
-            receipt.append(String.format("%-20s %-8s %-6s %-10s\n", name, size, qty, subTotal));
+        String name = cartModel.getValueAt(i, 1).toString();
+        String size = cartModel.getValueAt(i, 2).toString();
+        String qty = cartModel.getValueAt(i, 3).toString();
+        String price = cartModel.getValueAt(i, 4).toString();
+        String subTotal = cartModel.getValueAt(i, 5).toString();
+    
+    // Format: Product Name (Size) x Qty
+        String description = name + " (" + size + ") x" + qty;
+    
+        receipt.append(String.format("%-30s %10s\n", description, subTotal));
         }
-        
-        receipt.append("-----------------------------------------------\n");
-        receipt.append(String.format("%-37s\n", "TOTAL: " + txtTotal.getText()));
-        receipt.append(String.format("%-37s\n", "CASH: ₱" + String.format("%.2f", cash)));
-        receipt.append(String.format("%-37s\n", "CHANGE: ₱" + String.format("%.2f", change)));
-        receipt.append("===============================================\n");
-        receipt.append("            Thank you for your order! ♡\n");
-        
-        // Show receipt confirmation
+
+        receipt.append("\n**************************************\n");
+        receipt.append(String.format("%-30s %10s\n", "TOTAL:", txtTotal.getText()));
+        receipt.append(String.format("%-30s %10s\n", "CASH:", "₱" + String.format("%.2f", cash)));
+        receipt.append(String.format("%-30s %10s\n", "CHANGE:", "₱" + String.format("%.2f", change)));
+        receipt.append("**************************************\n");
+        receipt.append("\n        Thank you for your order! ♡\n");
+        receipt.append("           Please come again!\n");
+
+// Show receipt confirmation
         int confirm = JOptionPane.showConfirmDialog(this, 
             receipt.toString(), 
             "Confirm Purchase", 
@@ -651,10 +659,8 @@ public class usermenu extends javax.swing.JFrame {
             JOptionPane.PLAIN_MESSAGE);
         
         if (confirm == JOptionPane.YES_OPTION) {
-            // Save to database
             saveOrderToDatabase(total, cash, change);
             
-            // Clear cart
             cartModel.setRowCount(0);
             txtTotal.setText("");
             txtCash.setText("");
@@ -916,14 +922,14 @@ public class usermenu extends javax.swing.JFrame {
         reportspanel.setBackground(ClickedColor);
         
     }//GEN-LAST:event_reportspanelMousePressed
-
+  
     private void reportspanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_reportspanelMouseClicked
         // TODO add your handling code here:
         userreport ur = new userreport();
         desktoppane.removeAll();
         desktoppane.add(ur).setVisible(true);
     }//GEN-LAST:event_reportspanelMouseClicked
-
+    
   
     /**
      * @param args the command line arguments

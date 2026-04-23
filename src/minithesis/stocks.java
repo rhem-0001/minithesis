@@ -299,13 +299,13 @@ public static stocks instance;
 
         tblquantityreason.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "Product", "Size", "Pull Outs", "Reason", "Date"
+                "Code", "Product", "Size", "Pull Outs", "Reason", "Date"
             }
         ));
         jScrollPane2.setViewportView(tblquantityreason);
@@ -878,9 +878,14 @@ private String showReasonDialog() {
 public void populatePullOutTable() {
     try {
         Connection con = sqlconnector.getConnection();
-        String query = "SELECT product_code, product_name, quantity_pulled, reason, pullout_date " +
-                       "FROM tblquantityreason " +
-                       "ORDER BY pullout_date DESC";
+        
+        // JOIN with product_variant and size to get the size_name
+        String query = "SELECT qr.product_code, qr.product_name, s.size_name, " +
+                      "qr.quantity_pulled, qr.reason, qr.pullout_date " +
+                      "FROM tblquantityreason qr " +
+                      "LEFT JOIN product_variant pv ON qr.variant_id = pv.variant_id " +
+                      "LEFT JOIN size s ON pv.size_id = s.size_id " +
+                      "ORDER BY qr.pullout_date DESC";
         
         Statement st = con.createStatement();
         ResultSet rs = st.executeQuery(query);
@@ -890,11 +895,12 @@ public void populatePullOutTable() {
         
         while(rs.next()){
             Vector coldata = new Vector();
-            coldata.add(rs.getInt("product_code"));
-            coldata.add(rs.getString("product_name"));
-            coldata.add(rs.getInt("quantity_pulled"));
-            coldata.add(rs.getString("reason"));
-            coldata.add(rs.getTimestamp("pullout_date"));
+            coldata.add(rs.getInt("product_code"));          // Col 0: Product Code
+            coldata.add(rs.getString("product_name"));       // Col 1: Product Name
+            coldata.add(rs.getString("size_name"));          // Col 2: Size (NEW!)
+            coldata.add(rs.getInt("quantity_pulled"));       // Col 3: Quantity Pulled
+            coldata.add(rs.getString("reason"));             // Col 4: Reason
+            coldata.add(rs.getTimestamp("pullout_date"));    // Col 5: Date
             
             tblmodel.addRow(coldata);
         }

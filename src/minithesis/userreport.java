@@ -54,6 +54,7 @@ public class userreport extends javax.swing.JInternalFrame {
         jLabel2 = new javax.swing.JLabel();
         btnFilter = new javax.swing.JButton();
         btnReset = new javax.swing.JButton();
+        btnBackToMenu = new javax.swing.JButton();
         record = new javax.swing.JLabel();
         lbldailysales = new javax.swing.JLabel();
         txtdailysales = new javax.swing.JTextField();
@@ -103,6 +104,9 @@ public class userreport extends javax.swing.JInternalFrame {
         btnReset.setText("Reset");
         btnReset.addActionListener(this::btnResetActionPerformed);
 
+        btnBackToMenu.setText("Back");
+        btnBackToMenu.addActionListener(this::btnBackToMenuActionPerformed);
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -114,21 +118,25 @@ public class userreport extends javax.swing.JInternalFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(6, 6, 6)
                         .addComponent(jCalendar1, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(datefrom, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(btnReset)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(btnFilter))
-                                    .addComponent(dateto, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(datefrom, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(dateto, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                                .addGap(40, 40, 40)
+                                .addComponent(btnReset)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(btnFilter)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnBackToMenu, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addGap(18, 18, Short.MAX_VALUE)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -155,7 +163,8 @@ public class userreport extends javax.swing.JInternalFrame {
                                 .addGap(18, 18, 18)))
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btnReset)
-                            .addComponent(btnFilter, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(btnFilter, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnBackToMenu)))
                     .addComponent(jCalendar1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 361, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -221,7 +230,6 @@ private void loadUserRecords() {
             DefaultTableModel model = (DefaultTableModel) tbluserrecords.getModel();
             model.setRowCount(0);
             
-            // Use your existing connector method
             con = sqlconnector.getConnection();
             if (con == null) {
                 JOptionPane.showMessageDialog(this, "Database connection failed!");
@@ -234,7 +242,7 @@ private void loadUserRecords() {
             
             String query = "SELECT order_date, order_id, total_amount FROM orders " +
                           "WHERE DATE(order_date) BETWEEN ? AND ? " +
-                          "ORDER BY order_date DESC";
+                          "ORDER BY order_date DESC, order_id DESC";
             pst = con.prepareStatement(query);
             pst.setString(1, dateFormat.format(fromDate));
             pst.setString(2, dateFormat.format(toDate));
@@ -244,8 +252,13 @@ private void loadUserRecords() {
                 Vector row = new Vector();
                 row.add(dateFormat.format(rs.getDate("order_date")));
                 row.add(rs.getInt("order_id"));
-                row.add(rs.getDouble("total_amount"));
+                row.add(String.format("₱%.2f", rs.getDouble("total_amount")));
                 model.addRow(row);
+            }
+            
+            // Show message if no records
+            if (model.getRowCount() == 0) {
+                JOptionPane.showMessageDialog(this, "No records found for the selected date range.");
             }
             
         } catch (SQLException e) {
@@ -286,15 +299,17 @@ private void calculateSales() {
             String toDateStr = dateFormat.format(toDate);
             
             // === DAILY SALES (for selected "From" date) ===
-            String dailyQuery = "SELECT SUM(total_amount) as daily_total, COUNT(*) as order_count " +
+            String dailyQuery = "SELECT COALESCE(SUM(total_amount), 0) as daily_total, COUNT(*) as order_count " +
                               "FROM orders WHERE DATE(order_date) = ?";
             dailyPst = con.prepareStatement(dailyQuery);
             dailyPst.setString(1, fromDateStr);
             dailyRs = dailyPst.executeQuery();
             
             double dailySales = 0.0;
+            int orderCount = 0;
             if (dailyRs.next()) {
                 dailySales = dailyRs.getDouble("daily_total");
+                orderCount = dailyRs.getInt("order_count");
             }
             txtdailysales.setText(String.format("₱%.2f", dailySales));
             
@@ -304,7 +319,7 @@ private void calculateSales() {
             cal.add(Calendar.DAY_OF_YEAR, 6); // Add 6 days = 7 days total
             String weekEndDate = dateFormat.format(cal.getTime());
             
-            String weeklyQuery = "SELECT SUM(total_amount) as weekly_total " +
+            String weeklyQuery = "SELECT COALESCE(SUM(total_amount), 0) as weekly_total " +
                                "FROM orders WHERE DATE(order_date) BETWEEN ? AND ?";
             weeklyPst = con.prepareStatement(weeklyQuery);
             weeklyPst.setString(1, fromDateStr);
@@ -318,7 +333,7 @@ private void calculateSales() {
             txtweeklysales.setText(String.format("₱%.2f", weeklySales));
             
             // === TOTAL SALES (within selected date range) ===
-            String totalQuery = "SELECT SUM(total_amount) as total_sales FROM orders " +
+            String totalQuery = "SELECT COALESCE(SUM(total_amount), 0) as total_sales FROM orders " +
                               "WHERE DATE(order_date) BETWEEN ? AND ?";
             totalPst = con.prepareStatement(totalQuery);
             totalPst.setString(1, fromDateStr);
@@ -453,15 +468,23 @@ private void calculateSales() {
     private void btnFilterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFilterActionPerformed
         // TODO add your handling code here:
         if (datefrom.getDate() == null || dateto.getDate() == null) {
-            JOptionPane.showMessageDialog(this, "Please select both dates!");
+            JOptionPane.showMessageDialog(this, "Please select both FROM and TO dates!", "Missing Dates", JOptionPane.WARNING_MESSAGE);
             return;
         }
+        
         if (datefrom.getDate().after(dateto.getDate())) {
-            JOptionPane.showMessageDialog(this, "Invalid date range!");
+            JOptionPane.showMessageDialog(this, "FROM date cannot be after TO date!", "Invalid Date Range", JOptionPane.ERROR_MESSAGE);
             return;
         }
-            loadUserRecords();
-            calculateSales();
+        
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String fromStr = sdf.format(datefrom.getDate());
+        String toStr = sdf.format(dateto.getDate());
+        
+        loadUserRecords();
+        calculateSales();
+        
+        JOptionPane.showMessageDialog(this, "Showing records from " + fromStr + " to " + toStr, "Filter Applied", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_btnFilterActionPerformed
 
     private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetActionPerformed
@@ -472,11 +495,42 @@ private void calculateSales() {
         
         loadUserRecords();
         calculateSales();
+        
+        JOptionPane.showMessageDialog(this, "Filter reset - showing today's records", "Reset", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_btnResetActionPerformed
+
+    private void btnBackToMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackToMenuActionPerformed
+        // TODO add your handling code here:
+        this.dispose();
+    
+    // Create new usercategory instance
+    usercategory uc = new usercategory();
+    
+    // Check if usermenu instance exists
+    if (usermenu.instance != null) {
+        // Clear desktop pane
+        usermenu.instance.getDesktopPane().removeAll();
+        
+        // Add usercategory to desktop pane
+        usermenu.instance.getDesktopPane().add(uc);
+        uc.setVisible(true);
+        
+        // Maximize the frame
+        try {
+            uc.setMaximum(true);
+        } catch (java.beans.PropertyVetoException e) {
+            e.printStackTrace();
+        }
+        
+        // Load all products
+        uc.loadAllProducts();
+    }
+    }//GEN-LAST:event_btnBackToMenuActionPerformed
 
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnBackToMenu;
     private javax.swing.JButton btnFilter;
     private javax.swing.JButton btnReset;
     private com.toedter.calendar.JDateChooser datefrom;

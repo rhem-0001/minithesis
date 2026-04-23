@@ -5,9 +5,11 @@
 package minithesis;
 
 import java.sql.*;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.Vector;
+import java.text.SimpleDateFormat;  // Add this
+import java.util.Date;  
 /**
  *
  * @author Roged Martin
@@ -20,8 +22,72 @@ public class inventoryreports extends javax.swing.JInternalFrame {
     
     public inventoryreports() {
         initComponents();
+        loadInventoryReport();
+    }
+    public void loadInventoryReport() {
+        try {
+            Connection con = sqlconnector.getConnection();
+            
+            // Complex query to get all inventory data
+            String query = "SELECT " +
+                          "p.product_code as Code, " +
+                          "p.product_name as Name, " +
+                          "c.category_name as Category, " +
+                          "s.size_name as Size, " +
+                          "pv.stock_quantity as CurrentStock, " +
+                          "COALESCE(SUM(oi.quantity), 0) as SoldQuantity, " +
+                          "COALESCE((SELECT SUM(qr.quantity_pulled) FROM tblquantityreason qr " +
+                          "WHERE qr.variant_id = pv.variant_id), 0) as PullOuts, " +
+                          "pv.variant_id " +
+                          "FROM product p " +
+                          "JOIN product_variant pv ON p.product_id = pv.product_id " +
+                          "LEFT JOIN category c ON p.category_id = c.category_id " +
+                          "LEFT JOIN size s ON pv.size_id = s.size_id " +
+                          "LEFT JOIN order_items oi ON p.product_name = oi.product_name AND s.size_name = oi.size_name " +
+                          "GROUP BY pv.variant_id, p.product_code, p.product_name, c.category_name, s.size_name, pv.stock_quantity " +
+                          "ORDER BY p.product_code, s.size_name";
+            
+            Statement st = con.createStatement();
+            ResultSet rs = st.executeQuery(query);
+            
+            DefaultTableModel model = (DefaultTableModel) tblinventoryreports.getModel();
+            model.setRowCount(0);
+            
+            while(rs.next()) {
+                Vector coldata = new Vector();
+                
+                int currentStock = rs.getInt("CurrentStock");
+                int soldQty = rs.getInt("SoldQuantity");
+                int pullOuts = rs.getInt("PullOuts");
+                int updatedQty = currentStock - soldQty - pullOuts;
+                
+                coldata.add(getCurrentDate());                      // Date
+                coldata.add(rs.getInt("Code"));                     // Code
+                coldata.add(rs.getString("Name"));                  // Name
+                coldata.add(rs.getString("Category"));              // Category
+                coldata.add(rs.getString("Size"));                  // Size
+                coldata.add(currentStock);                          // Quantity (Current Stock)
+                coldata.add(soldQty);                               // Sold Quantity
+                coldata.add(pullOuts);                              // Pull Outs
+                coldata.add(updatedQty);                            // Updated Quantity
+                
+                model.addRow(coldata);
+            }
+            
+            rs.close();
+            st.close();
+            con.close();
+            
+        } catch(SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error loading inventory report: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
     
+    private String getCurrentDate() {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        return sdf.format(new Date());
+    }
  
 
 
