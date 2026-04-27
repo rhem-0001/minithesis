@@ -14,17 +14,17 @@ import javax.swing.JOptionPane;
 import java.sql.Connection;
 import java.util.Date;
 import java.text.SimpleDateFormat;
+import javax.swing.JFrame;
 
 public class Maintenance extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Maintenance.class.getName());
 
-    /**
-     * Creates new form Maintenance
-     */
     Color DefaultColor, ClickedColor;
     public Maintenance() {
         initComponents();
+        
+       
         
         overview ov = new overview();
         desktoppane.add(ov);
@@ -40,8 +40,9 @@ public class Maintenance extends javax.swing.JFrame {
         
         DefaultColor= new Color(255,255,255);
         ClickedColor= new Color(204,0,0);     
+        
     }
-    
+
     
    
     /**

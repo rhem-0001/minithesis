@@ -49,13 +49,13 @@ public class records extends javax.swing.JInternalFrame {
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         recordtable = new javax.swing.JTable();
-        jCalendar1 = new com.toedter.calendar.JCalendar();
-        datefrom = new com.toedter.calendar.JDateChooser();
-        dateto = new com.toedter.calendar.JDateChooser();
         lblfrom = new javax.swing.JLabel();
         lblto = new javax.swing.JLabel();
         btnfilter = new javax.swing.JButton();
         btnreset = new javax.swing.JButton();
+        datefrom = new com.toedter.calendar.JDateChooser();
+        dateto = new com.toedter.calendar.JDateChooser();
+        jCalendar2 = new com.toedter.calendar.JCalendar();
         record = new javax.swing.JLabel();
         lbldailysales = new javax.swing.JLabel();
         txtdailysales = new javax.swing.JTextField();
@@ -101,20 +101,23 @@ public class records extends javax.swing.JInternalFrame {
                         .addContainerGap()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 644, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(28, 28, 28)
-                        .addComponent(jCalendar1, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(34, 34, 34)
+                        .addComponent(jCalendar2, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lblto, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(lblfrom, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(27, 27, 27)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(27, 27, 27)
                                 .addComponent(btnreset)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(93, 93, 93)
                                 .addComponent(btnfilter))
-                            .addComponent(datefrom, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(dateto, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(datefrom, javax.swing.GroupLayout.DEFAULT_SIZE, 224, Short.MAX_VALUE)
+                                    .addComponent(dateto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))))
                 .addContainerGap(20, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -123,22 +126,22 @@ public class records extends javax.swing.JInternalFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(118, 118, 118)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(lblfrom, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(datefrom, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(26, 26, 26)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblfrom, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(datefrom, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(22, 22, 22)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(lblto, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(dateto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(btnfilter)
                             .addComponent(btnreset))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 43, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 47, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jCalendar1, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(28, 28, 28)))
+                        .addComponent(jCalendar2, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(34, 34, 34)))
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 373, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(15, 15, 15))
         );
@@ -468,35 +471,6 @@ public class records extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txttotalsalesActionPerformed
 
-    private void btnfilterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnfilterActionPerformed
-        // TODO add your handling code here:
-        try {
-            if (datefrom.getDate() == null || dateto.getDate() == null) {
-                JOptionPane.showMessageDialog(null, "Please select both FROM and TO dates!");
-                return;
-            }
-            
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-            String fromDate = sdf.format(datefrom.getDate());
-            String toDate = sdf.format(dateto.getDate());
-            
-            // Check if from date is after to date
-            if (datefrom.getDate().after(dateto.getDate())) {
-                JOptionPane.showMessageDialog(null, "FROM date cannot be after TO date!");
-                return;
-            }
-            
-            loadSalesDataByDateRange(fromDate, toDate);
-            loadOrderDetailsTableByDateRange(fromDate, toDate);
-            
-            JOptionPane.showMessageDialog(null, "Showing records from " + fromDate + " to " + toDate);
-            
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Error: " + e.getMessage());
-            e.printStackTrace();
-        }
-    }//GEN-LAST:event_btnfilterActionPerformed
-
     private void btnresetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnresetActionPerformed
         // TODO add your handling code here:
         datefrom.setDate(null);
@@ -506,6 +480,35 @@ public class records extends javax.swing.JInternalFrame {
         JOptionPane.showMessageDialog(null, "Filter reset - showing today's records");
     }//GEN-LAST:event_btnresetActionPerformed
 
+    private void btnfilterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnfilterActionPerformed
+        // TODO add your handling code here:
+        try {
+            if (datefrom.getDate() == null || dateto.getDate() == null) {
+                JOptionPane.showMessageDialog(null, "Please select both FROM and TO dates!");
+                return;
+            }
+
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            String fromDate = sdf.format(datefrom.getDate());
+            String toDate = sdf.format(dateto.getDate());
+
+            // Check if from date is after to date
+            if (datefrom.getDate().after(dateto.getDate())) {
+                JOptionPane.showMessageDialog(null, "FROM date cannot be after TO date!");
+                return;
+            }
+
+            loadSalesDataByDateRange(fromDate, toDate);
+            loadOrderDetailsTableByDateRange(fromDate, toDate);
+
+            JOptionPane.showMessageDialog(null, "Showing records from " + fromDate + " to " + toDate);
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_btnfilterActionPerformed
+
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -513,7 +516,7 @@ public class records extends javax.swing.JInternalFrame {
     private javax.swing.JButton btnreset;
     private com.toedter.calendar.JDateChooser datefrom;
     private com.toedter.calendar.JDateChooser dateto;
-    private com.toedter.calendar.JCalendar jCalendar1;
+    private com.toedter.calendar.JCalendar jCalendar2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lbldailysales;
