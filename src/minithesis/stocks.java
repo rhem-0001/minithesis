@@ -13,6 +13,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import javax.swing.RowFilter;
+import javax.swing.table.TableRowSorter;
 
 
 
@@ -69,6 +71,9 @@ public static stocks instance;
         btndelete = new javax.swing.JButton();
         btnDecreaseQty = new javax.swing.JButton();
         btnIncreaseQty = new javax.swing.JButton();
+        jPanel6 = new javax.swing.JPanel();
+        txtSearchPullOuts = new javax.swing.JTextField();
+        txtSearchStock = new javax.swing.JTextField();
         jScrollPane2 = new javax.swing.JScrollPane();
         tblquantityreason = new javax.swing.JTable();
 
@@ -252,7 +257,7 @@ public static stocks instance;
                         .addComponent(btnupdate)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnsave)))
-                .addContainerGap(119, Short.MAX_VALUE))
+                .addContainerGap(113, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -280,19 +285,61 @@ public static stocks instance;
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btndelete)
                     .addComponent(btnclose))
-                .addGap(119, 119, 119))
+                .addGap(34, 34, 34))
+        );
+
+        jPanel6.setBackground(new java.awt.Color(255, 102, 102));
+        jPanel6.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+
+        txtSearchPullOuts.addActionListener(this::txtSearchPullOutsActionPerformed);
+        txtSearchPullOuts.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtSearchPullOutsKeyReleased(evt);
+            }
+        });
+
+        txtSearchStock.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtSearchStockKeyReleased(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
+        jPanel6.setLayout(jPanel6Layout);
+        jPanel6Layout.setHorizontalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(txtSearchStock, javax.swing.GroupLayout.DEFAULT_SIZE, 202, Short.MAX_VALUE)
+                    .addComponent(txtSearchPullOuts))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel6Layout.setVerticalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(txtSearchStock, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(txtSearchPullOuts, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                .addContainerGap(11, Short.MAX_VALUE)
+                .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -754,7 +801,50 @@ public static stocks instance;
             txtquantity.setText(String.valueOf(originalQuantity));
         }
     }//GEN-LAST:event_txtquantityFocusLost
-public void makeEnabled(){
+
+    private void txtSearchPullOutsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSearchPullOutsActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtSearchPullOutsActionPerformed
+
+    private void txtSearchStockKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSearchStockKeyReleased
+        // TODO add your handling code here:
+        filterStockTable();
+    }//GEN-LAST:event_txtSearchStockKeyReleased
+
+    private void txtSearchPullOutsKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSearchPullOutsKeyReleased
+        // TODO add your handling code here:
+        filterPullOutsTable();
+    }//GEN-LAST:event_txtSearchPullOutsKeyReleased
+
+    private void filterStockTable() {
+    String searchText = txtSearchStock.getText().trim().toLowerCase();
+    
+    DefaultTableModel model = (DefaultTableModel) tblstock.getModel();
+    TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(model);
+    tblstock.setRowSorter(sorter);
+    
+    if (searchText.isEmpty()) {
+        sorter.setRowFilter(null);
+    } else {
+        sorter.setRowFilter(RowFilter.regexFilter("(?i)" + searchText));
+    }
+    }
+    
+    private void filterPullOutsTable() {
+    String searchText = txtSearchPullOuts.getText().trim().toLowerCase();
+    
+    DefaultTableModel model = (DefaultTableModel) tblquantityreason.getModel();
+    TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(model);
+    tblquantityreason.setRowSorter(sorter);
+    
+    if (searchText.isEmpty()) {
+        sorter.setRowFilter(null);
+    } else {
+        sorter.setRowFilter(RowFilter.regexFilter("(?i)" + searchText));
+    }
+    }
+    
+    public void makeEnabled(){
     txtproduct.setEnabled(true);
     txtquantity.setEnabled(true);
     txtquantity.setEditable(true); 
@@ -927,6 +1017,7 @@ public void populatePullOutTable() {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
@@ -935,6 +1026,8 @@ public void populatePullOutTable() {
     private javax.swing.JLabel lblquantity;
     private javax.swing.JTable tblquantityreason;
     private javax.swing.JTable tblstock;
+    private javax.swing.JTextField txtSearchPullOuts;
+    private javax.swing.JTextField txtSearchStock;
     private javax.swing.JTextField txtSize;
     private javax.swing.JTextField txtproduct;
     private javax.swing.JTextField txtquantity;
