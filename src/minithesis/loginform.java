@@ -1,9 +1,11 @@
 
 package minithesis;
 
-import javax.swing.JOptionPane;
+import java.security.MessageDigest;
 import java.sql.Connection;
-import java.sql.*;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import javax.swing.JOptionPane;
 import javax.swing.JFrame;
 
 
@@ -12,10 +14,7 @@ public class loginform extends javax.swing.JFrame {
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(loginform.class.getName());
 
     public loginform() {
-        initComponents();
-        
-        
-       
+        initComponents(); 
     }
 
     @SuppressWarnings("unchecked")
@@ -28,6 +27,7 @@ public class loginform extends javax.swing.JFrame {
         lblpassword = new javax.swing.JLabel();
         txtpassword = new javax.swing.JPasswordField();
         cbxpassword = new javax.swing.JCheckBox();
+        btnsignup = new javax.swing.JButton();
         btnlogin = new javax.swing.JButton();
         lblbg = new javax.swing.JLabel();
 
@@ -62,12 +62,19 @@ public class loginform extends javax.swing.JFrame {
         cbxpassword.addActionListener(this::cbxpasswordActionPerformed);
         getContentPane().add(cbxpassword, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 310, 110, 20));
 
+        btnsignup.setBackground(new java.awt.Color(153, 0, 0));
+        btnsignup.setFont(new java.awt.Font("Perpetua", 1, 24)); // NOI18N
+        btnsignup.setForeground(new java.awt.Color(255, 255, 255));
+        btnsignup.setText("Sign Up");
+        btnsignup.addActionListener(this::btnsignupActionPerformed);
+        getContentPane().add(btnsignup, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 360, 120, 40));
+
         btnlogin.setBackground(new java.awt.Color(153, 0, 0));
         btnlogin.setFont(new java.awt.Font("Perpetua", 1, 24)); // NOI18N
         btnlogin.setForeground(new java.awt.Color(255, 255, 255));
         btnlogin.setText("Log In");
         btnlogin.addActionListener(this::btnloginActionPerformed);
-        getContentPane().add(btnlogin, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 350, 160, 50));
+        getContentPane().add(btnlogin, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 360, 110, 40));
 
         lblbg.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/redbg.png"))); // NOI18N
         getContentPane().add(lblbg, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, -170, 1050, 860));
@@ -76,63 +83,103 @@ public class loginform extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    private String hashPassword(String password) {
+        try {
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            byte[] encodedhash = digest.digest(password.getBytes(java.nio.charset.StandardCharsets.UTF_8));
+            StringBuilder hexString = new StringBuilder(2 * encodedhash.length);
+            for (byte b : encodedhash) {
+                String hex = Integer.toHexString(0xff & b);
+                if (hex.length() == 1) hexString.append('0');
+                hexString.append(hex);
+            }
+            return hexString.toString();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    
     private void btnloginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnloginActionPerformed
         String username = txtusername.getText().trim();
         String password = new String(txtpassword.getPassword());
     
-    if (username.isEmpty() || password.isEmpty()) {
-        javax.swing.JOptionPane.showMessageDialog(this, 
-            "Please enter username and password!", "Error", 
-            javax.swing.JOptionPane.ERROR_MESSAGE);
-        return;
-    }
-    
-    try {
-        java.sql.Connection conn = sqlconnector.getConnection();
-        String sql = "SELECT * FROM users WHERE username = ? AND userpassword = ?";
-        java.sql.PreparedStatement pst = conn.prepareStatement(sql);
-        
-        pst.setString(1, username);
-        pst.setString(2, password);
-        
-        java.sql.ResultSet rs = pst.executeQuery();
-        
-        if (rs.next()) {
-            String userType = rs.getString("user_type");
-            
-            javax.swing.JOptionPane.showMessageDialog(this, 
-                "Login Successful!\nWelcome, " + username + "!",
-                "Success",
-                javax.swing.JOptionPane.INFORMATION_MESSAGE);
-            
-            this.dispose(); // Close login form
-            
-            // Redirect based on user type
-               if (userType.equalsIgnoreCase("Admin")) {
-                new Maintenance().setVisible(true);
-            } else {
-                new usermenu().setVisible(true);
-            }
-        } else {
-            // ❌ ERROR - Credentials don't match
-            javax.swing.JOptionPane.showMessageDialog(this, 
-                "Invalid username or password!\nPlease check your credentials and try again.", 
-                "Login Failed", 
-                javax.swing.JOptionPane.ERROR_MESSAGE);
-            
-            // Clear the password field
-            txtpassword.setText("");
+        // Validation
+        if (username.isEmpty() || password.isEmpty()) {
+            JOptionPane.showMessageDialog(this, 
+                "Please enter username and password!", "Error", 
+                JOptionPane.ERROR_MESSAGE);
+            return;
         }
         
+        // Hash the entered password
+        String hashedPassword = hashPassword(password);
+        if (hashedPassword == null) {
+            JOptionPane.showMessageDialog(this, 
+                "Error processing password!", "Error", 
+                JOptionPane.ERROR_MESSAGE);
+            return;
+        }
         
-        conn.close();
-    } catch (Exception e) {
-        javax.swing.JOptionPane.showMessageDialog(this, 
-            "Error: " + e.getMessage(), 
-            "Database Error", 
-            javax.swing.JOptionPane.ERROR_MESSAGE);
-        e.printStackTrace();
-    }
+        Connection conn = null;
+        PreparedStatement pst = null;
+        ResultSet rs = null;
+        
+        try {
+            conn = sqlconnector.getConnection();
+            String sql = "SELECT * FROM users WHERE username = ? AND userpassword = ?";
+            pst = conn.prepareStatement(sql);
+            
+            pst.setString(1, username);
+            pst.setString(2, hashedPassword);  // Compare hashed passwords
+            
+            rs = pst.executeQuery();
+            
+            if (rs.next()) {
+                String userType = rs.getString("user_type");
+                
+                JOptionPane.showMessageDialog(this, 
+                    "Login Successful!\nWelcome, " + username + "!",
+                    "Success",
+                    JOptionPane.INFORMATION_MESSAGE);
+                
+                logger.info("User logged in: " + username + " (Role: " + userType + ")");
+                
+                this.dispose(); // Close login form
+                
+                // Redirect based on user type
+                if (userType.equalsIgnoreCase("Admin")) {
+                    new Maintenance().setVisible(true);
+                } else {
+                    new usermenu().setVisible(true);
+                }
+            } else {
+                // Invalid credentials
+                JOptionPane.showMessageDialog(this, 
+                    "Invalid username or password!\nPlease check your credentials and try again.", 
+                    "Login Failed", 
+                    JOptionPane.ERROR_MESSAGE);
+                
+                logger.warning("Failed login attempt for username: " + username);
+                
+                // Clear the password field only
+                txtpassword.setText("");
+                txtusername.requestFocus();
+            }
+            
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, 
+                "Error: " + e.getMessage(), 
+                "Database Error", 
+                JOptionPane.ERROR_MESSAGE);
+            logger.severe("Login error: " + e.getMessage());
+            e.printStackTrace();
+        } finally {
+            // Close resources properly
+            try { if (rs != null) rs.close(); } catch (Exception e) { e.printStackTrace(); }
+            try { if (pst != null) pst.close(); } catch (Exception e) { e.printStackTrace(); }
+            try { if (conn != null) conn.close(); } catch (Exception e) { e.printStackTrace(); }
+        }
 
     }//GEN-LAST:event_btnloginActionPerformed
 
@@ -140,7 +187,7 @@ public class loginform extends javax.swing.JFrame {
         // TODO add your handling code here:
         if(cbxpassword.isSelected()){
             txtpassword.setEchoChar((char)0);
-        }else{
+        } else {
             txtpassword.setEchoChar('*');
         }
     }//GEN-LAST:event_cbxpasswordActionPerformed
@@ -148,6 +195,12 @@ public class loginform extends javax.swing.JFrame {
     private void txtusernameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtusernameActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtusernameActionPerformed
+
+    private void btnsignupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnsignupActionPerformed
+        // TODO add your handling code here:
+        this.dispose(); // Close login form
+        new signup().setVisible(true); // Open signup form
+    }//GEN-LAST:event_btnsignupActionPerformed
 
     /**
      * @param args the command line arguments
@@ -176,6 +229,7 @@ public class loginform extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnlogin;
+    private javax.swing.JButton btnsignup;
     private javax.swing.JCheckBox cbxpassword;
     private javax.swing.JLabel lblbg;
     private javax.swing.JLabel lblpassword;

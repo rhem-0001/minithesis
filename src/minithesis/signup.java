@@ -1,5 +1,11 @@
 package minithesis;
 
+import java.security.MessageDigest;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import javax.swing.JOptionPane;
+
 public class signup extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(signup.class.getName());
@@ -112,69 +118,113 @@ public class signup extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private String hashPassword(String password) {
+        try {
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            byte[] encodedhash = digest.digest(password.getBytes(java.nio.charset.StandardCharsets.UTF_8));
+            StringBuilder hexString = new StringBuilder(2 * encodedhash.length);
+            for (byte b : encodedhash) {
+                String hex = Integer.toHexString(0xff & b);
+                if (hex.length() == 1) hexString.append('0');
+                hexString.append(hex);
+            }
+            return hexString.toString();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    
     private void btnpasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnpasswordActionPerformed
         String username = jusername.getText().trim(); 
         String userType = jcategory.getSelectedItem().toString();
         String password = new String(jpassword.getPassword());
     
-   
-    if (username.isEmpty() || password.isEmpty()) {
-        javax.swing.JOptionPane.showMessageDialog(this, 
-            "Please fill in all fields!", "Error", 
-            javax.swing.JOptionPane.ERROR_MESSAGE);
-        return;
-    }
-    
-    java.sql.Connection conn = null;
-    try {
-        conn = sqlconnector.getConnection();
-        
-       
-        String checkSql = "SELECT username FROM users WHERE username = ?";
-        java.sql.PreparedStatement checkPst = conn.prepareStatement(checkSql);
-        checkPst.setString(1, username);
-        java.sql.ResultSet rs = checkPst.executeQuery();
-        
-        if (rs.next()) {
-                javax.swing.JOptionPane.showMessageDialog(this, 
-                "This username is already taken!\nPlease choose another one.", 
-                "Username Exists", 
-                javax.swing.JOptionPane.WARNING_MESSAGE);
+        // Validation
+        if (username.isEmpty() || password.isEmpty()) {
+            JOptionPane.showMessageDialog(this, 
+                "Please fill in all fields!", "Error", 
+                JOptionPane.ERROR_MESSAGE);
             return;
         }
         
-        String insertSql = "INSERT INTO users (username, userpassword, user_type) VALUES (?, ?, ?)";
-        java.sql.PreparedStatement insertPst = conn.prepareStatement(insertSql);
-        insertPst.setString(1, username);
-        insertPst.setString(2, password);
-        insertPst.setString(3, userType);
-        
-        int rowsAffected = insertPst.executeUpdate();
-        
-        if (rowsAffected > 0) {
-            javax.swing.JOptionPane.showMessageDialog(this, 
-                "Account created successfully!\nUsername: " + username + "\nRole: " + userType, 
-                "Success", 
-                javax.swing.JOptionPane.INFORMATION_MESSAGE);
-            
-            
-            jusername.setText("");
-            jcategory.setSelectedIndex(0);
-            jpassword.setText("");
-            
-            this.dispose();
-            new loginform().setVisible(true);
+        if (password.length() < 6) {
+            JOptionPane.showMessageDialog(this, 
+                "Password must be at least 6 characters long!", "Error", 
+                JOptionPane.ERROR_MESSAGE);
+            return;
         }
         
-    } catch (Exception e) {
-        javax.swing.JOptionPane.showMessageDialog(this, 
-            "Database Error: " + e.getMessage(), 
-            "Error", 
-            javax.swing.JOptionPane.ERROR_MESSAGE);
-        e.printStackTrace();
-    } finally {
-        try { if (conn != null) conn.close(); } catch (Exception e) { e.printStackTrace(); }
-    }
+        // Hash the password
+        String hashedPassword = hashPassword(password);
+        if (hashedPassword == null) {
+            JOptionPane.showMessageDialog(this, 
+                "Error processing password!", "Error", 
+                JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
+        Connection conn = null;
+        PreparedStatement checkPst = null;
+        PreparedStatement insertPst = null;
+        ResultSet rs = null;
+        
+        try {
+            conn = sqlconnector.getConnection();
+            
+            // Check if username already exists
+            String checkSql = "SELECT username FROM users WHERE username = ?";
+            checkPst = conn.prepareStatement(checkSql);
+            checkPst.setString(1, username);
+            rs = checkPst.executeQuery();
+            
+            if (rs.next()) {
+                JOptionPane.showMessageDialog(this, 
+                    "This username is already taken!\nPlease choose another one.", 
+                    "Username Exists", 
+                    JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+            
+            // Insert new user with hashed password
+            String insertSql = "INSERT INTO users (username, userpassword, user_type) VALUES (?, ?, ?)";
+            insertPst = conn.prepareStatement(insertSql);
+            insertPst.setString(1, username);
+            insertPst.setString(2, hashedPassword);  // Store hashed password
+            insertPst.setString(3, userType);
+            
+            int rowsAffected = insertPst.executeUpdate();
+            
+            if (rowsAffected > 0) {
+                JOptionPane.showMessageDialog(this, 
+                    "Account created successfully!\nUsername: " + username + "\nRole: " + userType, 
+                    "Success", 
+                    JOptionPane.INFORMATION_MESSAGE);
+                
+                // Clear fields
+                jusername.setText("");
+                jcategory.setSelectedIndex(0);
+                jpassword.setText("");
+                
+                // Close signup and open login
+                this.dispose();
+                new loginform().setVisible(true);
+            }
+            
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, 
+                "Database Error: " + e.getMessage(), 
+                "Error", 
+                JOptionPane.ERROR_MESSAGE);
+            logger.severe("Signup error: " + e.getMessage());
+            e.printStackTrace();
+        } finally {
+            // Close resources properly
+            try { if (rs != null) rs.close(); } catch (Exception e) { e.printStackTrace(); }
+            try { if (checkPst != null) checkPst.close(); } catch (Exception e) { e.printStackTrace(); }
+            try { if (insertPst != null) insertPst.close(); } catch (Exception e) { e.printStackTrace(); }
+            try { if (conn != null) conn.close(); } catch (Exception e) { e.printStackTrace(); }
+        }
 
     }//GEN-LAST:event_btnpasswordActionPerformed
 
@@ -191,10 +241,6 @@ public class signup extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_cbxpasswordActionPerformed
 
-    public static void main(String args[]) {
-       
-        java.awt.EventQueue.invokeLater(() -> new signup().setVisible(true));
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnpassword;

@@ -2,9 +2,9 @@
 package minithesis;
 public class Minithesis {
     public static void main(String[] args) {
-           signup su = new signup();
+           loginform log = new loginform();
            
-           su.setVisible(true);
+           log.setVisible(true);
     }
     
 }
