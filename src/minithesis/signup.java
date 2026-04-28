@@ -20,18 +20,23 @@ public class signup extends javax.swing.JFrame {
         jpassword = new javax.swing.JPasswordField();
         btnpassword = new javax.swing.JButton();
         jusername = new javax.swing.JTextField();
+        cbxpassword = new javax.swing.JCheckBox();
+        jLabel3 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel1.setBackground(new java.awt.Color(255, 102, 102));
 
-        jLabel1.setFont(new java.awt.Font("Times New Roman", 1, 19)); // NOI18N
-        jLabel1.setText("Enter Username: ");
+        jLabel1.setFont(new java.awt.Font("Times New Roman", 1, 10)); // NOI18N
+        jLabel1.setText("Username: ");
 
+        jcategory.setFont(new java.awt.Font("Times New Roman", 1, 12)); // NOI18N
         jcategory.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Admin", "User" }));
 
-        jLabel2.setFont(new java.awt.Font("Times New Roman", 1, 19)); // NOI18N
-        jLabel2.setText("Enter Password: ");
+        jLabel2.setFont(new java.awt.Font("Times New Roman", 1, 10)); // NOI18N
+        jLabel2.setText("Password: ");
+
+        jpassword.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(230, 230, 230)));
 
         btnpassword.setBackground(new java.awt.Color(255, 51, 51));
         btnpassword.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
@@ -39,67 +44,80 @@ public class signup extends javax.swing.JFrame {
         btnpassword.addActionListener(this::btnpasswordActionPerformed);
 
         jusername.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        jusername.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(230, 230, 230)));
         jusername.addActionListener(this::jusernameActionPerformed);
+
+        cbxpassword.setFont(new java.awt.Font("Perpetua", 1, 12)); // NOI18N
+        cbxpassword.setText("show password");
+        cbxpassword.addActionListener(this::cbxpasswordActionPerformed);
+
+        jLabel3.setFont(new java.awt.Font("Times New Roman", 1, 36)); // NOI18N
+        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel3.setText("WELCOME!");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(320, 320, 320)
-                        .addComponent(btnpassword, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(186, 186, 186)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 173, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(jpassword, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jcategory, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jusername, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 253, Short.MAX_VALUE))))
-                .addContainerGap(254, Short.MAX_VALUE))
+                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 346, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(jcategory, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jpassword, javax.swing.GroupLayout.DEFAULT_SIZE, 368, Short.MAX_VALUE)
+                        .addComponent(cbxpassword, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jusername)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(398, 398, 398)
+                .addComponent(btnpassword, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(416, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(174, 174, 174)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(jusername, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(9, 9, 9)
+                .addContainerGap(147, Short.MAX_VALUE)
+                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(31, 31, 31)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jusername, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jcategory, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(jpassword, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(50, 50, 50)
+                .addGap(21, 21, 21)
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jpassword, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(cbxpassword)
+                .addGap(31, 31, 31)
                 .addComponent(btnpassword, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(156, Short.MAX_VALUE))
+                .addGap(170, 170, 170))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnpasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnpasswordActionPerformed
-        String username = jusername.getText();
-        String category = jcategory.getSelectedItem().toString();
+        String username = jusername.getText().trim(); 
+        String userType = jcategory.getSelectedItem().toString();
         String password = new String(jpassword.getPassword());
     
-    // Validation
+   
     if (username.isEmpty() || password.isEmpty()) {
         javax.swing.JOptionPane.showMessageDialog(this, 
             "Please fill in all fields!", "Error", 
@@ -107,42 +125,55 @@ public class signup extends javax.swing.JFrame {
         return;
     }
     
-    
-    // Insert into database
+    java.sql.Connection conn = null;
     try {
-        java.sql.Connection conn = sqlconnector.getConnection();
-        String sql = "INSERT INTO users (username, userpassword, user_type) VALUES (?, ?, ?)";
-        java.sql.PreparedStatement pst = conn.prepareStatement(sql);
+        conn = sqlconnector.getConnection();
         
-        pst.setString(1, username);  // username
-        pst.setString(2, password);  // password (consider hashing in production)
-        pst.setString(3, category);  // user_type (same as category)
+       
+        String checkSql = "SELECT username FROM users WHERE username = ?";
+        java.sql.PreparedStatement checkPst = conn.prepareStatement(checkSql);
+        checkPst.setString(1, username);
+        java.sql.ResultSet rs = checkPst.executeQuery();
         
-        int rowsAffected = pst.executeUpdate();
+        if (rs.next()) {
+                javax.swing.JOptionPane.showMessageDialog(this, 
+                "This username is already taken!\nPlease choose another one.", 
+                "Username Exists", 
+                javax.swing.JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        
+        String insertSql = "INSERT INTO users (username, userpassword, user_type) VALUES (?, ?, ?)";
+        java.sql.PreparedStatement insertPst = conn.prepareStatement(insertSql);
+        insertPst.setString(1, username);
+        insertPst.setString(2, password);
+        insertPst.setString(3, userType);
+        
+        int rowsAffected = insertPst.executeUpdate();
         
         if (rowsAffected > 0) {
             javax.swing.JOptionPane.showMessageDialog(this, 
-                "Account created successfully!\nUsername: " + username + "\nUser Type: " + category, 
+                "Account created successfully!\nUsername: " + username + "\nRole: " + userType, 
                 "Success", 
                 javax.swing.JOptionPane.INFORMATION_MESSAGE);
             
-            // Clear fields
+            
             jusername.setText("");
             jcategory.setSelectedIndex(0);
             jpassword.setText("");
             
-            // Optionally close signup form and open login form
             this.dispose();
             new loginform().setVisible(true);
         }
         
-        conn.close();
     } catch (Exception e) {
         javax.swing.JOptionPane.showMessageDialog(this, 
-            "Error: " + e.getMessage(), 
-            "Database Error", 
+            "Database Error: " + e.getMessage(), 
+            "Error", 
             javax.swing.JOptionPane.ERROR_MESSAGE);
         e.printStackTrace();
+    } finally {
+        try { if (conn != null) conn.close(); } catch (Exception e) { e.printStackTrace(); }
     }
 
     }//GEN-LAST:event_btnpasswordActionPerformed
@@ -151,6 +182,15 @@ public class signup extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jusernameActionPerformed
 
+    private void cbxpasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxpasswordActionPerformed
+        // TODO add your handling code here:
+         if(cbxpassword.isSelected()){
+            jpassword.setEchoChar((char)0);
+        }else{
+            jpassword.setEchoChar('*');
+        }
+    }//GEN-LAST:event_cbxpasswordActionPerformed
+
     public static void main(String args[]) {
        
         java.awt.EventQueue.invokeLater(() -> new signup().setVisible(true));
@@ -158,8 +198,10 @@ public class signup extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnpassword;
+    private javax.swing.JCheckBox cbxpassword;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JComboBox<String> jcategory;
     private javax.swing.JPasswordField jpassword;
