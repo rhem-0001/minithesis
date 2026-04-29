@@ -21,34 +21,45 @@ public class usermenu extends javax.swing.JFrame {
     private HashMap<Integer, Integer> cartStockDeductions = new HashMap<>();
     private static final Logger logger = Logger.getLogger(usermenu.class.getName());
     
+    private boolean isAdminSwitching = false;
     public static usermenu instance;
     
     Color DefaultColor, ClickedColor;
     
     public usermenu() {
-        instance = this; 
-        initComponents(); 
-        loadCategories();
+        instance = this;
+        initComponents();
+        this.isAdminSwitching = false;
+        initializeUserMenu(); // Call shared method
         
-         // Create and add the usercategory internal frame
-        usercategory uc = new usercategory();
-        desktoppane.add(uc);
-        uc.setVisible(true);
-      
-        try {
+    }
+    public usermenu(boolean fromAdmin) {
+        instance = this;
+        initComponents();
+        this.isAdminSwitching = fromAdmin;
+        initializeUserMenu(); // Call shared method
+        
+    }
+    private void initializeUserMenu() {
+    loadCategories();
+    
+    usercategory uc = new usercategory();
+    desktoppane.add(uc);
+    uc.setVisible(true);
+    
+    try {
         uc.setMaximum(true);
     } catch (java.beans.PropertyVetoException e) {
         e.printStackTrace();
     }
-        
-        uc.loadAllProducts(); 
-        
-        startDateTime();
-        
-        DefaultColor = new Color(255,255,255);
-        ClickedColor = new Color(204,0,0); 
-        
+    
+    uc.loadAllProducts();
+    startDateTime();
+    
+    DefaultColor = new Color(255,255,255);
+    ClickedColor = new Color(204,0,0);
     }
+
     
     public class CategoryComboItem {
     private int id;
@@ -221,7 +232,7 @@ public class usermenu extends javax.swing.JFrame {
             LogoutpanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(LogoutpanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(lbllogout, javax.swing.GroupLayout.DEFAULT_SIZE, 26, Short.MAX_VALUE)
+                .addComponent(lbllogout, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -488,11 +499,10 @@ public class usermenu extends javax.swing.JFrame {
                         .addComponent(desktoppane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(Logoutpanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(resetpanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(resetpanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(recordpanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(reportspanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(reportspanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(Logoutpanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel21Layout.createSequentialGroup()
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -550,14 +560,35 @@ public class usermenu extends javax.swing.JFrame {
 
     private void LogoutpanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_LogoutpanelMouseClicked
         // TODO add your handling code here:
-        int result = JOptionPane.showConfirmDialog(null, "Are you sure you want to Log Out?", "Confirmation", JOptionPane.YES_NO_OPTION);
-        
-        if(result == JOptionPane.YES_OPTION){
-            loginform login = new loginform();
-            login.setVisible(true);
+        if (isAdminSwitching) {
+        // Admin is viewing as user - show options
+        Object[] options = {"Maintenance", "Logout"};
+        int choice = JOptionPane.showOptionDialog(
+            this,
+            "Redirect to Maintenance or Logout?",
+            "Admin Mode Logout",
+            JOptionPane.YES_NO_OPTION,
+            JOptionPane.QUESTION_MESSAGE,
+            null,
+            options,
+            options[0]
+        );
 
+        if (choice == 0) {
+            // User clicked "Maintenance"
             this.dispose();
+            new Maintenance().setVisible(true);
+        } else {
+            // User clicked "Logout"
+            this.dispose();
+            new loginform().setVisible(true);
         }
+        
+    } else {
+        // Normal User Logout - no dialog
+        this.dispose();
+        new loginform().setVisible(true);
+    }
     }//GEN-LAST:event_LogoutpanelMouseClicked
 
     private void resetpanelMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_resetpanelMousePressed
