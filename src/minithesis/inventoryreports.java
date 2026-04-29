@@ -28,16 +28,16 @@ public class inventoryreports extends javax.swing.JInternalFrame {
         try {
         Connection con = sqlconnector.getConnection();
         
-        // FIXED: Calculate "Quantity" (Start of Day) by adding back today's activity
+        // Get current stock and calculate today's activity
         String query = "SELECT " +
                       "p.product_code as Code, " +
                       "p.product_name as Name, " +
                       "c.category_name as Category, " +
                       "s.size_name as Size, " +
-                      "pv.stock_quantity as UpdatedQuantity, " +  // This is the End of Day / Current Stock
+                      "pv.stock_quantity as CurrentStock, " +
                       "pv.variant_id, " +
-                      "COALESCE(SUM(CASE WHEN DATE(o.order_date) = CURDATE() THEN oi.quantity ELSE 0 END), 0) as SoldQuantity, " +
-                      "COALESCE(SUM(CASE WHEN DATE(qr.pullout_date) = CURDATE() THEN qr.quantity_pulled ELSE 0 END), 0) as PullOuts " +
+                      "COALESCE(SUM(CASE WHEN DATE(o.order_date) = CURDATE() THEN oi.quantity ELSE 0 END), 0) as SoldToday, " +
+                      "COALESCE(SUM(CASE WHEN DATE(qr.pullout_date) = CURDATE() THEN qr.quantity_pulled ELSE 0 END), 0) as PullOutsToday " +
                       "FROM product p " +
                       "JOIN product_variant pv ON p.product_id = pv.product_id " +
                       "LEFT JOIN category c ON p.category_id = c.category_id " +
@@ -63,24 +63,22 @@ public class inventoryreports extends javax.swing.JInternalFrame {
             String category = rs.getString("Category");
             String size = rs.getString("Size");
             
-            int currentStock = rs.getInt("UpdatedQuantity"); // The actual DB value (e.g., 19)
-            int soldQty = rs.getInt("SoldQuantity");
-            int pullOuts = rs.getInt("PullOuts");
+            int currentStock = rs.getInt("CurrentStock");
+            int soldToday = rs.getInt("SoldToday");
+            int pullOutsToday = rs.getInt("PullOutsToday");
             
-            // CRITICAL FIX:
-            // Calculate "Quantity" (Start of Day) = Current Stock + Sold + Pull Outs
-            // Example: 19 + 0 + 1 = 20.
-            int startOfDayQty = currentStock + soldQty + pullOuts;
+            // Calculate start of day stock
+            int startOfDayStock = currentStock + soldToday + pullOutsToday;
             
-            coldata.add(getCurrentDate());             // Date
-            coldata.add(code);                         // Code
-            coldata.add(name);                         // Name
-            coldata.add(category);                     // Category
-            coldata.add(size);                         // Size
-            coldata.add(startOfDayQty);                // Quantity (Start of Day)
-            coldata.add(soldQty);                      // Sold Quantity (Today)
-            coldata.add(pullOuts);                     // Pull Outs (Today)
-            coldata.add(currentStock);                 // Updated Quantity (End of Day / Current)
+            coldata.add(getCurrentDate());
+            coldata.add(code);
+            coldata.add(name);
+            coldata.add(category);
+            coldata.add(size);
+            coldata.add(startOfDayStock);
+            coldata.add(soldToday);
+            coldata.add(pullOutsToday);
+            coldata.add(currentStock);
             
             model.addRow(coldata);
         }

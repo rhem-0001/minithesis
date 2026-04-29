@@ -480,105 +480,138 @@ public static stocks instance;
     private void btnDecreaseQtyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDecreaseQtyActionPerformed
         // TODO add your handling code here:
         if (stockID == 0) {
-            JOptionPane.showMessageDialog(null, "Please select a product first!");
+        JOptionPane.showMessageDialog(null, "Please select a product first!");
+        return;
+    }
+
+    try {
+        String currentText = txtquantity.getText().trim();
+        if (currentText.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Quantity cannot be empty!");
             return;
         }
 
+        int currentQty = Integer.parseInt(currentText);
+        if (currentQty <= 0) {
+            JOptionPane.showMessageDialog(null, "Quantity cannot be negative or zero!");
+            return;
+        }
+
+        // Ask for quantity to deduct
+        String input = JOptionPane.showInputDialog(this, 
+            "Current Quantity: " + currentQty + "\n\nEnter quantity to deduct:", 
+            "Deduct Stock", 
+            JOptionPane.QUESTION_MESSAGE);
+        
+        if (input == null) {
+            return; // User cancelled
+        }
+        
+        input = input.trim();
+        if (input.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Please enter a quantity!");
+            return;
+        }
+        
+        int quantityToDeduct;
         try {
-            String currentText = txtquantity.getText().trim();
-            if (currentText.isEmpty()) {
-                JOptionPane.showMessageDialog(null, "Quantity cannot be empty!");
-                return;
-            }
-
-            int currentQty = Integer.parseInt(currentText);
-            if (currentQty <= 0) {
-                JOptionPane.showMessageDialog(null, "Quantity cannot be negative!");
-                return;
-            }
-
-            // Show reason dialog
-            String reason = showReasonDialog();
-            if (reason == null) return; // User cancelled
-
-            int newQty = currentQty - 1;
-            int quantityPulled = 1;
-
-            // === WRAP ALL JDBC CODE IN TRY-CATCH ===
-            Connection con = null;
-            PreparedStatement pst = null;
-            PreparedStatement getProductStmt = null;
-            PreparedStatement logStmt = null;
-            ResultSet rs = null;
-
-            try {
-                con = sqlconnector.getConnection();
-                if (con == null) {
-                    JOptionPane.showMessageDialog(null, "Database connection failed!");
-                    return;
-                }
-
-                // 1. Update stock quantity
-                String updateQuery = "UPDATE product_variant SET stock_quantity = ? WHERE variant_id = ?";
-                pst = con.prepareStatement(updateQuery);
-                pst.setInt(1, newQty);
-                pst.setInt(2, stockID);
-                pst.executeUpdate();
-
-                // 2. Get product details for logging
-                String getProductQuery = "SELECT p.product_code, p.product_name " +
-                "FROM product p " +
-                "JOIN product_variant pv ON p.product_id = pv.product_id " +
-                "WHERE pv.variant_id = ?";
-                getProductStmt = con.prepareStatement(getProductQuery);
-                getProductStmt.setInt(1, stockID);
-                rs = getProductStmt.executeQuery();
-
-                int productCode = 0;
-                String productName = "";
-                if (rs.next()) {
-                    productCode = rs.getInt("product_code");
-                    productName = rs.getString("product_name");
-                }
-
-                // 3. Log to tblquantityreason
-                String logQuery = "INSERT INTO tblquantityreason (variant_id, product_code, product_name, quantity_pulled, reason) VALUES (?, ?, ?, ?, ?)";
-                logStmt = con.prepareStatement(logQuery);
-                logStmt.setInt(1, stockID);
-                logStmt.setInt(2, productCode);
-                logStmt.setString(3, productName);
-                logStmt.setInt(4, quantityPulled);
-                logStmt.setString(5, reason);
-                logStmt.executeUpdate();
-
-                JOptionPane.showMessageDialog(null, "Stock decreased and pull-out recorded!");
-
-            } catch (SQLException e) {
-                JOptionPane.showMessageDialog(null, "Database error: " + e.getMessage());
-                e.printStackTrace();
-            } finally {
-                // Close all resources
-                try {
-                    if (rs != null) rs.close();
-                    if (pst != null) pst.close();
-                    if (getProductStmt != null) getProductStmt.close();
-                    if (logStmt != null) logStmt.close();
-                    if (con != null) con.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            // 4. Refresh tables
-            populatetable();
-            populatePullOutTable();
-
-            txtquantity.setText(String.valueOf(newQty));
-            originalQuantity = newQty;
-
+            quantityToDeduct = Integer.parseInt(input);
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(null, "Please enter a valid number!");
+            return;
         }
+        
+        if (quantityToDeduct <= 0) {
+            JOptionPane.showMessageDialog(null, "Quantity to deduct must be greater than zero!");
+            return;
+        }
+        
+        if (quantityToDeduct > currentQty) {
+            JOptionPane.showMessageDialog(null, "Cannot deduct more than current quantity!\nCurrent: " + currentQty);
+            return;
+        }
+
+        // Show reason dialog
+        String reason = showReasonDialog();
+        if (reason == null) return; // User cancelled
+
+        int newQty = currentQty - quantityToDeduct;
+
+        // === WRAP ALL JDBC CODE IN TRY-CATCH ===
+        Connection con = null;
+        PreparedStatement pst = null;
+        PreparedStatement getProductStmt = null;
+        PreparedStatement logStmt = null;
+        ResultSet rs = null;
+
+        try {
+            con = sqlconnector.getConnection();
+            if (con == null) {
+                JOptionPane.showMessageDialog(null, "Database connection failed!");
+                return;
+            }
+
+            // 1. Update stock quantity
+            String updateQuery = "UPDATE product_variant SET stock_quantity = ? WHERE variant_id = ?";
+            pst = con.prepareStatement(updateQuery);
+            pst.setInt(1, newQty);
+            pst.setInt(2, stockID);
+            pst.executeUpdate();
+
+            // 2. Get product details for logging
+            String getProductQuery = "SELECT p.product_code, p.product_name " +
+            "FROM product p " +
+            "JOIN product_variant pv ON p.product_id = pv.product_id " +
+            "WHERE pv.variant_id = ?";
+            getProductStmt = con.prepareStatement(getProductQuery);
+            getProductStmt.setInt(1, stockID);
+            rs = getProductStmt.executeQuery();
+
+            int productCode = 0;
+            String productName = "";
+            if (rs.next()) {
+                productCode = rs.getInt("product_code");
+                productName = rs.getString("product_name");
+            }
+
+            // 3. Log to tblquantityreason
+            String logQuery = "INSERT INTO tblquantityreason (variant_id, product_code, product_name, quantity_pulled, reason) VALUES (?, ?, ?, ?, ?)";
+            logStmt = con.prepareStatement(logQuery);
+            logStmt.setInt(1, stockID);
+            logStmt.setInt(2, productCode);
+            logStmt.setString(3, productName);
+            logStmt.setInt(4, quantityToDeduct);  // Use the quantity to deduct
+            logStmt.setString(5, reason);
+            logStmt.executeUpdate();
+
+            JOptionPane.showMessageDialog(null, "Stock decreased by " + quantityToDeduct + " and pull-out recorded!");
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Database error: " + e.getMessage());
+            e.printStackTrace();
+        } finally {
+            // Close all resources
+            try {
+                if (rs != null) rs.close();
+                if (pst != null) pst.close();
+                if (getProductStmt != null) getProductStmt.close();
+                if (logStmt != null) logStmt.close();
+                if (con != null) con.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        // 4. Refresh tables
+        populatetable();
+        populatePullOutTable();
+
+        txtquantity.setText(String.valueOf(newQty));
+        originalQuantity = newQty;
+
+    } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(null, "Please enter a valid number!");
+    }
     }//GEN-LAST:event_btnDecreaseQtyActionPerformed
 
     private void btndeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btndeleteActionPerformed
