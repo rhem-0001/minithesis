@@ -49,22 +49,17 @@
                       <Component id="lblto" alignment="1" min="-2" pref="47" max="-2" attributes="0"/>
                       <Component id="lblfrom" alignment="1" min="-2" pref="47" max="-2" attributes="0"/>
                   </Group>
-                  <Group type="103" groupAlignment="0" attributes="0">
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
                       <Group type="102" attributes="0">
-                          <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
                           <Component id="btnreset" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="93" max="-2" attributes="0"/>
+                          <EmptySpace max="32767" attributes="0"/>
                           <Component id="btnfilter" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <Group type="102" alignment="0" attributes="0">
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                              <Component id="datefrom" min="-2" pref="224" max="-2" attributes="0"/>
-                              <Component id="dateto" min="-2" pref="224" max="-2" attributes="0"/>
-                          </Group>
-                      </Group>
+                      <Component id="datefrom" min="-2" pref="224" max="-2" attributes="0"/>
+                      <Component id="dateto" min="-2" pref="224" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="20" max="32767" attributes="0"/>
+                  <EmptySpace pref="54" max="32767" attributes="0"/>
               </Group>
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
@@ -89,9 +84,9 @@
                               <Component id="dateto" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="btnfilter" min="-2" max="-2" attributes="0"/>
-                              <Component id="btnreset" min="-2" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="btnreset" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="btnfilter" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace max="32767" attributes="0"/>
                       </Group>
