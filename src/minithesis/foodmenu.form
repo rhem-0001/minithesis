@@ -37,9 +37,10 @@
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
-              <Component id="jScrollPane1" pref="707" max="32767" attributes="0"/>
+              <Component id="jScrollPane1" pref="639" max="32767" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="jPanel1" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -217,9 +218,9 @@
                               </Group>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="cmbcategory" pref="160" max="32767" attributes="0"/>
+                                  <Component id="cmbcategory" max="32767" attributes="0"/>
                                   <Component id="txtprice" max="32767" attributes="0"/>
-                                  <Component id="cmbsize" alignment="0" max="32767" attributes="0"/>
+                                  <Component id="cmbsize" alignment="0" pref="184" max="32767" attributes="0"/>
                               </Group>
                           </Group>
                           <Group type="102" attributes="0">
@@ -264,7 +265,7 @@
                           <Component id="jPanel8" max="32767" attributes="0"/>
                           <Component id="cmbsize" max="32767" attributes="0"/>
                       </Group>
-                      <EmptySpace pref="70" max="32767" attributes="0"/>
+                      <EmptySpace pref="101" max="32767" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="btnadd" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="btnsave" alignment="3" min="-2" max="-2" attributes="0"/>

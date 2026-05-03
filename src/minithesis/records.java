@@ -85,11 +85,17 @@ public class records extends javax.swing.JInternalFrame {
         lblto.setForeground(new java.awt.Color(242, 242, 242));
         lblto.setText("TO:");
 
+        btnfilter.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnfilter.setText("Filter");
         btnfilter.addActionListener(this::btnfilterActionPerformed);
 
+        btnreset.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnreset.setText("Reset");
         btnreset.addActionListener(this::btnresetActionPerformed);
+
+        datefrom.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+
+        dateto.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);

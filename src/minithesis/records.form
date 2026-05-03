@@ -187,6 +187,9 @@
         </Component>
         <Component class="javax.swing.JButton" name="btnfilter">
           <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Segoe UI" size="12" style="1"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="Filter"/>
           </Properties>
           <Events>
@@ -195,6 +198,9 @@
         </Component>
         <Component class="javax.swing.JButton" name="btnreset">
           <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Segoe UI" size="12" style="1"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="Reset"/>
           </Properties>
           <Events>
@@ -202,8 +208,18 @@
           </Events>
         </Component>
         <Component class="com.toedter.calendar.JDateChooser" name="datefrom">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Segoe UI" size="12" style="1"/>
+            </Property>
+          </Properties>
         </Component>
         <Component class="com.toedter.calendar.JDateChooser" name="dateto">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Segoe UI" size="12" style="1"/>
+            </Property>
+          </Properties>
         </Component>
         <Component class="com.toedter.calendar.JCalendar" name="jCalendar2">
         </Component>

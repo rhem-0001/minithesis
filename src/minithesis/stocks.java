@@ -159,6 +159,7 @@ public static stocks instance;
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        txtquantity.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         txtquantity.setEnabled(false);
         txtquantity.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
@@ -189,9 +190,11 @@ public static stocks instance;
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        txtproduct.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         txtproduct.setEnabled(false);
         txtproduct.addActionListener(this::txtproductActionPerformed);
 
+        txtSize.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         txtSize.setEnabled(false);
         txtSize.addActionListener(this::txtSizeActionPerformed);
 
@@ -291,6 +294,7 @@ public static stocks instance;
         jPanel6.setBackground(new java.awt.Color(255, 102, 102));
         jPanel6.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
+        txtSearchPullOuts.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         txtSearchPullOuts.addActionListener(this::txtSearchPullOutsActionPerformed);
         txtSearchPullOuts.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
@@ -298,6 +302,7 @@ public static stocks instance;
             }
         });
 
+        txtSearchStock.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         txtSearchStock.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 txtSearchStockKeyReleased(evt);

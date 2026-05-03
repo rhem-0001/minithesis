@@ -312,9 +312,9 @@ public static foodmenu instance;
                             .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(cmbcategory, 0, 160, Short.MAX_VALUE)
+                            .addComponent(cmbcategory, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(txtprice)
-                            .addComponent(cmbsize, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addComponent(cmbsize, 0, 184, Short.MAX_VALUE)))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -348,7 +348,7 @@ public static foodmenu instance;
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(cmbsize))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 70, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 101, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnadd)
                     .addComponent(btnsave))
@@ -383,9 +383,10 @@ public static foodmenu instance;
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 707, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 639, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -715,7 +716,8 @@ private int getSizeIdByName(String sizeName) {
             JOptionPane.showMessageDialog(null, "Please select a row first!");
             return;
         }
-
+        
+        selectedRow = tblproduct.convertRowIndexToModel(selectedRow);
         DefaultTableModel model = (DefaultTableModel) tblproduct.getModel();
         
         // Debug: Print what we're getting
@@ -841,16 +843,18 @@ private int getSizeIdByName(String sizeName) {
         // TODO add your handling code here:
          String searchText = txtSearchProduct.getText().trim().toLowerCase();
     
-    DefaultTableModel model = (DefaultTableModel) tblproduct.getModel();
-    TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(model);
-    tblproduct.setRowSorter(sorter);
-    
-    if (searchText.isEmpty()) {
-        sorter.setRowFilter(null);
-    } else {
-        // Search specific columns (Product Name, Category, Size)
-        sorter.setRowFilter(RowFilter.regexFilter("(?i)" + searchText, 1, 2, 3));
-    }
+        DefaultTableModel model = (DefaultTableModel) tblproduct.getModel();
+        TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(model);
+        tblproduct.setRowSorter(sorter);
+
+        if (searchText.isEmpty()) {
+            sorter.setRowFilter(null);
+        } else {
+            sorter.setRowFilter(RowFilter.regexFilter("(?i)" + searchText, 1, 2, 3));
+        }
+
+        // Clear form when searching to avoid showing wrong data
+        setDefault();
     }//GEN-LAST:event_txtSearchProductKeyReleased
 
 

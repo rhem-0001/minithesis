@@ -281,13 +281,21 @@ public class inventoryreports extends javax.swing.JInternalFrame {
         ));
         jScrollPane1.setViewportView(tblinventoryreports);
 
+        jDateChooser1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+
+        jDateChooser2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+
+        datefrom.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         datefrom.setText("From : ");
 
+        dateto.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         dateto.setText("To :");
 
+        btnReset.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnReset.setText("Reset");
         btnReset.addActionListener(this::btnResetActionPerformed);
 
+        btnFilter.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnFilter.setText("Filter");
         btnFilter.addActionListener(this::btnFilterActionPerformed);
 
@@ -305,15 +313,16 @@ public class inventoryreports extends javax.swing.JInternalFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(97, 97, 97)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                                .addComponent(datefrom)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addComponent(dateto)
-                                .addGap(65, 65, 65)
-                                .addComponent(jDateChooser2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(datefrom)
-                                .addGap(47, 47, 47)
-                                .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addGap(24, 24, 24)))
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(jDateChooser2, javax.swing.GroupLayout.DEFAULT_SIZE, 188, Short.MAX_VALUE)
+                            .addComponent(jDateChooser1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnReset)
