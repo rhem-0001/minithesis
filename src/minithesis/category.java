@@ -1,4 +1,4 @@
-/*
+   /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JInternalFrame.java to edit this template
  */
@@ -13,10 +13,11 @@ import java.util.Vector;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import minithesis.foodmenu;
+
 public class category extends javax.swing.JInternalFrame {
-private int categoryId;
-private String check;
-public static category instance; 
+    private int categoryId;
+    private String check;
+    public static category instance; 
     /**
      * Creates new form category
      */
@@ -217,7 +218,7 @@ public static category instance;
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtcategoryname, javax.swing.GroupLayout.DEFAULT_SIZE, 269, Short.MAX_VALUE)
+                        .addComponent(txtcategoryname, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
                         .addGap(15, 15, 15))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -350,226 +351,178 @@ public static category instance;
 
     private void txtsizeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtsizeActionPerformed
         // TODO add your handling code here:
-        
     }//GEN-LAST:event_txtsizeActionPerformed
 
     private void btnupdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnupdateActionPerformed
-        // TODO add your handling code here:
         if ("update".equals(check)) {
-        txtcategoryname.setEnabled(true);
-        txtsize.setEnabled(false);
-    } else if ("updatesize".equals(check)) {
-        txtsize.setEnabled(true);
-        txtcategoryname.setEnabled(false);
-    }
-    
-    btndelete.setEnabled(true);
-    btnupdate.setEnabled(false);
-    btnsave.setEnabled(true);
+            txtcategoryname.setEnabled(true);
+            txtsize.setEnabled(false);
+        } else if ("updatesize".equals(check)) {
+            txtsize.setEnabled(true);
+            txtcategoryname.setEnabled(false);
+        }
+        
+        btndelete.setEnabled(true);
+        btnupdate.setEnabled(false);
+        btnsave.setEnabled(true);
     }//GEN-LAST:event_btnupdateActionPerformed
 
     private void btnsaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnsaveActionPerformed
-        // TODO add your handling code here:
-         try {
-        Connection con = sqlconnector.getConnection();
-        PreparedStatement pst;
-        
-        // Handle SIZE operations
-        if (check.equals("addsize") || check.equals("updatesize") || check.equals("deletesize")) {
-            // Validate size field
-            String sizeName = txtsize.getText().trim();
-            if (sizeName.isEmpty()) {
-                JOptionPane.showMessageDialog(null, "Please enter a size name!");
+        try {
+            Connection con = sqlconnector.getConnection();
+            PreparedStatement pst;
+            
+            // Handle SIZE operations
+            if (check.equals("addsize") || check.equals("updatesize") || check.equals("deletesize")) {
+                String sizeName = txtsize.getText().trim();
+                if (sizeName.isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "Please enter a size name!");
+                    return;
+                }
+                
+                if (check.equals("addsize")) {
+                    String query = "INSERT INTO size (size_name) VALUES (?)";
+                    pst = con.prepareStatement(query);
+                    pst.setString(1, sizeName);
+                    pst.executeUpdate();
+                    JOptionPane.showMessageDialog(null, "Size added successfully!");
+                } else if (check.equals("updatesize")) {
+                    String query = "UPDATE size SET size_name=? WHERE size_id=?";
+                    pst = con.prepareStatement(query);
+                    pst.setString(1, sizeName);
+                    pst.setInt(2, categoryId);
+                    pst.executeUpdate();
+                    JOptionPane.showMessageDialog(null, "Size updated successfully!");
+                }
+                
+                setDefault();
+                populateSizeTable();
+                
+                // Refresh foodmenu
+                if (foodmenu.instance != null) {
+                    foodmenu.instance.populatetable();
+                    foodmenu.instance.loadSizes();
+                }
+                
+                // Refresh stocks table
+                if(stocks.instance != null) {
+                    stocks.instance.populatetable();
+                }
+                
                 return;
             }
             
-            if (check.equals("addsize")) {
-                // Add new size
-                String query = "INSERT INTO size (size_name) VALUES (?)";
-                pst = con.prepareStatement(query);
-                pst.setString(1, sizeName);
-                pst.executeUpdate();
-                
-                JOptionPane.showMessageDialog(null, "Size added successfully!");
-                
-            } else if (check.equals("updatesize")) {
-                // Update size
-                String query = "UPDATE size SET size_name=? WHERE size_id=?";
-                pst = con.prepareStatement(query);
-                pst.setString(1, sizeName);
-                pst.setInt(2, categoryId);
-                pst.executeUpdate();
-                
-                JOptionPane.showMessageDialog(null, "Size updated successfully!");
-            }
-            
-            
-            
-            setDefault();
-            populateSizeTable();
-            
-            // Refresh foodmenu
-            if (foodmenu.instance != null) {
-                foodmenu.instance.populatetable();
-                foodmenu.instance.loadCategories();
-            }
-            
-            // Refresh usermenu combobox
-            if (usermenu.instance != null) {
-                usermenu.instance.loadCategories();
-            }
-            
-            // ✅ Refresh usermenu for size changes
-            if(usermenu.instance != null) {
-                Object cat = usermenu.instance.cmbusercategory.getSelectedItem();
-                if(cat instanceof usermenu.CategoryComboItem) {
-                    usermenu.instance.loadProductsByCategory(
-                        ((usermenu.CategoryComboItem)cat).getId()
-                    );
+            // Handle CATEGORY operations
+            if (check.equals("add") || check.equals("update") || check.equals("category")) {
+                String categoryName = txtcategoryname.getText().trim();
+                if (categoryName.isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "Please enter a category name!");
+                    return;
                 }
+                
+                if (check.equals("add")) {
+                    String query = "INSERT INTO category (category_name) VALUES (?)";
+                    pst = con.prepareStatement(query);
+                    pst.setString(1, categoryName);
+                    pst.executeUpdate();
+                } else if (check.equals("update")) {
+                    String query = "UPDATE category SET category_name=? WHERE category_id=?";
+                    pst = con.prepareStatement(query);
+                    pst.setString(1, categoryName);
+                    pst.setInt(2, categoryId);
+                    pst.executeUpdate();
+                }
+                
+                JOptionPane.showMessageDialog(null, "Category saved successfully!");
+                setDefault();
+                populatetable();
+                
+                // Refresh foodmenu
+                if (foodmenu.instance != null) {
+                    foodmenu.instance.populatetable();
+                    foodmenu.instance.loadCategories();
+                }
+                
+                // Refresh stocks table
+                if(stocks.instance != null) {
+                    stocks.instance.populatetable();
+                }
+                
+                return;
             }
             
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error: " + e.getMessage());
+        }
+    }//GEN-LAST:event_btnsaveActionPerformed
+
+    private void btndeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btndeleteActionPerformed
+        if (categoryId == 0) {
+            JOptionPane.showMessageDialog(null, "Please select an item to delete.");
             return;
         }
         
-        // Handle CATEGORY operations
-        if (check.equals("add") || check.equals("update") || check.equals("category")) {
-            // Validate category field
-            String categoryName = txtcategoryname.getText().trim();
-            if (categoryName.isEmpty()) {
-                JOptionPane.showMessageDialog(null, "Please enter a category name!");
-                return;
-            }
+        int confirm = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete this?", "Confirm Delete", JOptionPane.YES_NO_OPTION);
+        if (confirm != JOptionPane.YES_OPTION) return;
+        
+        try {
+            Connection con = sqlconnector.getConnection();
+            PreparedStatement pst;
             
-            if (check.equals("add")) {
-                // Add new category
-                String query = "INSERT INTO category (category_name) VALUES (?)";
-                pst = con.prepareStatement(query);
-                pst.setString(1, categoryName);
+            if ("updatesize".equals(check) || "deletesize".equals(check)) {
+                pst = con.prepareStatement("DELETE FROM size WHERE size_id = ?");
+                pst.setInt(1, categoryId);
                 pst.executeUpdate();
                 
-            } else if (check.equals("update")) {
-                // Update category
-                String query = "UPDATE category SET category_name=? WHERE category_id=?";
-                pst = con.prepareStatement(query);
-                pst.setString(1, categoryName);
-                pst.setInt(2, categoryId);
+                JOptionPane.showMessageDialog(null, "Size deleted successfully!");
+                populateSizeTable();
+                
+                if (foodmenu.instance != null) {
+                    foodmenu.instance.loadSizes();
+                }
+            } else {
+                pst = con.prepareStatement("SELECT COUNT(*) FROM product WHERE category_id = ?");
+                pst.setInt(1, categoryId);
+                ResultSet rs = pst.executeQuery();
+                
+                if (rs.next() && rs.getInt(1) > 0) {
+                    JOptionPane.showMessageDialog(null, "Cannot delete! This category is being used by products.");
+                    return;
+                }
+                
+                pst = con.prepareStatement("DELETE FROM category WHERE category_id = ?");
+                pst.setInt(1, categoryId);
                 pst.executeUpdate();
+                
+                JOptionPane.showMessageDialog(null, "Category deleted successfully!");
+                populatetable();
+                
+                if (foodmenu.instance != null) {
+                    foodmenu.instance.populatetable();
+                    foodmenu.instance.loadCategories();
+                }
             }
             
-            JOptionPane.showMessageDialog(null, "Category saved successfully!");
             setDefault();
-            populatetable();
             
-            // Refresh foodmenu
-            if (foodmenu.instance != null) {
-                foodmenu.instance.populatetable();
-                foodmenu.instance.loadCategories();
-            }
-            
-            // ✅ Refresh usermenu combobox for category changes
-            if(usermenu.instance != null) {
-                usermenu.instance.loadCategories();
-            }
-            
-            // ✅ Refresh stocks.java table if open
+            // Refresh stocks
             if(stocks.instance != null) {
                 stocks.instance.populatetable();
             }
             
-            return;
+        } catch(SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error deleting: " + e.getMessage());
         }
-        
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(null, "Error: " + e.getMessage());
-    }
-    }//GEN-LAST:event_btnsaveActionPerformed
-
-    private void btndeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btndeleteActionPerformed
-        
-        if (categoryId == 0) {
-        JOptionPane.showMessageDialog(null, "Please select an item to delete.");
-        return;
-    }
-    
-    int confirm = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete this?", "Confirm Delete", JOptionPane.YES_NO_OPTION);
-    if (confirm != JOptionPane.YES_OPTION) return;
-    
-    try {
-        Connection con = sqlconnector.getConnection();
-        PreparedStatement pst;
-        
-        // Check if we're deleting a SIZE (categoryId came from size table)
-        if ("updatesize".equals(check) || "deletesize".equals(check)) {
-            // Delete from size table
-            pst = con.prepareStatement("DELETE FROM size WHERE size_id = ?");
-            pst.setInt(1, categoryId);
-            pst.executeUpdate();
-            
-            JOptionPane.showMessageDialog(null, "Size deleted successfully!");
-            populateSizeTable();
-            
-            // Refresh foodmenu sizes
-            if (foodmenu.instance != null) {
-                foodmenu.instance.loadSizes();
-            }
-        } else {
-            // Delete from category table
-            // First check if any products are using this category
-            pst = con.prepareStatement("SELECT COUNT(*) FROM product WHERE category_id = ?");
-            pst.setInt(1, categoryId);
-            ResultSet rs = pst.executeQuery();
-            
-            if (rs.next() && rs.getInt(1) > 0) {
-                JOptionPane.showMessageDialog(null, "Cannot delete! This category is being used by products. Delete or update those products first.");
-                return;
-            }
-            
-            // Now delete the category
-            pst = con.prepareStatement("DELETE FROM category WHERE category_id = ?");
-            pst.setInt(1, categoryId);
-            pst.executeUpdate();
-            
-            JOptionPane.showMessageDialog(null, "Category deleted successfully!");
-            populatetable();
-            
-            // Refresh foodmenu
-            if (foodmenu.instance != null) {
-                foodmenu.instance.populatetable();
-                foodmenu.instance.loadCategories();
-            }
-
-            // >>> ADD THIS BLOCK HERE <<<
-            // Refresh usermenu combobox
-            if (usermenu.instance != null) {
-                usermenu.instance.loadCategories();
-            }
-        }
-        
-        setDefault();
-        
-    } catch(SQLException e) {
-        JOptionPane.showMessageDialog(null, "Error deleting: " + e.getMessage());
-    }
     }//GEN-LAST:event_btndeleteActionPerformed
 
     private void btnaddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnaddActionPerformed
-        // TODO add your handling code here:
         txtcategoryname.setEnabled(true);
         txtcategoryname.setEditable(true);
-    
-    // Disable size field
         txtsize.setEnabled(false);
-    
-    // Set mode to add category
         check = "add";
-    
-    // Enable save button
         btnsave.setEnabled(true);
         btnupdate.setEnabled(false);
         btndelete.setEnabled(false);
-    
-    // Focus on category field
         txtcategoryname.requestFocus();
     }//GEN-LAST:event_btnaddActionPerformed
 
@@ -578,30 +531,26 @@ public static category instance;
     }//GEN-LAST:event_txtcategorynameActionPerformed
 
     private void tblcategoryMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblcategoryMouseClicked
-        // TODO add your handling code here:
         try {
-        int selectedRow = tblcategory.getSelectedRow();
-        if (selectedRow == -1) return;
-        
-        DefaultTableModel model = (DefaultTableModel) tblcategory.getModel();
-        
-        categoryId = Integer.parseInt(model.getValueAt(selectedRow, 0).toString());
-        txtcategoryname.setText(model.getValueAt(selectedRow, 1).toString());
-        
-        // Enable category field, disable size field
-        txtcategoryname.setEnabled(true);
-        txtsize.setEnabled(false);
-        
-        // Set check to indicate we're working with categories
-        check = "update";
-        
-        btnupdate.setEnabled(true);
-        btndelete.setEnabled(true);
-        btnsave.setEnabled(false);
-        
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(null, e);
-    }
+            int selectedRow = tblcategory.getSelectedRow();
+            if (selectedRow == -1) return;
+            
+            DefaultTableModel model = (DefaultTableModel) tblcategory.getModel();
+            
+            categoryId = Integer.parseInt(model.getValueAt(selectedRow, 0).toString());
+            txtcategoryname.setText(model.getValueAt(selectedRow, 1).toString());
+            
+            txtcategoryname.setEnabled(true);
+            txtsize.setEnabled(false);
+            check = "update";
+            
+            btnupdate.setEnabled(true);
+            btndelete.setEnabled(true);
+            btnsave.setEnabled(false);
+            
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
     }//GEN-LAST:event_tblcategoryMouseClicked
 
     private void btncloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncloseActionPerformed
@@ -610,30 +559,26 @@ public static category instance;
     }//GEN-LAST:event_btncloseActionPerformed
 
     private void tblsizeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblsizeMouseClicked
-        // TODO add your handling code here:
         try {
-        int selectedRow = tblsize.getSelectedRow();
-        if (selectedRow == -1) return;
-        
-        DefaultTableModel model = (DefaultTableModel) tblsize.getModel();
-        
-        categoryId = Integer.parseInt(model.getValueAt(selectedRow, 0).toString());
-        txtsize.setText(model.getValueAt(selectedRow, 1).toString());
-        
-        // Enable size field, disable category field
-        txtsize.setEnabled(true);
-        txtcategoryname.setEnabled(false);
-        
-        // Set check to indicate we're working with sizes
-        check = "updatesize";
-        
-        btnupdate.setEnabled(true);
-        btndelete.setEnabled(true);
-        btnsave.setEnabled(false);
-        
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(null, e);
-    }
+            int selectedRow = tblsize.getSelectedRow();
+            if (selectedRow == -1) return;
+            
+            DefaultTableModel model = (DefaultTableModel) tblsize.getModel();
+            
+            categoryId = Integer.parseInt(model.getValueAt(selectedRow, 0).toString());
+            txtsize.setText(model.getValueAt(selectedRow, 1).toString());
+            
+            txtsize.setEnabled(true);
+            txtcategoryname.setEnabled(false);
+            check = "updatesize";
+            
+            btnupdate.setEnabled(true);
+            btndelete.setEnabled(true);
+            btnsave.setEnabled(false);
+            
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
     }//GEN-LAST:event_tblsizeMouseClicked
 
     private void btnaddsizeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnaddsizeMouseClicked
@@ -642,91 +587,75 @@ public static category instance;
     }//GEN-LAST:event_btnaddsizeMouseClicked
 
     private void btnaddsizeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnaddsizeActionPerformed
-        // TODO add your handling code here:
         txtsize.setEnabled(true);
         txtsize.setEditable(true);
-    
-    // Disable category field
         txtcategoryname.setEnabled(false);
-    
-    // Set mode to add size
         check = "addsize";
-    
-    // Enable save button
         btnsave.setEnabled(true);
         btnupdate.setEnabled(false);
         btndelete.setEnabled(false);
-    
-    // Focus on size field
-    txtsize.requestFocus();
+        txtsize.requestFocus();
     }//GEN-LAST:event_btnaddsizeActionPerformed
-public void makeEnabled(){
-    txtsize.setEnabled(true);
-    txtcategoryname.setEnabled(true);
-}
-public void setDefault(){
-    txtcategoryname.setText("");
-    txtsize.setText("");
-    
-    txtcategoryname.setEnabled(false);
-    txtsize.setEnabled(false);
-    
-    btnadd.setEnabled(true);
-    btnaddsize.setEnabled(true);
-    btndelete.setEnabled(false);
-    btnupdate.setEnabled(false);
-    btnsave.setEnabled(false);
- 
-    
-    populatetable();
-    populateSizeTable();
-}
-public void populateSizeTable() {
-    int colcount = 0;
-    try {
-        Connection con = sqlconnector.getConnection();
-        Statement st = con.createStatement();
-        String query = "SELECT * FROM size ORDER BY size_id ASC";
-        ResultSet rs = st.executeQuery(query);
-        ResultSetMetaData rsdata = rs.getMetaData();
-        colcount = rsdata.getColumnCount();
-        
-        DefaultTableModel tblmodel = (DefaultTableModel) tblsize.getModel();
-        tblmodel.setRowCount(0);
-        
-        while(rs.next()) {
-            Vector coldata = new Vector();
-            coldata.add(rs.getInt("size_id"));
-            coldata.add(rs.getString("size_name"));
-            tblmodel.addRow(coldata);
-        }
-    } catch(SQLException e) {
-        JOptionPane.showMessageDialog(null, e);
+    public void makeEnabled(){
+        txtsize.setEnabled(true);
+        txtcategoryname.setEnabled(true);
     }
-}
-public void populatetable(){
-    int colcount = 0;
-    try{
-        Connection con = sqlconnector.getConnection();
-        Statement st = con.createStatement();
-        String query = "SELECT category_id, category_name FROM category ORDER BY category_id ASC";
-        ResultSet rs = st.executeQuery(query);
-        ResultSetMetaData rsdata = rs.getMetaData();
-        colcount = rsdata.getColumnCount();
-        
-        DefaultTableModel tblmodel =(DefaultTableModel)tblcategory.getModel();
-        tblmodel.setRowCount(0);
-        while(rs.next()){
-            Vector coldata = new Vector();
+    public void setDefault(){
+        txtcategoryname.setText("");
+        txtsize.setText("");
+
+        txtcategoryname.setEnabled(false);
+        txtsize.setEnabled(false);
+
+        btnadd.setEnabled(true);
+        btnaddsize.setEnabled(true);
+        btndelete.setEnabled(false);
+        btnupdate.setEnabled(false);
+        btnsave.setEnabled(false);
+
+
+        populatetable();
+        populateSizeTable();
+    }
+    public void populateSizeTable() {
+        try {
+            Connection con = sqlconnector.getConnection();
+            Statement st = con.createStatement();
+            String query = "SELECT * FROM size ORDER BY size_id ASC";
+            ResultSet rs = st.executeQuery(query);
+            
+            DefaultTableModel tblmodel = (DefaultTableModel) tblsize.getModel();
+            tblmodel.setRowCount(0);
+            
+            while(rs.next()) {
+                Vector coldata = new Vector();
+                coldata.add(rs.getInt("size_id"));
+                coldata.add(rs.getString("size_name"));
+                tblmodel.addRow(coldata);
+            }
+        } catch(SQLException e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
+    }
+    public void populatetable(){
+        try{
+            Connection con = sqlconnector.getConnection();
+            Statement st = con.createStatement();
+            String query = "SELECT category_id, category_name FROM category ORDER BY category_id ASC";
+            ResultSet rs = st.executeQuery(query);
+            
+            DefaultTableModel tblmodel =(DefaultTableModel)tblcategory.getModel();
+            tblmodel.setRowCount(0);
+            while(rs.next()){
+                Vector coldata = new Vector();
                 coldata.add(rs.getInt("category_id"));
                 coldata.add(rs.getString("category_name")); 
                 tblmodel.addRow(coldata);
+            }
+        } catch(SQLException e){
+            JOptionPane.showMessageDialog(null, e);
         }
-    }catch(SQLException e){
-        JOptionPane.showMessageDialog(null, e);
     }
-        
-}
 public class CategoryItem {
     private int id;
     private String name;

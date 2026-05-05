@@ -25,10 +25,16 @@ public class usermenu extends javax.swing.JFrame {
     public static usermenu instance;
     
     Color DefaultColor, ClickedColor;
+    Object usercategory;
     
     public usermenu() {
         instance = this;
         initComponents();
+        
+        txtTotal.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        txtCash.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        txtChange.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        
         this.isAdminSwitching = false;
         initializeUserMenu(); // Call shared method
         
@@ -41,7 +47,6 @@ public class usermenu extends javax.swing.JFrame {
         
     }
     private void initializeUserMenu() {
-    loadCategories();
     
     usercategory uc = new usercategory();
     desktoppane.add(uc);
@@ -60,100 +65,15 @@ public class usermenu extends javax.swing.JFrame {
     ClickedColor = new Color(204,0,0);
     }
 
-    
-    public class CategoryComboItem {
-    private int id;
-    private String name;
-    
-    public CategoryComboItem(int id, String name) {  // <-- Fix this line
-        this.id = id;
-        this.name = name;
-    }
     // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-     
-    public int getId() { return id; }
-    @Override
-    public String toString() { return name; }
-    }
      // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     
-    public Object getSelectedCategory() {
-    return cmbusercategory.getSelectedItem();
-    }
-    
-   public void loadCategories() {
-    try {
-        Connection con = sqlconnector.getConnection();
-        String sql = "SELECT category_id, category_name FROM category ORDER BY category_name ASC";
-        PreparedStatement pst = con.prepareStatement(sql);
-        ResultSet rs = pst.executeQuery();
-        
-        cmbusercategory.removeAllItems();
-        cmbusercategory.addItem(new CategoryComboItem(0, "-- Select Category --"));
-        
-        while(rs.next()) {
-            cmbusercategory.addItem(new CategoryComboItem(
-                rs.getInt("category_id"), 
-                rs.getString("category_name")
-            ));
-        }
-        con.close();
-    } catch(Exception e) {
-        JOptionPane.showMessageDialog(this, "Error loading categories: " + e.getMessage());                                                                                                                                                 
-    }
-}
-   
-   public void loadProductsByCategory(int categoryId) {
-    try {
-        Connection con = sqlconnector.getConnection();
-        
-        // FIX: Use DISTINCT to get unique products only
-        String sql = "SELECT DISTINCT p.product_id, p.product_name " +
-                     "FROM product p " +
-                     "JOIN product_variant pv ON p.product_id = pv.product_id " +
-                     "WHERE p.category_id = ? " +
-                     "ORDER BY p.product_name ASC";
-        
-        PreparedStatement pst = con.prepareStatement(sql);
-        pst.setInt(1, categoryId);
-        ResultSet rs = pst.executeQuery();
-        
-        DefaultTableModel model = (DefaultTableModel) tblProducts.getModel();
-        model.setRowCount(0);
-        
-        while(rs.next()) {
-            // Only add ID and Name (matching your 2 columns in the screenshot)
-            model.addRow(new Object[]{
-                rs.getInt("product_id"),        // Col 0: ID
-                rs.getString("product_name")    // Col 1: Name
-            });
-        }
-        con.close();
-        
-    } catch(Exception e) {
-        JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
-        e.printStackTrace();
-    }
-}
 
    public javax.swing.JDesktopPane getDesktopPane() {
     return desktoppane;
    }
-    
-    
-    
     // Add new row if item doesn't exist
-    
-    
-    
-    
-
     // Also add a focus listener or document listener if you want real-time update
-    
-    
-    
-    
- 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -546,12 +466,6 @@ public class usermenu extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    
-    
-    
-    
-
-    
     private void LogoutpanelMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_LogoutpanelMousePressed
         // TODO add your handling code here:
 
@@ -923,8 +837,206 @@ public class usermenu extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtChangeActionPerformed
 
+    private void removeCartItem(int row, int productId, String size, int qtyToRestore) {
+    try {
+        Connection con = sqlconnector.getConnection();
+        
+        // 1. Find the variant_id
+        String getVarSql = "SELECT pv.variant_id FROM product_variant pv " +
+                           "JOIN size s ON pv.size_id = s.size_id " +
+                           "WHERE pv.product_id = ? AND s.size_name = ?";
+        PreparedStatement pst = con.prepareStatement(getVarSql);
+        pst.setInt(1, productId);
+        pst.setString(2, size);
+        ResultSet rs = pst.executeQuery();
+        
+        if (rs.next()) {
+            int variantId = rs.getInt("variant_id");
+            
+            // 2. Restore stock to database
+            String updateSql = "UPDATE product_variant SET stock_quantity = stock_quantity + ? WHERE variant_id = ?";
+            PreparedStatement updatePst = con.prepareStatement(updateSql);
+            updatePst.setInt(1, qtyToRestore);
+            updatePst.setInt(2, variantId);
+            updatePst.executeUpdate();
+            updatePst.close();
+        }
+        
+        rs.close();
+        pst.close();
+        con.close();
+        
+        // 3. Remove row from table
+        DefaultTableModel model = (DefaultTableModel) tblProducts.getModel();
+        model.removeRow(row);
+        
+        // 4. Recalculate Total
+        recalculateTotal();
+        
+        // 5. Refresh product list (to update stock status in usercategory)
+        refreshProductList();
+        
+        JOptionPane.showMessageDialog(this, "Item removed and stock restored.");
+        
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Error removing item: " + e.getMessage());
+    }
+    }
+    
+    private void updateCartItem(int row, int productId, String size, int oldQty, int newQty, double price) {
+    try {
+        Connection con = sqlconnector.getConnection();
+        
+        // 1. Find variant_id and current DB stock
+        String getVarSql = "SELECT pv.variant_id, pv.stock_quantity as db_stock FROM product_variant pv " +
+                           "JOIN size s ON pv.size_id = s.size_id " +
+                           "WHERE pv.product_id = ? AND s.size_name = ?";
+        PreparedStatement pst = con.prepareStatement(getVarSql);
+        pst.setInt(1, productId);
+        pst.setString(2, size);
+        ResultSet rs = pst.executeQuery();
+        
+        if (rs.next()) {
+            int variantId = rs.getInt("variant_id");
+            int dbStock = rs.getInt("db_stock"); // Stock currently in DB
+            
+            int diff = newQty - oldQty;
+            
+            if (diff > 0) {
+                // Increasing quantity: Need to deduct more from DB
+                if (dbStock < diff) {
+                    JOptionPane.showMessageDialog(this, "Not enough stock available!\nAvailable in DB: " + dbStock);
+                    rs.close();
+                    pst.close();
+                    con.close();
+                    return;
+                }
+                
+                String updateSql = "UPDATE product_variant SET stock_quantity = stock_quantity - ? WHERE variant_id = ?";
+                PreparedStatement updatePst = con.prepareStatement(updateSql);
+                updatePst.setInt(1, diff);
+                updatePst.setInt(2, variantId);
+                updatePst.executeUpdate();
+                updatePst.close();
+                
+            } else if (diff < 0) {
+                // Decreasing quantity: Restore stock to DB
+                int restoreQty = Math.abs(diff);
+                String updateSql = "UPDATE product_variant SET stock_quantity = stock_quantity + ? WHERE variant_id = ?";
+                PreparedStatement updatePst = con.prepareStatement(updateSql);
+                updatePst.setInt(1, restoreQty);
+                updatePst.setInt(2, variantId);
+                updatePst.executeUpdate();
+                updatePst.close();
+            }
+            
+            // 2. Update Table Model
+            DefaultTableModel model = (DefaultTableModel) tblProducts.getModel();
+            model.setValueAt(String.valueOf(newQty), row, 3); // Update Qty
+            double subTotal = newQty * price;
+            model.setValueAt(String.format("%.2f", subTotal), row, 5); // Update SubTotal
+            
+            rs.close();
+            pst.close();
+            con.close();
+            
+            // 3. Recalculate Total
+            recalculateTotal();
+            
+            // 4. Refresh product list
+            refreshProductList();
+            
+            JOptionPane.showMessageDialog(this, "Cart updated successfully!");
+            
+        } else {
+            JOptionPane.showMessageDialog(this, "Error: Product variant not found.");
+        }
+        
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Error updating item: " + e.getMessage());
+    }
+    }
+    
+    private void recalculateTotal() {
+        double total = 0;
+        DefaultTableModel model = (DefaultTableModel) tblProducts.getModel();
+        for (int i = 0; i < model.getRowCount(); i++) {
+            String subTotalStr = model.getValueAt(i, 5).toString().replace("₱", "").replace(",", "");
+            total += Double.parseDouble(subTotalStr);
+        }
+        txtTotal.setText(String.format("%.2f", total));
+    }
+    
+    private void refreshProductList() {
+    // Iterate through internal frames to find usercategory and refresh it
+        for (javax.swing.JInternalFrame frame : getDesktopPane().getAllFrames()) {
+            if (frame instanceof usercategory) {
+                ((usercategory) frame).loadAllProducts();
+                break;
+            }
+        }
+    }
+    
     private void tblProductsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblProductsMouseClicked
         // TODO add your handling code here:
+        int row = tblProducts.getSelectedRow();
+    if (row == -1) return;
+
+    // Convert view row to model row (important if table is sorted)
+    row = tblProducts.convertRowIndexToModel(row);
+
+    try {
+        DefaultTableModel model = (DefaultTableModel) tblProducts.getModel();
+        
+        // Get data from the selected row
+        // Columns: 0=ID, 1=Name, 2=Size, 3=Qty, 4=Price, 5=SubTotal
+        int productId = Integer.parseInt(model.getValueAt(row, 0).toString());
+        String productName = model.getValueAt(row, 1).toString();
+        String size = model.getValueAt(row, 2).toString();
+        int currentQty = Integer.parseInt(model.getValueAt(row, 3).toString());
+        double price = Double.parseDouble(model.getValueAt(row, 4).toString().replace("₱", "").replace(",", ""));
+
+        // Show dialog to update quantity
+        String input = JOptionPane.showInputDialog(this, 
+            "Update Quantity for:\n" + productName + " (" + size + ")\n\n" +
+            "Current Quantity: " + currentQty + "\n" +
+            "Enter New Quantity (Enter 0 to remove item):", 
+            "Update Cart Item", 
+            JOptionPane.QUESTION_MESSAGE);
+
+        if (input == null) return; // User cancelled
+
+        input = input.trim();
+        if (input.isEmpty()) return;
+
+        int newQty = Integer.parseInt(input);
+
+        if (newQty < 0) {
+            JOptionPane.showMessageDialog(this, "Quantity cannot be negative!");
+            return;
+        }
+
+        if (newQty == 0) {
+            // Remove item
+            int confirm = JOptionPane.showConfirmDialog(this, 
+                "Remove " + productName + " (" + size + ") from cart?\nStock will be restored.", 
+                "Confirm Removal", 
+                JOptionPane.YES_NO_OPTION);
+            
+            if (confirm == JOptionPane.YES_OPTION) {
+                removeCartItem(row, productId, size, currentQty);
+            }
+        } else {
+            // Update quantity
+            updateCartItem(row, productId, size, currentQty, newQty, price);
+        }
+
+    } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(this, "Please enter a valid number.");
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
+        e.printStackTrace();
+    }
     }//GEN-LAST:event_tblProductsMouseClicked
 
     private void tblProductsMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblProductsMouseEntered
@@ -975,7 +1087,7 @@ public class usermenu extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel Logoutpanel;
-    private javax.swing.JDesktopPane desktoppane;
+    javax.swing.JDesktopPane desktoppane;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel21;

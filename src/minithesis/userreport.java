@@ -61,7 +61,6 @@ public class userreport extends javax.swing.JInternalFrame {
         lblweeklysales = new javax.swing.JLabel();
         txttotalsales = new javax.swing.JTextField();
         lbltotalsales = new javax.swing.JLabel();
-        jDateChooser1 = new com.toedter.calendar.JDateChooser();
         txtweeklysales = new javax.swing.JTextField();
 
         setPreferredSize(new java.awt.Dimension(1002, 592));
@@ -211,7 +210,6 @@ public class userreport extends javax.swing.JInternalFrame {
         lbltotalsales.setForeground(new java.awt.Color(102, 0, 0));
         lbltotalsales.setText("Total sales");
         getContentPane().add(lbltotalsales, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 390, 190, 40));
-        getContentPane().add(jDateChooser1, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 70, -1, -1));
 
         txtweeklysales.setBackground(new java.awt.Color(255, 102, 102));
         txtweeklysales.setFont(new java.awt.Font("Segoe UI Emoji", 1, 24)); // NOI18N
@@ -539,7 +537,6 @@ private void calculateSales() {
     private com.toedter.calendar.JDateChooser datefrom;
     private com.toedter.calendar.JDateChooser dateto;
     private com.toedter.calendar.JCalendar jCalendar1;
-    private com.toedter.calendar.JDateChooser jDateChooser1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;

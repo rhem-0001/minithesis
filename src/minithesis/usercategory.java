@@ -7,6 +7,8 @@ package minithesis;
 import java.sql.*;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.RowFilter;
+import javax.swing.table.TableRowSorter;
 /**
  *
  * @author Roged Martin
@@ -18,12 +20,19 @@ public class usercategory extends javax.swing.JInternalFrame {
      */
     public usercategory() {
         initComponents();
-        loadProductsForCategory();
+        loadAllProducts();
         
         tblusercategory.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         tblusercategory.setRowSelectionAllowed(true);
         tblusercategory.setFocusable(true);
         tblusercategory.setAutoCreateRowSorter(false);
+        
+        txtsearchusercategory.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                searchProducts();
+            }
+        });
+        
     }
     
     public void loadAllProducts() {
@@ -31,10 +40,11 @@ public class usercategory extends javax.swing.JInternalFrame {
             Connection con = sqlconnector.getConnection();
             
             // Fetch ALL products that are IN STOCK (stock_quantity > 0)
-            String sql = "SELECT DISTINCT p.product_id, p.product_name " +
+            String sql = "SELECT DISTINCT p.product_id, p.product_name, c.category_name " +
                          "FROM product p " +
                          "JOIN product_variant pv ON p.product_id = pv.product_id " +
-                         "WHERE pv.stock_quantity > 0 " +  // Only show products with stock
+                         "LEFT JOIN category c ON p.category_id = c.category_id " +
+                         "WHERE pv.stock_quantity > 0 " +
                          "ORDER BY p.product_name ASC";
             
             PreparedStatement pst = con.prepareStatement(sql);
@@ -46,7 +56,8 @@ public class usercategory extends javax.swing.JInternalFrame {
             while(rs.next()) {
                 model.addRow(new Object[]{
                     rs.getInt("product_id"),
-                    rs.getString("product_name")
+                    rs.getString("product_name"),
+                    rs.getString("category_name")
                 });
             }
             con.close();
@@ -56,56 +67,41 @@ public class usercategory extends javax.swing.JInternalFrame {
         }
     }
     
-    public void loadProductsForCategory() {
+    private void searchProducts() {
+        String searchText = txtsearchusercategory.getText().trim().toLowerCase();
+        
+        if (searchText.isEmpty()) {
+            loadAllProducts();
+            return;
+        }
+        
         try {
-            if (usermenu.instance == null) {
-                System.out.println("usermenu instance is null!");
-                return;
-            }
-            
-            Object selected = usermenu.instance.cmbusercategory.getSelectedItem();
-            if (selected == null || !(selected instanceof usermenu.CategoryComboItem)) {
-                System.out.println("No valid category selected");
-                return;
-            }
-            
-            int categoryId = ((usermenu.CategoryComboItem)selected).getId();
-            System.out.println("Loading products for category ID: " + categoryId);
-            
-            if (categoryId == 0) {
-                System.out.println("Category ID is 0 (placeholder)");
-                return;
-            }
-            
             Connection con = sqlconnector.getConnection();
             
-            // Only show products that have stock > 0
-            String sql = "SELECT DISTINCT p.product_id, p.product_name " +
+            // Search by product name OR category name
+            String sql = "SELECT DISTINCT p.product_id, p.product_name, c.category_name " +
                          "FROM product p " +
                          "JOIN product_variant pv ON p.product_id = pv.product_id " +
-                         "WHERE p.category_id = ? AND pv.stock_quantity > 0 " +  // Filter out of stock
+                         "LEFT JOIN category c ON p.category_id = c.category_id " +
+                         "WHERE pv.stock_quantity > 0 " +
+                         "AND (LOWER(p.product_name) LIKE ? OR LOWER(c.category_name) LIKE ?) " +
                          "ORDER BY p.product_name ASC";
             
             PreparedStatement pst = con.prepareStatement(sql);
-            pst.setInt(1, categoryId);
+            String searchPattern = "%" + searchText + "%";
+            pst.setString(1, searchPattern);
+            pst.setString(2, searchPattern);
             ResultSet rs = pst.executeQuery();
             
             DefaultTableModel model = (DefaultTableModel) tblusercategory.getModel();
             model.setRowCount(0);
             
-            int count = 0;
             while(rs.next()) {
                 model.addRow(new Object[]{
                     rs.getInt("product_id"),
-                    rs.getString("product_name")
+                    rs.getString("product_name"),
+                    rs.getString("category_name")
                 });
-                count++;
-            }
-            
-            System.out.println("Loaded " + count + " products");
-            
-            if (count == 0) {
-                JOptionPane.showMessageDialog(this, "No products available in this category.");
             }
             
             rs.close();
@@ -117,7 +113,6 @@ public class usercategory extends javax.swing.JInternalFrame {
             e.printStackTrace();
         }
     }
-    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -198,8 +193,7 @@ public class usercategory extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void tblusercategoryMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblusercategoryMouseClicked
-        // TODO add your handling code here:
-         if(evt.getClickCount() < 1) return;
+        if(evt.getClickCount() < 1) return;
         int row = tblusercategory.getSelectedRow();
         if(row == -1) return;
         
@@ -262,7 +256,6 @@ public class usercategory extends javax.swing.JInternalFrame {
                 variantId = variantMap.get(selectedSize);
             }
             
-            // This check is now less likely to trigger since we filter in the query
             if(stock <= 0) {
                 JOptionPane.showMessageDialog(this, "Out of Stock for " + selectedSize + "!");
                 return;
@@ -317,7 +310,7 @@ public class usercategory extends javax.swing.JInternalFrame {
                 updatePst.close();
                 con.close();
                 
-                loadProductsForCategory();
+                loadAllProducts();
                 if(stocks.instance != null) stocks.instance.populatetable();
                 
                 JOptionPane.showMessageDialog(this, "Added to cart!");
