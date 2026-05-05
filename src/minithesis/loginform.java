@@ -77,7 +77,7 @@ public class loginform extends javax.swing.JFrame {
         getContentPane().add(btnlogin, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 360, 110, 40));
 
         lblbg.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/redbg.png"))); // NOI18N
-        getContentPane().add(lblbg, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, -170, 1050, 860));
+        getContentPane().add(lblbg, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 700, 530));
 
         pack();
         setLocationRelativeTo(null);

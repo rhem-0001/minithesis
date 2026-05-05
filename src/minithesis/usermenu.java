@@ -181,7 +181,6 @@ public class usermenu extends javax.swing.JFrame {
         txtTotal = new javax.swing.JTextField();
         txtCash = new javax.swing.JTextField();
         txtChange = new javax.swing.JTextField();
-        cmbusercategory = new javax.swing.JComboBox<>();
         reportspanel = new javax.swing.JPanel();
         lblreports = new javax.swing.JLabel();
 
@@ -217,6 +216,7 @@ public class usermenu extends javax.swing.JFrame {
             }
         });
 
+        lbllogout.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         lbllogout.setText("LogOut");
 
         javax.swing.GroupLayout LogoutpanelLayout = new javax.swing.GroupLayout(Logoutpanel);
@@ -245,6 +245,7 @@ public class usermenu extends javax.swing.JFrame {
             }
         });
 
+        lblreset.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         lblreset.setText("Reset");
 
         javax.swing.GroupLayout resetpanelLayout = new javax.swing.GroupLayout(resetpanel);
@@ -273,6 +274,7 @@ public class usermenu extends javax.swing.JFrame {
             }
         });
 
+        lbltotal.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         lbltotal.setText("Record");
         lbltotal.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -349,6 +351,7 @@ public class usermenu extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
+        lblttl.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblttl.setText("TOTAL");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
@@ -365,6 +368,7 @@ public class usermenu extends javax.swing.JFrame {
             .addComponent(lblttl, javax.swing.GroupLayout.DEFAULT_SIZE, 29, Short.MAX_VALUE)
         );
 
+        lblcash.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblcash.setText("CASH");
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
@@ -373,7 +377,7 @@ public class usermenu extends javax.swing.JFrame {
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addGap(32, 32, 32)
-                .addComponent(lblcash, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(lblcash, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
@@ -384,6 +388,7 @@ public class usermenu extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        lblchange.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblchange.setText("CHANGE");
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
@@ -410,16 +415,17 @@ public class usermenu extends javax.swing.JFrame {
         );
         desktoppaneLayout.setVerticalGroup(
             desktoppaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 552, Short.MAX_VALUE)
+            .addGap(0, 592, Short.MAX_VALUE)
         );
 
+        txtTotal.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         txtTotal.addActionListener(this::txtTotalActionPerformed);
 
+        txtCash.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         txtCash.addActionListener(this::txtCashActionPerformed);
 
+        txtChange.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         txtChange.addActionListener(this::txtChangeActionPerformed);
-
-        cmbusercategory.addActionListener(this::cmbusercategoryActionPerformed);
 
         reportspanel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -430,6 +436,7 @@ public class usermenu extends javax.swing.JFrame {
             }
         });
 
+        lblreports.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         lblreports.setText("Reports");
 
         javax.swing.GroupLayout reportspanelLayout = new javax.swing.GroupLayout(reportspanel);
@@ -462,12 +469,11 @@ public class usermenu extends javax.swing.JFrame {
                                 .addComponent(Logoutpanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
                                 .addComponent(resetpanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(reportspanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
-                                .addComponent(recordpanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(reportspanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(desktoppane)
-                            .addComponent(cmbusercategory, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addComponent(recordpanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(desktoppane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jPanel21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(jPanel21Layout.createSequentialGroup()
@@ -494,8 +500,6 @@ public class usermenu extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel21Layout.createSequentialGroup()
-                        .addComponent(cmbusercategory, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(desktoppane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -919,24 +923,6 @@ public class usermenu extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtChangeActionPerformed
 
-    private void cmbusercategoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbusercategoryActionPerformed
-        // TODO add your handling code here:
-        Object selected = cmbusercategory.getSelectedItem();
-
-    if (selected == null || !(selected instanceof CategoryComboItem)) return;
-    
-    CategoryComboItem item = (CategoryComboItem) selected;
-    if (item.getId() == 0) return;
-
-    // Load products into the LEFT table (inside usercategory internal frame)
-    for (javax.swing.JInternalFrame frame : desktoppane.getAllFrames()) {
-        if (frame instanceof usercategory) {
-            ((usercategory) frame).loadProductsForCategory(); 
-            break;
-        }
-    }
-    }//GEN-LAST:event_cmbusercategoryActionPerformed
-
     private void tblProductsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblProductsMouseClicked
         // TODO add your handling code here:
     }//GEN-LAST:event_tblProductsMouseClicked
@@ -989,7 +975,6 @@ public class usermenu extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel Logoutpanel;
-    javax.swing.JComboBox<CategoryComboItem> cmbusercategory;
     private javax.swing.JDesktopPane desktoppane;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;

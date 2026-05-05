@@ -79,9 +79,11 @@ public class records extends javax.swing.JInternalFrame {
         ));
         jScrollPane1.setViewportView(recordtable);
 
+        lblfrom.setFont(new java.awt.Font("Showcard Gothic", 1, 14)); // NOI18N
         lblfrom.setForeground(new java.awt.Color(242, 242, 242));
         lblfrom.setText("FROM:");
 
+        lblto.setFont(new java.awt.Font("Showcard Gothic", 1, 14)); // NOI18N
         lblto.setForeground(new java.awt.Color(242, 242, 242));
         lblto.setText("TO:");
 
@@ -102,20 +104,21 @@ public class records extends javax.swing.JInternalFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(34, 34, 34)
+                .addGap(28, 28, 28)
                 .addComponent(jCalendar2, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(74, 74, 74)
+                .addGap(54, 54, 54)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblto, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblfrom, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(lblfrom, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblto, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(btnreset)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnfilter))
-                    .addComponent(datefrom, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(dateto, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(datefrom, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addComponent(btnreset)
+                            .addGap(94, 94, 94)
+                            .addComponent(btnfilter))
+                        .addComponent(dateto, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(54, Short.MAX_VALUE))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
@@ -127,24 +130,24 @@ public class records extends javax.swing.JInternalFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(118, 118, 118)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(114, 114, 114)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(lblfrom, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(datefrom, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(22, 22, 22)
+                        .addGap(26, 26, 26)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(lblto, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(dateto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
+                        .addGap(32, 32, 32)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btnreset)
                             .addComponent(btnfilter))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap(119, Short.MAX_VALUE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jCalendar2, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(32, 32, 32)))
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 372, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(24, 24, 24)))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 393, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18))
         );
 
@@ -153,12 +156,12 @@ public class records extends javax.swing.JInternalFrame {
         record.setFont(new java.awt.Font("Showcard Gothic", 3, 50)); // NOI18N
         record.setForeground(new java.awt.Color(102, 0, 0));
         record.setText("RECORDS");
-        getContentPane().add(record, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 10, 250, 100));
+        getContentPane().add(record, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 20, 250, 100));
 
         lbldailysales.setFont(new java.awt.Font("Showcard Gothic", 1, 24)); // NOI18N
         lbldailysales.setForeground(new java.awt.Color(102, 0, 0));
         lbldailysales.setText("Daily Sales");
-        getContentPane().add(lbldailysales, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 120, 170, 40));
+        getContentPane().add(lbldailysales, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 150, 170, 40));
 
         txtdailysales.setBackground(new java.awt.Color(255, 102, 102));
         txtdailysales.setFont(new java.awt.Font("Segoe UI Emoji", 1, 24)); // NOI18N
@@ -166,12 +169,12 @@ public class records extends javax.swing.JInternalFrame {
         txtdailysales.setText("0.00");
         txtdailysales.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         txtdailysales.addActionListener(this::txtdailysalesActionPerformed);
-        getContentPane().add(txtdailysales, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 160, 250, 60));
+        getContentPane().add(txtdailysales, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 190, 250, 60));
 
         lblweeklysales.setFont(new java.awt.Font("Showcard Gothic", 1, 24)); // NOI18N
         lblweeklysales.setForeground(new java.awt.Color(102, 0, 0));
         lblweeklysales.setText("Weekly Sales");
-        getContentPane().add(lblweeklysales, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 250, 190, 40));
+        getContentPane().add(lblweeklysales, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 290, 190, 40));
 
         txtweeklysales.setBackground(new java.awt.Color(255, 102, 102));
         txtweeklysales.setFont(new java.awt.Font("Segoe UI Emoji", 1, 24)); // NOI18N
@@ -179,12 +182,12 @@ public class records extends javax.swing.JInternalFrame {
         txtweeklysales.setText("0.00");
         txtweeklysales.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         txtweeklysales.addActionListener(this::txtweeklysalesActionPerformed);
-        getContentPane().add(txtweeklysales, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 290, 250, 60));
+        getContentPane().add(txtweeklysales, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 330, 250, 60));
 
         lbltotalsales.setFont(new java.awt.Font("Showcard Gothic", 1, 24)); // NOI18N
         lbltotalsales.setForeground(new java.awt.Color(102, 0, 0));
         lbltotalsales.setText("Total sales");
-        getContentPane().add(lbltotalsales, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 390, 190, 40));
+        getContentPane().add(lbltotalsales, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 430, 190, 40));
 
         txttotalsales.setBackground(new java.awt.Color(255, 102, 102));
         txttotalsales.setFont(new java.awt.Font("Segoe UI Emoji", 1, 24)); // NOI18N
@@ -192,7 +195,7 @@ public class records extends javax.swing.JInternalFrame {
         txttotalsales.setText("0.00");
         txttotalsales.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         txttotalsales.addActionListener(this::txttotalsalesActionPerformed);
-        getContentPane().add(txttotalsales, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 430, 250, 60));
+        getContentPane().add(txttotalsales, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 470, 250, 60));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents

@@ -49,7 +49,7 @@ public class overview extends javax.swing.JInternalFrame {
         rs = pst.executeQuery();
         if (rs.next()) {
             double totalSales = rs.getDouble("total");
-            txtoverviewsales.setText(String.format("₱%,.2f", totalSales));
+            txtoverviewsales.setText(String.format("%,.2f", totalSales));
         }
         rs.close();
         pst.close();
@@ -133,10 +133,10 @@ public class overview extends javax.swing.JInternalFrame {
             coldata.add(rs.getInt("quantity"));
             
             // 6. Price (Formatted with Peso sign)
-            coldata.add(String.format("₱%.2f", rs.getDouble("price")));
+            coldata.add(String.format("%.2f", rs.getDouble("price")));
             
             // 7. Total (Formatted with Peso sign)
-            coldata.add(String.format("₱%.2f", rs.getDouble("total")));
+            coldata.add(String.format("%.2f", rs.getDouble("total")));
             
             model.addRow(coldata);
         }
@@ -228,9 +228,6 @@ public class overview extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        lblrecenttransaction = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        tbloverview = new javax.swing.JTable();
         jPanel1 = new javax.swing.JPanel();
         lblbestseller = new javax.swing.JLabel();
         txtbestseller = new javax.swing.JTextField();
@@ -238,16 +235,59 @@ public class overview extends javax.swing.JInternalFrame {
         txtoverviewsales = new javax.swing.JTextField();
         lbltotalorders = new javax.swing.JLabel();
         txttotalorders = new javax.swing.JTextField();
-        OVERVIEW = new javax.swing.JLabel();
         btnrefresh = new javax.swing.JButton();
+        lblrecenttransaction = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tbloverview = new javax.swing.JTable();
 
         setPreferredSize(new java.awt.Dimension(974, 664));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        lblrecenttransaction.setFont(new java.awt.Font("Gill Sans Ultra Bold", 1, 18)); // NOI18N
+        jPanel1.setBackground(new java.awt.Color(255, 102, 102));
+        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        lblbestseller.setFont(new java.awt.Font("Segoe UI Black", 1, 18)); // NOI18N
+        lblbestseller.setForeground(new java.awt.Color(102, 0, 0));
+        lblbestseller.setText("Best Selling Product: ");
+        jPanel1.add(lblbestseller, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 110, -1, 20));
+
+        txtbestseller.setBackground(new java.awt.Color(102, 0, 0));
+        txtbestseller.setFont(new java.awt.Font("Segoe UI Emoji", 1, 24)); // NOI18N
+        txtbestseller.setForeground(new java.awt.Color(255, 255, 255));
+        txtbestseller.addActionListener(this::txtbestsellerActionPerformed);
+        jPanel1.add(txtbestseller, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 150, 420, 60));
+
+        lbltotalsales.setFont(new java.awt.Font("Segoe UI Black", 1, 18)); // NOI18N
+        lbltotalsales.setForeground(new java.awt.Color(102, 0, 0));
+        lbltotalsales.setText("Total Sales: ");
+        jPanel1.add(lbltotalsales, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 40, -1, -1));
+
+        txtoverviewsales.setBackground(new java.awt.Color(102, 0, 0));
+        txtoverviewsales.setFont(new java.awt.Font("Segoe UI Emoji", 1, 24)); // NOI18N
+        txtoverviewsales.setForeground(new java.awt.Color(255, 255, 255));
+        txtoverviewsales.setText("0.00");
+        jPanel1.add(txtoverviewsales, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 70, 360, 60));
+
+        lbltotalorders.setFont(new java.awt.Font("Segoe UI Black", 1, 18)); // NOI18N
+        lbltotalorders.setForeground(new java.awt.Color(102, 0, 0));
+        lbltotalorders.setText("Total Orders: ");
+        jPanel1.add(lbltotalorders, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 180, -1, -1));
+
+        txttotalorders.setBackground(new java.awt.Color(102, 0, 0));
+        txttotalorders.setFont(new java.awt.Font("Segoe UI Emoji", 1, 24)); // NOI18N
+        txttotalorders.setForeground(new java.awt.Color(255, 255, 255));
+        txttotalorders.setText("0");
+        jPanel1.add(txttotalorders, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 210, 360, 60));
+
+        btnrefresh.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnrefresh.setText("Refresh");
+        btnrefresh.addActionListener(this::btnrefreshActionPerformed);
+        jPanel1.add(btnrefresh, new org.netbeans.lib.awtextra.AbsoluteConstraints(870, 330, -1, -1));
+
+        lblrecenttransaction.setFont(new java.awt.Font("Segoe UI Black", 1, 24)); // NOI18N
         lblrecenttransaction.setForeground(new java.awt.Color(102, 0, 0));
         lblrecenttransaction.setText("Recent Transaction: ");
-        getContentPane().add(lblrecenttransaction, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 340, -1, -1));
+        jPanel1.add(lblrecenttransaction, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 320, -1, -1));
 
         tbloverview.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -259,52 +299,7 @@ public class overview extends javax.swing.JInternalFrame {
         ));
         jScrollPane1.setViewportView(tbloverview);
 
-        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 370, 940, 240));
-
-        jPanel1.setBackground(new java.awt.Color(255, 102, 102));
-        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        lblbestseller.setFont(new java.awt.Font("Gill Sans Ultra Bold", 1, 14)); // NOI18N
-        lblbestseller.setForeground(new java.awt.Color(102, 0, 0));
-        lblbestseller.setText("Best Selling Product: ");
-        jPanel1.add(lblbestseller, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 100, -1, 20));
-
-        txtbestseller.setBackground(new java.awt.Color(102, 0, 0));
-        txtbestseller.setFont(new java.awt.Font("Segoe UI Emoji", 1, 24)); // NOI18N
-        txtbestseller.setForeground(new java.awt.Color(255, 255, 255));
-        txtbestseller.addActionListener(this::txtbestsellerActionPerformed);
-        jPanel1.add(txtbestseller, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 130, 420, 60));
-
-        lbltotalsales.setFont(new java.awt.Font("Gill Sans Ultra Bold", 1, 14)); // NOI18N
-        lbltotalsales.setForeground(new java.awt.Color(102, 0, 0));
-        lbltotalsales.setText("Total Sales: ");
-        jPanel1.add(lbltotalsales, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 100, -1, -1));
-
-        txtoverviewsales.setBackground(new java.awt.Color(102, 0, 0));
-        txtoverviewsales.setFont(new java.awt.Font("Segoe UI Emoji", 1, 24)); // NOI18N
-        txtoverviewsales.setForeground(new java.awt.Color(255, 255, 255));
-        txtoverviewsales.setText("0.00");
-        jPanel1.add(txtoverviewsales, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 130, 360, 60));
-
-        lbltotalorders.setFont(new java.awt.Font("Gill Sans Ultra Bold", 1, 14)); // NOI18N
-        lbltotalorders.setForeground(new java.awt.Color(102, 0, 0));
-        lbltotalorders.setText("Total Orders: ");
-        jPanel1.add(lbltotalorders, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 220, -1, -1));
-
-        txttotalorders.setBackground(new java.awt.Color(102, 0, 0));
-        txttotalorders.setFont(new java.awt.Font("Segoe UI Emoji", 1, 24)); // NOI18N
-        txttotalorders.setForeground(new java.awt.Color(255, 255, 255));
-        txttotalorders.setText("0");
-        jPanel1.add(txttotalorders, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 250, 360, 60));
-
-        OVERVIEW.setFont(new java.awt.Font("Showcard Gothic", 1, 55)); // NOI18N
-        OVERVIEW.setForeground(new java.awt.Color(102, 0, 0));
-        OVERVIEW.setText("OVERVIEW");
-        jPanel1.add(OVERVIEW, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, 320, 80));
-
-        btnrefresh.setText("Refresh");
-        btnrefresh.addActionListener(this::btnrefreshActionPerformed);
-        jPanel1.add(btnrefresh, new org.netbeans.lib.awtextra.AbsoluteConstraints(870, 10, -1, -1));
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 360, 940, 250));
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 990, 630));
 
@@ -325,7 +320,6 @@ public class overview extends javax.swing.JInternalFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel OVERVIEW;
     private javax.swing.JButton btnrefresh;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;

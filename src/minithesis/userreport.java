@@ -64,7 +64,7 @@ public class userreport extends javax.swing.JInternalFrame {
         jDateChooser1 = new com.toedter.calendar.JDateChooser();
         txtweeklysales = new javax.swing.JTextField();
 
-        setPreferredSize(new java.awt.Dimension(1002, 552));
+        setPreferredSize(new java.awt.Dimension(1002, 592));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel1.setBackground(new java.awt.Color(102, 0, 0));
@@ -92,18 +92,23 @@ public class userreport extends javax.swing.JInternalFrame {
         ));
         jScrollPane1.setViewportView(tbluserrecords);
 
+        jLabel1.setFont(new java.awt.Font("Showcard Gothic", 1, 14)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("From:");
 
+        jLabel2.setFont(new java.awt.Font("Showcard Gothic", 1, 14)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(242, 242, 242));
         jLabel2.setText("To:");
 
+        btnFilter.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnFilter.setText("Filter");
         btnFilter.addActionListener(this::btnFilterActionPerformed);
 
+        btnReset.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnReset.setText("Reset");
         btnReset.addActionListener(this::btnResetActionPerformed);
 
+        btnBackToMenu.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnBackToMenu.setText("Back");
         btnBackToMenu.addActionListener(this::btnBackToMenuActionPerformed);
 
@@ -116,27 +121,24 @@ public class userreport extends javax.swing.JInternalFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 551, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(6, 6, 6)
+                        .addGap(12, 12, 12)
                         .addComponent(jCalendar1, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(datefrom, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(dateto, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                                .addGap(40, 40, 40)
                                 .addComponent(btnReset)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGap(31, 31, 31)
                                 .addComponent(btnFilter)
-                                .addGap(29, 29, 29)
-                                .addComponent(btnBackToMenu, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                .addGap(28, 28, 28)
+                                .addComponent(btnBackToMenu, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(dateto, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(datefrom, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addGap(18, 18, Short.MAX_VALUE)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -144,45 +146,45 @@ public class userreport extends javax.swing.JInternalFrame {
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 7, Short.MAX_VALUE))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(datefrom, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(29, 29, 29))
+                                .addGap(17, 17, 17)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(datefrom, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(dateto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(btnReset)
+                                        .addComponent(btnFilter, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(btnBackToMenu))
+                                .addGap(24, 24, 24))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addComponent(dateto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)))
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnReset)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(btnFilter, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(btnBackToMenu))))
-                    .addComponent(jCalendar1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 361, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addContainerGap()
+                                .addComponent(jCalendar1, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 396, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(0, 16, Short.MAX_VALUE))
         );
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 10, 570, 530));
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 10, 570, 550));
 
         record.setFont(new java.awt.Font("Showcard Gothic", 3, 50)); // NOI18N
         record.setForeground(new java.awt.Color(102, 0, 0));
         record.setText("user RECORDS");
-        getContentPane().add(record, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 10, 390, 100));
+        getContentPane().add(record, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 10, 390, 100));
 
         lbldailysales.setFont(new java.awt.Font("Showcard Gothic", 1, 24)); // NOI18N
         lbldailysales.setForeground(new java.awt.Color(102, 0, 0));
         lbldailysales.setText("Daily Sales");
-        getContentPane().add(lbldailysales, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 120, 170, 40));
+        getContentPane().add(lbldailysales, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 120, 170, 40));
 
         txtdailysales.setBackground(new java.awt.Color(255, 102, 102));
         txtdailysales.setFont(new java.awt.Font("Segoe UI Emoji", 1, 24)); // NOI18N
@@ -190,12 +192,12 @@ public class userreport extends javax.swing.JInternalFrame {
         txtdailysales.setText("0.00");
         txtdailysales.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         txtdailysales.addActionListener(this::txtdailysalesActionPerformed);
-        getContentPane().add(txtdailysales, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 160, 240, 60));
+        getContentPane().add(txtdailysales, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 160, 240, 60));
 
         lblweeklysales.setFont(new java.awt.Font("Showcard Gothic", 1, 24)); // NOI18N
         lblweeklysales.setForeground(new java.awt.Color(102, 0, 0));
         lblweeklysales.setText("Weekly Sales");
-        getContentPane().add(lblweeklysales, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 260, 190, 40));
+        getContentPane().add(lblweeklysales, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 260, 190, 40));
 
         txttotalsales.setBackground(new java.awt.Color(255, 102, 102));
         txttotalsales.setFont(new java.awt.Font("Segoe UI Emoji", 1, 24)); // NOI18N
@@ -203,12 +205,12 @@ public class userreport extends javax.swing.JInternalFrame {
         txttotalsales.setText("0.00");
         txttotalsales.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         txttotalsales.addActionListener(this::txttotalsalesActionPerformed);
-        getContentPane().add(txttotalsales, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 450, 240, 60));
+        getContentPane().add(txttotalsales, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 440, 240, 60));
 
         lbltotalsales.setFont(new java.awt.Font("Showcard Gothic", 1, 24)); // NOI18N
         lbltotalsales.setForeground(new java.awt.Color(102, 0, 0));
         lbltotalsales.setText("Total sales");
-        getContentPane().add(lbltotalsales, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 410, 190, 40));
+        getContentPane().add(lbltotalsales, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 390, 190, 40));
         getContentPane().add(jDateChooser1, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 70, -1, -1));
 
         txtweeklysales.setBackground(new java.awt.Color(255, 102, 102));
@@ -217,7 +219,7 @@ public class userreport extends javax.swing.JInternalFrame {
         txtweeklysales.setText("0.00");
         txtweeklysales.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         txtweeklysales.addActionListener(this::txtweeklysalesActionPerformed);
-        getContentPane().add(txtweeklysales, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 300, 240, 60));
+        getContentPane().add(txtweeklysales, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 300, 240, 60));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
