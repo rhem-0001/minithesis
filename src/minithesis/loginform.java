@@ -5,16 +5,19 @@ import java.security.MessageDigest;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.awt.Color;
 import javax.swing.JOptionPane;
-import javax.swing.JFrame;
 
 
 public class loginform extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(loginform.class.getName());
-
+    Color DefaultColor, ClickedColor;
+    
     public loginform() {
         initComponents(); 
+        DefaultColor = new Color(204, 0, 0);
+        ClickedColor = new Color(153, 0, 0);
     }
 
     @SuppressWarnings("unchecked")
@@ -27,7 +30,6 @@ public class loginform extends javax.swing.JFrame {
         lblpassword = new javax.swing.JLabel();
         txtpassword = new javax.swing.JPasswordField();
         cbxpassword = new javax.swing.JCheckBox();
-        btnsignup = new javax.swing.JButton();
         btnlogin = new javax.swing.JButton();
         lblbg = new javax.swing.JLabel();
 
@@ -55,6 +57,7 @@ public class loginform extends javax.swing.JFrame {
         getContentPane().add(lblpassword, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 270, 150, -1));
 
         txtpassword.setFont(new java.awt.Font("Perpetua", 0, 18)); // NOI18N
+        txtpassword.addActionListener(this::txtpasswordActionPerformed);
         getContentPane().add(txtpassword, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 270, 270, 30));
 
         cbxpassword.setFont(new java.awt.Font("Perpetua", 0, 14)); // NOI18N
@@ -62,19 +65,12 @@ public class loginform extends javax.swing.JFrame {
         cbxpassword.addActionListener(this::cbxpasswordActionPerformed);
         getContentPane().add(cbxpassword, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 310, 110, 20));
 
-        btnsignup.setBackground(new java.awt.Color(153, 0, 0));
-        btnsignup.setFont(new java.awt.Font("Perpetua", 1, 24)); // NOI18N
-        btnsignup.setForeground(new java.awt.Color(255, 255, 255));
-        btnsignup.setText("Sign Up");
-        btnsignup.addActionListener(this::btnsignupActionPerformed);
-        getContentPane().add(btnsignup, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 360, 120, 40));
-
         btnlogin.setBackground(new java.awt.Color(153, 0, 0));
         btnlogin.setFont(new java.awt.Font("Perpetua", 1, 24)); // NOI18N
         btnlogin.setForeground(new java.awt.Color(255, 255, 255));
         btnlogin.setText("Log In");
         btnlogin.addActionListener(this::btnloginActionPerformed);
-        getContentPane().add(btnlogin, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 360, 110, 40));
+        getContentPane().add(btnlogin, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 350, 110, 40));
 
         lblbg.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/redbg.png"))); // NOI18N
         getContentPane().add(lblbg, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 700, 530));
@@ -103,21 +99,15 @@ public class loginform extends javax.swing.JFrame {
     private void btnloginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnloginActionPerformed
         String username = txtusername.getText().trim();
         String password = new String(txtpassword.getPassword());
-    
-        // Validation
+        
         if (username.isEmpty() || password.isEmpty()) {
-            JOptionPane.showMessageDialog(this, 
-                "Please enter username and password!", "Error", 
-                JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Please enter username and password!", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
         
-        // Hash the entered password
         String hashedPassword = hashPassword(password);
         if (hashedPassword == null) {
-            JOptionPane.showMessageDialog(this, 
-                "Error processing password!", "Error", 
-                JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Error processing password!", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
         
@@ -129,53 +119,31 @@ public class loginform extends javax.swing.JFrame {
             conn = sqlconnector.getConnection();
             String sql = "SELECT * FROM users WHERE username = ? AND userpassword = ?";
             pst = conn.prepareStatement(sql);
-            
             pst.setString(1, username);
-            pst.setString(2, hashedPassword);  // Compare hashed passwords
-            
+            pst.setString(2, hashedPassword);
             rs = pst.executeQuery();
             
             if (rs.next()) {
                 String userType = rs.getString("user_type");
-                
-                JOptionPane.showMessageDialog(this, 
-                    "Login Successful!\nWelcome, " + username + "!",
-                    "Success",
-                    JOptionPane.INFORMATION_MESSAGE);
-                
+                JOptionPane.showMessageDialog(this, "Login Successful!", "Welcome", JOptionPane.INFORMATION_MESSAGE);
                 logger.info("User logged in: " + username + " (Role: " + userType + ")");
                 
-                this.dispose(); // Close login form
+                this.dispose();
                 
-                // Redirect based on user type
-                if (userType.equalsIgnoreCase("Admin")) {
+                if ("Admin".equals(userType)) {
                     new Maintenance().setVisible(true);
                 } else {
-                    new usermenu().setVisible(true);
+                    new usermenu(false).setVisible(true);
                 }
             } else {
-                // Invalid credentials
-                JOptionPane.showMessageDialog(this, 
-                    "Invalid username or password!\nPlease check your credentials and try again.", 
-                    "Login Failed", 
-                    JOptionPane.ERROR_MESSAGE);
-                
-                logger.warning("Failed login attempt for username: " + username);
-                
-                // Clear the password field only
-                txtpassword.setText("");
-                txtusername.requestFocus();
+                JOptionPane.showMessageDialog(this, "Invalid username or password!", "Login Failed", JOptionPane.ERROR_MESSAGE);
             }
             
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, 
-                "Error: " + e.getMessage(), 
-                "Database Error", 
-                JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Database Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             logger.severe("Login error: " + e.getMessage());
             e.printStackTrace();
         } finally {
-            // Close resources properly
             try { if (rs != null) rs.close(); } catch (Exception e) { e.printStackTrace(); }
             try { if (pst != null) pst.close(); } catch (Exception e) { e.printStackTrace(); }
             try { if (conn != null) conn.close(); } catch (Exception e) { e.printStackTrace(); }
@@ -184,7 +152,6 @@ public class loginform extends javax.swing.JFrame {
     }//GEN-LAST:event_btnloginActionPerformed
 
     private void cbxpasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxpasswordActionPerformed
-        // TODO add your handling code here:
         if(cbxpassword.isSelected()){
             txtpassword.setEchoChar((char)0);
         } else {
@@ -193,14 +160,12 @@ public class loginform extends javax.swing.JFrame {
     }//GEN-LAST:event_cbxpasswordActionPerformed
 
     private void txtusernameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtusernameActionPerformed
-        // TODO add your handling code here:
+        txtpassword.requestFocus();
     }//GEN-LAST:event_txtusernameActionPerformed
 
-    private void btnsignupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnsignupActionPerformed
-        // TODO add your handling code here:
-        this.dispose(); // Close login form
-        new signup().setVisible(true); // Open signup form
-    }//GEN-LAST:event_btnsignupActionPerformed
+    private void txtpasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtpasswordActionPerformed
+        btnloginActionPerformed(evt);
+    }//GEN-LAST:event_txtpasswordActionPerformed
 
     /**
      * @param args the command line arguments
@@ -229,7 +194,6 @@ public class loginform extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnlogin;
-    private javax.swing.JButton btnsignup;
     private javax.swing.JCheckBox cbxpassword;
     private javax.swing.JLabel lblbg;
     private javax.swing.JLabel lblpassword;

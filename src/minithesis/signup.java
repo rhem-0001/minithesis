@@ -13,9 +13,7 @@ public class signup extends javax.swing.JFrame {
     public signup() {
         initComponents();
     }
-
-   
-    @SuppressWarnings("unchecked")
+   @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
@@ -38,6 +36,7 @@ public class signup extends javax.swing.JFrame {
 
         jcategory.setFont(new java.awt.Font("Times New Roman", 1, 12)); // NOI18N
         jcategory.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Admin", "User" }));
+        jcategory.addActionListener(this::jcategoryActionPerformed);
 
         jLabel2.setFont(new java.awt.Font("Times New Roman", 1, 10)); // NOI18N
         jLabel2.setText("Password: ");
@@ -190,7 +189,7 @@ public class signup extends javax.swing.JFrame {
             String insertSql = "INSERT INTO users (username, userpassword, user_type) VALUES (?, ?, ?)";
             insertPst = conn.prepareStatement(insertSql);
             insertPst.setString(1, username);
-            insertPst.setString(2, hashedPassword);  // Store hashed password
+            insertPst.setString(2, hashedPassword);
             insertPst.setString(3, userType);
             
             int rowsAffected = insertPst.executeUpdate();
@@ -219,13 +218,11 @@ public class signup extends javax.swing.JFrame {
             logger.severe("Signup error: " + e.getMessage());
             e.printStackTrace();
         } finally {
-            // Close resources properly
             try { if (rs != null) rs.close(); } catch (Exception e) { e.printStackTrace(); }
             try { if (checkPst != null) checkPst.close(); } catch (Exception e) { e.printStackTrace(); }
             try { if (insertPst != null) insertPst.close(); } catch (Exception e) { e.printStackTrace(); }
             try { if (conn != null) conn.close(); } catch (Exception e) { e.printStackTrace(); }
         }
-
     }//GEN-LAST:event_btnpasswordActionPerformed
 
     private void jusernameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jusernameActionPerformed
@@ -233,13 +230,16 @@ public class signup extends javax.swing.JFrame {
     }//GEN-LAST:event_jusernameActionPerformed
 
     private void cbxpasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxpasswordActionPerformed
-        // TODO add your handling code here:
-         if(cbxpassword.isSelected()){
+        if(cbxpassword.isSelected()){
             jpassword.setEchoChar((char)0);
-        }else{
+        } else {
             jpassword.setEchoChar('*');
         }
     }//GEN-LAST:event_cbxpasswordActionPerformed
+
+    private void jcategoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcategoryActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jcategoryActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

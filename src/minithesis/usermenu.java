@@ -536,7 +536,8 @@ public class usermenu extends javax.swing.JFrame {
     }//GEN-LAST:event_lbltotalMouseClicked
 
     private void recordpanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_recordpanelMouseClicked
-        if (tblProducts.getRowCount() == 0) {
+        // 1. Validation: Check if cart is empty
+    if (tblProducts.getRowCount() == 0) {
         JOptionPane.showMessageDialog(this, 
             "Cart is empty! Please add items first.", 
             "Empty Cart", 
@@ -544,6 +545,7 @@ public class usermenu extends javax.swing.JFrame {
         return;
     }
     
+    // 2. Validation: Check if cash is entered
     if (txtCash.getText().isEmpty()) {
         JOptionPane.showMessageDialog(this, 
             "Please enter cash amount!", 
@@ -553,10 +555,12 @@ public class usermenu extends javax.swing.JFrame {
     }
     
     try {
+        // Parse amounts (removing currency symbols if present)
         double total = Double.parseDouble(txtTotal.getText().replace("₱", "").replace(",", ""));
         double cash = Double.parseDouble(txtCash.getText().replace("₱", "").replace(",", ""));
         double change = cash - total;
         
+        // 3. Validation: Check if cash is sufficient
         if (change < 0) {
             JOptionPane.showMessageDialog(this, 
                 "Insufficient cash amount!", 
@@ -565,7 +569,7 @@ public class usermenu extends javax.swing.JFrame {
             return;
         }
         
-        // Build receipt text - RIGHT ALIGNED
+        // 4. Build Receipt String
         StringBuilder receipt = new StringBuilder();
         receipt.append("        YOYI'S CAKES & PASTRIES\n");
         receipt.append("              CASH RECEIPT\n");
@@ -574,53 +578,63 @@ public class usermenu extends javax.swing.JFrame {
         receipt.append("Order ID: #").append(generateOrderId()).append("\n");
         receipt.append("**************************************\n\n");
 
-// Header - Description left, Price right
-        receipt.append(String.format("%-30s %10s\n", "Description", "Price"));
+        // Header
+        receipt.append(String.format("%-30s %20s\n", "Description", "Price"));
         receipt.append("--------------------------------------\n");
 
         DefaultTableModel cartModel = (DefaultTableModel) tblProducts.getModel();
         for (int i = 0; i < cartModel.getRowCount(); i++) {
-        String name = cartModel.getValueAt(i, 1).toString();
-        String size = cartModel.getValueAt(i, 2).toString();
-        String qty = cartModel.getValueAt(i, 3).toString();
-        String price = cartModel.getValueAt(i, 4).toString();
-        String subTotal = cartModel.getValueAt(i, 5).toString();
-    
-    // Format: Product Name (Size) x Qty
-        String description = name + " (" + size + ") x" + qty;
-    
-        receipt.append(String.format("%-30s %10s\n", description, subTotal));
+            String name = cartModel.getValueAt(i, 1).toString();
+            String size = cartModel.getValueAt(i, 2).toString();
+            String qty = cartModel.getValueAt(i, 3).toString();
+            String subTotal = cartModel.getValueAt(i, 5).toString();
+        
+            // Format: Product Name (Size) x Qty
+            String description = name + " (" + size + ") x" + qty;
+            receipt.append(String.format("%-30s %10s\n", description, subTotal));
         }
 
         receipt.append("\n**************************************\n");
-        receipt.append(String.format("%-30s %10s\n", "TOTAL:", txtTotal.getText()));
-        receipt.append(String.format("%-30s %10s\n", "CASH:", "₱" + String.format("%.2f", cash)));
-        receipt.append(String.format("%-30s %10s\n", "CHANGE:", "₱" + String.format("%.2f", change)));
+        receipt.append(String.format("%-30s %20s\n", "TOTAL:", txtTotal.getText()));
+        receipt.append(String.format("%-30s %20s\n", "CASH:", "₱" + String.format("%.2f", cash)));
+        receipt.append(String.format("%-30s %20s\n", "CHANGE:", "₱" + String.format("%.2f", change)));
         receipt.append("**************************************\n");
         receipt.append("\n        Thank you for your order! ♡\n");
         receipt.append("           Please come again!\n");
 
-// Show receipt confirmation
-        int confirm = JOptionPane.showConfirmDialog(this, 
+        // 5. Show Receipt with Single OK Button
+        // showMessageDialog only has an OK button.
+        // We pass JOptionPane.INFORMATION_MESSAGE to get the standard info icon.
+        JOptionPane.showMessageDialog(this, 
             receipt.toString(), 
             "Confirm Purchase", 
-            JOptionPane.YES_NO_OPTION,
-            JOptionPane.PLAIN_MESSAGE);
+            JOptionPane.INFORMATION_MESSAGE);
         
-        if (confirm == JOptionPane.YES_OPTION) {
-            saveOrderToDatabase(total, cash, change);
-            
-            cartModel.setRowCount(0);
-            txtTotal.setText("");
-            txtCash.setText("");
-            txtChange.setText("");
-            
-            JOptionPane.showMessageDialog(this, 
-                "✓ Sale completed successfully!", 
-                "Success", 
-                JOptionPane.INFORMATION_MESSAGE);
+        // 6. Since the dialog is dismissed (OK clicked), we proceed to save immediately
+        saveOrderToDatabase(total, cash, change);
+        
+        // 7. Clear Cart and Inputs
+        cartModel.setRowCount(0);
+        txtTotal.setText("");
+        txtCash.setText("");
+        txtChange.setText("");
+        
+        // 8. Refresh Stock Tables
+        if (stocks.instance != null) {
+            stocks.instance.populatetable();
         }
-        
+        if (foodmenu.instance != null) {
+            foodmenu.instance.populatetable();
+        }
+        if (usermenu.instance != null && usermenu.instance.usercategory != null) { // Assuming usercategory access is fixed
+             // Logic to refresh usercategory products if needed
+        }
+
+        JOptionPane.showMessageDialog(this, 
+            "✓ Sale completed successfully!", 
+            "Success", 
+            JOptionPane.INFORMATION_MESSAGE);
+            
     } catch (Exception e) {
         JOptionPane.showMessageDialog(this, 
             "Error: " + e.getMessage(), 
@@ -628,7 +642,6 @@ public class usermenu extends javax.swing.JFrame {
             JOptionPane.ERROR_MESSAGE);
         e.printStackTrace();
     }
-    
     }//GEN-LAST:event_recordpanelMouseClicked
 
     private int generateOrderId() {
