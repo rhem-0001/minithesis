@@ -240,7 +240,7 @@ public class overview extends javax.swing.JInternalFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tbloverview = new javax.swing.JTable();
 
-        setPreferredSize(new java.awt.Dimension(974, 664));
+        setPreferredSize(new java.awt.Dimension(1025, 610));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel1.setBackground(new java.awt.Color(255, 102, 102));
@@ -282,7 +282,7 @@ public class overview extends javax.swing.JInternalFrame {
         btnrefresh.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnrefresh.setText("Refresh");
         btnrefresh.addActionListener(this::btnrefreshActionPerformed);
-        jPanel1.add(btnrefresh, new org.netbeans.lib.awtextra.AbsoluteConstraints(870, 330, -1, -1));
+        jPanel1.add(btnrefresh, new org.netbeans.lib.awtextra.AbsoluteConstraints(910, 330, -1, -1));
 
         lblrecenttransaction.setFont(new java.awt.Font("Segoe UI Black", 1, 24)); // NOI18N
         lblrecenttransaction.setForeground(new java.awt.Color(102, 0, 0));
@@ -299,9 +299,9 @@ public class overview extends javax.swing.JInternalFrame {
         ));
         jScrollPane1.setViewportView(tbloverview);
 
-        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 360, 940, 250));
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 360, 980, 200));
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 990, 630));
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1020, 630));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
