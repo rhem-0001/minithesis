@@ -477,6 +477,7 @@ public class inventoryreports extends javax.swing.JInternalFrame {
             inventoryreports frame = new inventoryreports();
             frame.setVisible(true);
         });
+        System.out.print("Hi everyone");
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
